@@ -4,7 +4,7 @@
 
 <mapper namespace="demo">
 
-    <select id="getDemoList" resultType="java.util.ArrayList">
+    <select id="getDemoList" resultType="demo">
         SELECT * FROM wd_test
     </select>
 

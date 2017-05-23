@@ -46,7 +46,7 @@
 
     <!-- 定义针对字符编码的拦截器，强制规定Request和Response的编码方式 -->
     <filter>
-        <filter-name>setCharacterEncoding</filter-name>
+        <filter-name>characterEncodingFilter</filter-name>
         <filter-class>
             org.springframework.web.filter.CharacterEncodingFilter
         </filter-class>
@@ -60,8 +60,8 @@
         </init-param>
     </filter>
     <filter-mapping>
-        <filter-name>setCharacterEncoding</filter-name>
-        <url-pattern>/</url-pattern>
+        <filter-name>characterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
 
 </web-app>

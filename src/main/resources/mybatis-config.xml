@@ -5,7 +5,7 @@
 <configuration>
 
     <typeAliases>
-        <!--<typeAlias type="" alias=""/>-->
+        <typeAlias type="demo.po.Demo" alias="demo"/>
     </typeAliases>
 
     <!-- 对事务的管理和连接池的配置 -->

@@ -1,18 +1,20 @@
 package auth.dao;
 
-import com.sojson.common.model.UUserRole;
+import auth.po.UserRoleRelations;
 
 import java.util.List;
 import java.util.Map;
 
-public interface UUserRoleMapper {
-    int insert(UUserRole record);
+public interface UserRoleReMapper {
 
-    int insertSelective(UUserRole record);
+    int insert(UserRoleRelations record);
 
-	int deleteByUserId(Long id);
+    int insertSelective(UserRoleRelations record);
 
-	int deleteRoleByUserIds(Map<String, Object> resultMap);
+    int deleteByUserId(Long id);
 
-	List<Long> findUserIdByRoleId(Long id);
+    int deleteRoleByUserIds(Map<String, Object> resultMap);
+
+    List<Long> findUserIdByRoleId(Long id);
+
 }

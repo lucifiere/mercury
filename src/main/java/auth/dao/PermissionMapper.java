@@ -1,25 +1,26 @@
 package auth.dao;
 
-import com.sojson.common.model.UPermission;
-import com.sojson.permission.bo.UPermissionBo;
+import auth.po.Permission;
 
 import java.util.List;
 import java.util.Set;
 
-public interface UPermissionMapper {
+public interface PermissionMapper {
+
     int deleteByPrimaryKey(Long id);
 
-    int insert(UPermission record);
+    int insert(Permission record);
 
-    int insertSelective(UPermission record);
+    int insertSelective(Permission record);
 
-    UPermission selectByPrimaryKey(Long id);
+    Permission selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(UPermission record);
+    int updateByPrimaryKeySelective(Permission record);
 
-    int updateByPrimaryKey(UPermission record);
+    int updateByPrimaryKey(Permission record);
 
-	List<UPermissionBo> selectPermissionById(Long id);
-	//根据用户ID获取权限的Set集合
-	Set<String> findPermissionByUserId(Long id);
+    List<Permission> selectPermissionById(Long id);
+
+    Set<String> findPermissionByUserId(Long id);
+
 }

@@ -1,28 +1,28 @@
 package auth.dao;
 
-import com.sojson.common.model.UUser;
-import com.sojson.permission.bo.URoleBo;
+import auth.po.User;
 
 import java.util.List;
 import java.util.Map;
 
-public interface UUserMapper {
+public interface UserMapper {
+
     int deleteByPrimaryKey(Long id);
 
-    int insert(UUser record);
+    int insert(User record);
 
-    int insertSelective(UUser record);
+    int insertSelective(User record);
 
-    UUser selectByPrimaryKey(Long id);
+    User selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(UUser record);
+    int updateByPrimaryKeySelective(User record);
 
-    int updateByPrimaryKey(UUser record);
+    int updateByPrimaryKey(User record);
 
-	UUser login(Map<String, Object> map);
+    User login(Map<String, Object> map);
 
-	UUser findUserByEmail(String email);
+    User findUserByEmail(String email);
 
-	List<URoleBo> selectRoleByUserId(Long id);
+    List<User> selectRoleByUserId(Long id);
 
 }

@@ -1,27 +1,29 @@
 package auth.dao;
 
-import com.sojson.common.model.URole;
+import auth.po.Role;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface URoleMapper {
+public interface RoleMapper {
+
     int deleteByPrimaryKey(Long id);
 
-    int insert(URole record);
+    int insert(Role record);
 
-    int insertSelective(URole record);
+    int insertSelective(Role record);
 
-    URole selectByPrimaryKey(Long id);
+    Role selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(URole record);
+    int updateByPrimaryKeySelective(Role record);
 
-    int updateByPrimaryKey(URole record);
+    int updateByPrimaryKey(Role record);
 
 	Set<String> findRoleByUserId(Long id);
 
-	List<URole> findNowAllPermission(Map<String, Object> map);
+	List<Role> findNowAllPermission(Map<String, Object> map);
 	
 	void initData();
+
 }

@@ -53,16 +53,16 @@
     <!-- 整合Spring事务 -->
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
-            <tx:method name="publish*" />
-            <tx:method name="save*" />
-            <tx:method name="add*" />
-            <tx:method name="update*" />
-            <tx:method name="insert*" />
-            <tx:method name="create*" />
-            <tx:method name="del*" />
-            <tx:method name="load*" />
-            <tx:method name="init*" />
-            <tx:method name="insert*" />
+            <tx:method name="publish*"/>
+            <tx:method name="save*"/>
+            <tx:method name="add*"/>
+            <tx:method name="update*"/>
+            <tx:method name="insert*"/>
+            <tx:method name="create*"/>
+            <tx:method name="del*"/>
+            <tx:method name="load*"/>
+            <tx:method name="init*"/>
+            <tx:method name="insert*"/>
             <tx:method name="*" read-only="true"/>
         </tx:attributes>
     </tx:advice>

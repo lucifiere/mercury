@@ -20,10 +20,10 @@ public interface RoleMapper {
 
     int updateByPrimaryKey(Role record);
 
-	Set<String> findRoleByUserId(Long id);
+    Set<String> findRoleByUserId(Long id);
 
-	List<Role> findNowAllPermission(Map<String, Object> map);
-	
-	void initData();
+    List<Role> findNowAllPermission(Map<String, Object> map);
+
+    void initData();
 
 }

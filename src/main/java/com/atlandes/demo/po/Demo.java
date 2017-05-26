@@ -1,7 +1,7 @@
 package com.atlandes.demo.po;
 
 /**
- *  Created by Created by XD.Wang on 2016/10/9.
+ * Created by Created by XD.Wang on 2016/10/9.
  */
 
 public class Demo {

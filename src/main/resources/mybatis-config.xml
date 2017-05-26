@@ -14,12 +14,12 @@
     <!-- 对事务的管理和连接池的配置 -->
     <environments default="dev">
         <environment id="dev">
-            <transactionManager type="JDBC" />
+            <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.jdbc.Driver" />
-                <property name="url" value="jdbc:mysql://localhost:3306/dev" />
-                <property name="username" value="root" />
-                <property name="password" value="" />
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/dev"/>
+                <property name="username" value="root"/>
+                <property name="password" value=""/>
             </dataSource>
         </environment>
     </environments>

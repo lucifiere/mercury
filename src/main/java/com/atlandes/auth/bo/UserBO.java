@@ -1,16 +1,20 @@
-package auth.po;
+package com.atlandes.auth.bo;
 
 /**
- * Created by XD.Wang on 2017/5/25.
- * 角色
+ * Created by XD.Wang on 2017/5/26.
+ * 用户
  */
-public class Role {
+public class UserBO {
 
     private Long id;
 
     private String name;
 
     private Integer type;
+
+    private Long marker;
+
+    private Long userId;
 
     public Long getId() {
         return id;
@@ -35,4 +39,21 @@ public class Role {
     public void setType(Integer type) {
         this.type = type;
     }
+
+    public Long getMarker() {
+        return marker;
+    }
+
+    public void setMarker(Long marker) {
+        this.marker = marker;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
 }

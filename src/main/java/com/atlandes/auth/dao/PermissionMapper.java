@@ -1,6 +1,6 @@
-package auth.dao;
+package com.atlandes.auth.dao;
 
-import auth.po.Permission;
+import com.atlandes.auth.po.Permission;
 
 import java.util.List;
 import java.util.Set;

@@ -1,6 +1,6 @@
-package demo.dao;
+package com.atlandes.demo.dao;
 
-import demo.po.Demo;
+import com.atlandes.demo.po.Demo;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ public class DemoDao extends BaseDao {
 
     public List<Demo> getDemoList() {
         SqlSession session = factory.openSession();
-        List<Demo> demos = session.selectList("demo.getDemoList");
+        List<Demo> demos = session.selectList("com.atlandes.demo.getDemoList");
         session.close();
         return demos;
     }

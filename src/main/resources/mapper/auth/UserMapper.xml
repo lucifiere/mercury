@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sojson.common.dao.UUserMapper">
+<mapper namespace="com.sojson.com.atlandes.common.dao.UUserMapper">
 
-    <resultMap id="BaseResultMap" type="auth.po.User">
+    <resultMap id="BaseResultMap" type="com.atlandes.auth.po.User">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="nickname" property="nickname" jdbcType="VARCHAR"/>
         <result column="email" property="email" jdbcType="VARCHAR"/>
@@ -64,7 +64,7 @@
         group by u.id
     </select>
 
-    <select id="selectRoleByUserId" resultType="auth.bo.UserBO">
+    <select id="selectRoleByUserId" resultType="com.atlandes.auth.bo.UserBO">
         select
             ur.id,
             ur.name,
@@ -105,7 +105,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="auth.po.User">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.atlandes.auth.po.User">
         insert into u_user (
         id,
         nickname,
@@ -125,7 +125,7 @@
       )
     </insert>
 
-    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="auth.po.User">
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.atlandes.auth.po.User">
         insert into u_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -175,7 +175,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="auth.po.User">
+    <update id="updateByPrimaryKeySelective" parameterType="com.atlandes.auth.po.User">
         update u_user
         <set>
             <if test="nickname != null">
@@ -200,7 +200,7 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <update id="updateByPrimaryKey" parameterType="auth.po.User">
+    <update id="updateByPrimaryKey" parameterType="com.atlandes.auth.po.User">
         update u_user
         set nickname = #{nickname,jdbcType=VARCHAR},
             email = #{email,jdbcType=VARCHAR},

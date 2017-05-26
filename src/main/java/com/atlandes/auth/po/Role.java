@@ -1,18 +1,16 @@
-package auth.bo;
+package com.atlandes.auth.po;
 
 /**
- * Created by XD.Wang on 2017/5/26.
+ * Created by XD.Wang on 2017/5/25.
  * 角色
  */
-public class RoleBO {
+public class Role {
 
     private Long id;
 
     private String name;
 
     private Integer type;
-
-    private Long marker;
 
     public Long getId() {
         return id;
@@ -36,13 +34,5 @@ public class RoleBO {
 
     public void setType(Integer type) {
         this.type = type;
-    }
-
-    public Long getMarker() {
-        return marker;
-    }
-
-    public void setMarker(Long marker) {
-        this.marker = marker;
     }
 }

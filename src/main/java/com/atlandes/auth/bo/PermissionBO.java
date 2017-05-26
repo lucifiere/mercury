@@ -1,4 +1,4 @@
-package auth.bo;
+package com.atlandes.auth.bo;
 
 /**
  * Created by XD.Wang on 2017/5/26.

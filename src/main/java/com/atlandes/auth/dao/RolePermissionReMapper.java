@@ -1,6 +1,6 @@
-package auth.dao;
+package com.atlandes.auth.dao;
 
-import auth.po.RolePermissionRelations;
+import com.atlandes.auth.po.RolePermissionRelations;
 
 import java.util.List;
 import java.util.Map;

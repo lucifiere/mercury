@@ -1,4 +1,4 @@
-package auth.po;
+package com.atlandes.auth.po;
 
 import java.util.Date;
 

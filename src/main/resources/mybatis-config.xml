@@ -6,9 +6,9 @@
 
     <typeAliases>
         <!-- demo -->
-        <typeAlias type="demo.po.Demo" alias="demo"/>
+        <typeAlias type="com.atlandes.demo.po.Demo" alias="com.atlandes.demo"/>
         <!-- auth -->
-        <typeAlias type="auth.bo.PermissionBO" alias="perBO"/>
+        <typeAlias type="com.atlandes.auth.bo.PermissionBO" alias="perBO"/>
 
     </typeAliases>
 
@@ -24,10 +24,5 @@
             </dataSource>
         </environment>
     </environments>
-
-    <!-- mapping 文件路径配置 -->
-    <mappers>
-        <mapper resource="/mapper/demo/demo.xml" />
-    </mappers>
 
 </configuration>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="auth.rolePermissionRe">
+<mapper namespace="com.atlandes.auth.rolePermissionRe">
     
-    <resultMap id="BaseResultMap" type="auth.po.RolePermissionRelations">
+    <resultMap id="BaseResultMap" type="com.atlandes.auth.po.RolePermissionRelations">
         <result column="rid" property="rid" jdbcType="BIGINT"/>
         <result column="pid" property="pid" jdbcType="BIGINT"/>
     </resultMap>
@@ -57,12 +57,12 @@
   	    delete from auth_re_role_and_permission where rid in(${roleIds})
     </delete>
 
-    <insert id="insert" parameterType="auth.po.RolePermissionRelations">
+    <insert id="insert" parameterType="com.atlandes.auth.po.RolePermissionRelations">
         insert into auth_re_role_and_permission (rid, pid)
         values (#{rid,jdbcType=BIGINT}, #{pid,jdbcType=BIGINT})
     </insert>
 
-    <insert id="insertSelective" parameterType="auth.po.RolePermissionRelations">
+    <insert id="insertSelective" parameterType="com.atlandes.auth.po.RolePermissionRelations">
         insert into auth_re_role_and_permission
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="rid != null">

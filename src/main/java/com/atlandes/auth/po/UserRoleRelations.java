@@ -1,14 +1,14 @@
-package auth.po;
+package com.atlandes.auth.po;
 
 /**
  * Created by XD.Wang on 2017/5/25.
- * 角色权限关系
+ * 用户角色关系
  */
-public class RolePermissionRelations {
+public class UserRoleRelations {
 
     private Long id;
 
-    private Long pid;
+    private Long uid;
 
     private Long rid;
 
@@ -20,12 +20,12 @@ public class RolePermissionRelations {
         this.id = id;
     }
 
-    public Long getPid() {
-        return pid;
+    public Long getUid() {
+        return uid;
     }
 
-    public void setPid(Long pid) {
-        this.pid = pid;
+    public void setUid(Long uid) {
+        this.uid = uid;
     }
 
     public Long getRid() {

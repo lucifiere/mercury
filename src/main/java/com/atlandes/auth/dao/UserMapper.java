@@ -1,6 +1,6 @@
-package auth.dao;
+package com.atlandes.auth.dao;
 
-import auth.po.User;
+import com.atlandes.auth.po.User;
 
 import java.util.List;
 import java.util.Map;

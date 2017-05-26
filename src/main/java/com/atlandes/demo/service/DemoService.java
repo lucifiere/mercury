@@ -1,7 +1,7 @@
-package demo.service;
+package com.atlandes.demo.service;
 
-import demo.dao.DemoDao;
-import demo.po.Demo;
+import com.atlandes.demo.dao.DemoDao;
+import com.atlandes.demo.po.Demo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class DemoService {
     private static final Logger log = LoggerFactory.getLogger(DemoService.class);
 
     public List<Demo> getDemoList() {
-        log.debug("get demo list execute.");
+        log.debug("get com.atlandes.demo list execute.");
         return demoDAO.getDemoList();
     }
 

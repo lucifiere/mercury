@@ -1,8 +1,8 @@
-package demo.controller;
+package com.atlandes.demo.controller;
 
 import com.alibaba.fastjson.JSON;
-import demo.po.Demo;
-import demo.service.DemoService;
+import com.atlandes.demo.po.Demo;
+import com.atlandes.demo.service.DemoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +15,7 @@ import java.util.List;
  * 示例控制器
  */
 @Controller
-@RequestMapping("demo")
+@RequestMapping("com/atlandes/demo")
 public class DemoController {
 
     private final DemoService demoService;

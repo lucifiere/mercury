@@ -1,4 +1,4 @@
-package auth.po;
+package com.atlandes.auth.po;
 
 /**
  * Created by XD.Wang on 2017/5/25.

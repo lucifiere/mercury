@@ -23,4 +23,3 @@ CREATE TABLE `admin_menu` (
   UNIQUE KEY `unique_code` (`code`) USING BTREE,
   KEY `index_module_id` (`module_id`) USING BTREE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 comment='系统菜单信息表';
-

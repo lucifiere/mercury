@@ -8,10 +8,9 @@ public class RoleAllocationBO {
 
     private static final long serialVersionUID = 1L;
 
-    // 角色名从列转行，逗号分割
-    private String roleNames;
-    // 角色ID从列转行，以逗号分割
-    private String roleIds;
+    private String roleNames; // 角色名从列转行，逗号分割
+
+    private String roleIds; // 角色ID从列转行，以逗号分割
 
     public String getRoleNames() {
         return roleNames;

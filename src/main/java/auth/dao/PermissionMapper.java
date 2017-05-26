@@ -21,6 +21,6 @@ public interface PermissionMapper {
 
     List<Permission> selectPermissionById(Long id);
 
-    Set<String> findPermissionByUserId(Long id);
+    Set<String> findPermissionUrlByUserId(Long id);
 
 }

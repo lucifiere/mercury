@@ -5,7 +5,11 @@
 <configuration>
 
     <typeAliases>
+        <!-- demo -->
         <typeAlias type="demo.po.Demo" alias="demo"/>
+        <!-- auth -->
+        <typeAlias type="auth.bo.PermissionBO" alias="perBO"/>
+
     </typeAliases>
 
     <!-- 对事务的管理和连接池的配置 -->

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sojson.com.atlandes.common.dao.UUserMapper">
+<mapper namespace="com.atlandes.auth.user">
 
     <resultMap id="BaseResultMap" type="com.atlandes.auth.po.User">
         <id column="id" property="id" jdbcType="BIGINT"/>
@@ -47,7 +47,7 @@
     </select>
 
     <!-- 用户权限分配的分页查询 -->
-    <select id="findUserAndRole" resultType="com.sojson.permission.bo.UserRoleAllocationBo">
+    <select id="findUserAndRole" resultType="com.atlandes.auth.bo.RoleAllocationBO">
         select u.id,u.nickname,u.email,u.create_time,u.last_login_time,u.status ,group_concat(ur.name)
         roleNames,group_concat(ur.id)roleIds from
         u_user u

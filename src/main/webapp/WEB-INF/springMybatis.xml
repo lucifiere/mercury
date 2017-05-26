@@ -34,14 +34,13 @@
         <property name="filters" value="stat"/>
     </bean>
 
-    <!-- JSP视图解析器 -->
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/jsp/"/>
-    </bean>
-
     <!-- mybatis文件配置，扫描所有mapper文件 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" p:dataSource-ref="dataSource"
           p:configLocation="classpath:mybatis-config.xml" p:mapperLocations="classpath:mapper/**/*Mapper.xml"/>
+
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
 
     <!-- spring与mybatis整合配置，扫描所有dao -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" p:basePackage="com.atlandes"
@@ -50,6 +49,23 @@
     <!-- 对dataSource 数据源进行事务管理 -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
           p:dataSource-ref="dataSource"/>
+
+    <!-- 整合Spring事务 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="publish*" />
+            <tx:method name="save*" />
+            <tx:method name="add*" />
+            <tx:method name="update*" />
+            <tx:method name="insert*" />
+            <tx:method name="create*" />
+            <tx:method name="del*" />
+            <tx:method name="load*" />
+            <tx:method name="init*" />
+            <tx:method name="insert*" />
+            <tx:method name="*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
 
     <!-- 启用对事务注解的支持 -->
     <tx:annotation-driven transaction-manager="transactionManager"/>

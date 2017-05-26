@@ -17,6 +17,11 @@
     <mvc:resources mapping="/html/**" location="/html/" cache-period="2592000"/>
     <mvc:resources mapping="/static/**" location="/static/" cache-period="31536000"/>
 
+    <!-- JSP视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/jsp/"/>
+    </bean>
+
     <import resource="springMybatis.xml"/>
 
 </beans>

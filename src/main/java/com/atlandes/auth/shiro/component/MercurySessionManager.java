@@ -1,4 +1,4 @@
-package com.atlandes.auth.shiro.util;
+package com.atlandes.auth.shiro.component;
 
 /**
  * Created by XD.Wang on 2017/5/26.

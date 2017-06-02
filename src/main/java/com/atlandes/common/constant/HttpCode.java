@@ -10,4 +10,6 @@ public interface HttpCode {
 
     String AUTHENTICATION_REFUSED = "403";
 
+    String AUTHENTICATION_CANCEL = "408";
+
 }

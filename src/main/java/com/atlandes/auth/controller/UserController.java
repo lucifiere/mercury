@@ -18,6 +18,7 @@ import javax.annotation.Resource;
 public class UserController {
 
     @Resource
+    private
     UserService userService;
 
     @RequestMapping("/getUser")
@@ -25,6 +26,13 @@ public class UserController {
     public String selectByPrimaryKey(Long id) {
         User u = userService.selectByPrimaryKey(id);
         return JSON.toJSONString(u);
+    }
+
+    @RequestMapping("/addUser")
+    @ResponseBody
+    public String addUser(User user) {
+        Integer id = userService.insert(user);
+        return "{\"success\":\"" + id + "\"";
     }
 
 }

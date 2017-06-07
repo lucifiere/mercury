@@ -28,6 +28,7 @@ import java.util.Map;
  * 踢出校验
  */
 @SuppressWarnings({"unchecked", "static-access"})
+
 public class KickOutSessionFilter extends AccessControlFilter {
 
     private static String KICK_OUT_URL = "/u/login.sHtml?kickOut";

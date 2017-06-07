@@ -28,7 +28,6 @@ public class LoginFilter extends AccessControlFilter {
             ShiroFilterUtils.refuseAjax(response);
         }
         return Boolean.FALSE;
-
     }
 
     @Override

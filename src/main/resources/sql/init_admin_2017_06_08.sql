@@ -8,6 +8,10 @@ CREATE TABLE `admin_module` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 comment='系统模块信息表';
 
+INSERT INTO admin_module (name, remark, sort_id, url) VALUES ('个人信息', '查看个人信息', 1, '/');
+INSERT INTO admin_module (name, remark, sort_id, url) VALUES ('备忘事项', '查看个人备忘录', 2, '/');
+INSERT INTO admin_module (name, remark, sort_id, url) VALUES ('测试模块', '测试', 3, '/');
+
 CREATE TABLE `admin_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `code` varchar(10) DEFAULT '' COMMENT '菜单编号，唯一键',
@@ -23,3 +27,25 @@ CREATE TABLE `admin_menu` (
   UNIQUE KEY `unique_code` (`code`) USING BTREE,
   KEY `index_module_id` (`code`) USING BTREE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 comment='系统菜单信息表';
+
+INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
+  ('100000000', '安全管理', '管理用户、角色、权限等认证信息', '/', 1, '', 999, 1, 1);
+INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
+  ('100100000', '用户管理', '管理用户的增删改查', '/', 2, '100000000', 1, 1, 1);
+INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
+  ('100200000', '角色管理', '管理角色的增删改查', '/', 2, '100000000', 2, 1, 1);
+INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
+  ('100300000', '权限管理', '为资源配置权限', '/', 2, '100000000', 3, 1, 1);
+
+INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
+  ('200000000', '发布管理', '发表日志等', '/', 1, '', 1, 1, 1);
+INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
+  ('200100000', '日志管理', '日志的增删改查', '/', 2, '200000000', 1, 1, 1);
+
+INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
+  ('300000000', '消息中心', '消息的发送和接受', '/', 1, '', 2, 1, 1);
+INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
+  ('300100000', '发件箱', '发送消息', '/', 2, '300000000', 1, 1, 1);
+INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
+  ('300200000', '收件箱', '接收消息', '/', 2, '300000000', 2, 1, 1);
+

@@ -28,7 +28,7 @@ public class IndexController {
     public ModelAndView toIndexPage() {
         ModelAndView mv = new ModelAndView("admin/index");
         mv.addObject("menuList", menuService.getMenuList());
-        mv.addObject("currUserName", "lucifiere");
+        mv.addObject("currUserName", "XD.Wang");
         mv.addObject("moduleList", moduleService.getModuleList());
         return mv;
     }

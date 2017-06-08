@@ -83,7 +83,9 @@ a:active {
 }
 
 html {
-    background: url(../img/welcome.jpg) no-repeat center center fixed;
+    height: 100%;
+    width: 100%;
+    background: url(../img/admin_welcome.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -118,10 +120,22 @@ body {
 }
 
 p.error {
-    color: antiquewhite;
-    text-shadow: #fff 0 1px 0;
+    vertical-align: middle;
+    color: navajowhite;
+    text-shadow: #11A0FF 0 1px 0;
     text-align: center;
-    font: 900 15em helvetica neue;
+    padding-right: 100px;
+    font: 900 9em helvetica neue;
+    -webkit-animation: 2s headline_appear_animation;
+    -moz-animation: 2s headline_appear_animation;
+}
+
+p.sub_content {
+    vertical-align: middle;
+    color: #3f4649;
+    text-align: center;
+    padding-right: 100px;
+    font: 900 3em helvetica neue;
     -webkit-animation: 2s headline_appear_animation;
     -moz-animation: 2s headline_appear_animation;
 }
@@ -151,8 +165,6 @@ p.error {
     font-weight: 300;
     text-shadow: #000 0 1px 0;
 }
-
-
 
 .content h2 {
     text-transform: uppercase;

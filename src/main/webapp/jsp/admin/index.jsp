@@ -41,15 +41,9 @@
             </li>
 
             <li class="kuanjie">
-                <%--<c:forEach items="${userOptionList}" var="option">--%>
-                <%--<a href="${option.url}">${option.title} </a>--%>
-                <%--</c:forEach>--%>
-                <a href="#">用户选项</a>
-                <a href="#">用户选项</a>
-                <a href="#">用户选项</a>
-                <a href="#">用户选项</a>
-                <a href="#">用户选项</a>
-                <a href="#">用户选项</a>
+                <c:forEach items="${moduleList}" var="module">
+                    <a href="${module.url}">${module.name} </a>
+                </c:forEach>
             </li>
 
         </ul>
@@ -61,29 +55,16 @@
     <div class="nav-navicon admin-main admin-sidebar">
 
         <div class="sideMenu am-icon-dashboard" style="color:#aeb2b7; margin: 10px 0 0 0;">
-            欢迎系统管理员：刘耳总${currUserName}</div>
+            欢迎系统管理员：${currUserName}</div>
         <div class="sideMenu">
-            <h3 class="am-icon-flag"><em></em> <a href="#">模块A</a></h3>
-            <ul>
-                <li><a href="">模块的某个功能</a></li>
-                <li class="func" dataType='html' dataLink='msn.htm' iconImg='images/msn.gif'>模块的某个功能</li>
-                <li>模块的某个功能</li>
-                <li>模块的某个功能</li>
-                <li>模块的某个功能</li>
-                <li>模块的某个功能</li>
-            </ul>
-            <h3 class="am-icon-gears"><em></em> <a href="#">模块B</a></h3>
-            <ul>
-                <li>模块的某个功能</li>
-                <li>模块的某个功能</li>
-                <li>模块的某个功能</li>
-                <li>模块的某个功能</li>
-                <li>模块的某个功能</li>
-                <li>模块的某个功能</li>
-                <li>模块的某个功能</li>
-                <li>模块的某个功能</li>
-                <li>模块的某个功能</li>
-            </ul>
+            <c:forEach items="${menuList}" var="menu">
+                <h3 class="am-icon-flag"><em></em> <a href="#">${menu.name}</a></h3>
+                <ul>
+                    <c:forEach items="${menu.children}" var="child">
+                        <li><a href="${child.url}" target="container">${child.name}</a></li>
+                    </c:forEach>
+                </ul>
+            </c:forEach>
         </div>
         <!-- sideMenu End -->
 
@@ -107,11 +88,10 @@
 
         </div>
 
-        <div class="admin" >
-            <iframe src="index.jsp" width="100%" height="100%" class="admin">
+        <div class="admin">
+            <iframe src="${pageContext.request.contextPath}/html/admin_blank.html" width="100%" height="100%" class="admin" name="container">
 
             </iframe>
-
         </div>
 
     </div>

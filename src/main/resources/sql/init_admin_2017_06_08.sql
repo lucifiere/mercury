@@ -49,3 +49,9 @@ INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is
 INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
   ('300200000', '收件箱', '接收消息', '/', 2, '300000000', 2, 1, 1);
 
+-- 2017.6.9
+INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
+  ('400000000', '系统管理', '管理菜单、模块等基础信息', '/', 1, '', 3, 1, 1);
+INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
+  ('400100000', '菜单管理', '菜单的增删改查', '/menu/list', 2, '400000000', 1, 1, 1);
+

@@ -31,17 +31,16 @@
 <div class="admin-biaogelist">
     <div class="listbiaoti am-cf">
         <ul class="am-icon-flag on">
-            商品栏目管理
+            菜单管理
         </ul>
         <dl class="am-icon-home" style="float: right;">
-            当前位置： 首页 > <a href="#">商品列表</a>
+            当前位置： 系统管理 > <a href="#">菜单管理</a>
         </dl>
         <dl>
             <button type="button" class="am-btn am-btn-danger am-round am-btn-xs am-icon-plus"
                     data-am-modal="{target: '#my-popup'}">添加商品一级分类
             </button>
         </dl>
-        <!--data-am-modal="{target: '#my-popup'}" 弹出层 ID  弹出层 190行 开始  271行结束-->
 
     </div>
     <form class="am-form am-g">
@@ -55,7 +54,7 @@
                 <th class="table-type">数据量</th>
                 <th class="table-author am-hide-sm-only">访问</th>
                 <th class="table-date am-hide-sm-only">添加子栏目</th>
-                <th width="163px" class="table-set">操作</th>
+                <th class="table-set">操作</th>
             </tr>
             </thead>
             <tbody>
@@ -164,8 +163,6 @@
                             <button class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
                                     data-am-modal="{target: '#my-popups'}" title="修改"><span
                                     class="am-icon-pencil-square-o"></span></button>
-                            <!-- 用按钮的时候 弹层 后缀需要加 问好 ？#的 时候才有效 真恶心 .html?# -->
-
 
                             <button class="am-btn am-btn-default am-btn-xs am-text-warning  am-round" title="复制"><span
                                     class="am-icon-copy"></span></button>
@@ -223,7 +220,6 @@
                                     class="am-icon-pencil-square-o"></span></button>
                             <!-- 用按钮的时候 弹层 后缀需要加 问好 ？#的 时候才有效 真恶心 .html?# -->
 
-
                             <button class="am-btn am-btn-default am-btn-xs am-text-warning  am-round" title="复制"><span
                                     class="am-icon-copy"></span></button>
                             <button class="am-btn am-btn-default am-btn-xs am-text-danger am-round" title="删除"><span
@@ -260,25 +256,25 @@
             </tr>
             </tbody>
         </table>
+
         <div class="am-btn-group am-btn-group-xs">
-            <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 删除</button>
-            <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 上架</button>
-            <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 下架</button>
-            <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 移动</button>
             <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增</button>
-            <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 保存</button>
-            <button type="button" class="am-btn am-btn-default"><span class="am-icon-archive"></span> 移动</button>
+            <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 修改</button>
             <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button>
         </div>
-        <ul class="am-pagination am-fr">
-            <li class="am-disabled"><a href="#">«</a></li>
-            <li class="am-active"><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">»</a></li>
-        </ul>
+
+        <div class="am-btn-group am-btn-group-xs">
+            <ul class="am-pagination am-fr">
+                <li class="am-disabled"><a href="#">«</a></li>
+                <li class="am-active"><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">»</a></li>
+            </ul>
+        </div>
+
         <hr/>
         <p>
             备注：操作图标含义
@@ -286,20 +282,18 @@
             <a class="am-icon-pencil-square-o am-text-secondary" title="修改"> 修改栏目</a>
             <a class="am-icon-copy am-text-warning" title="复制"> 复制栏目</a>
             <a class="am-icon-trash-o am-text-danger" title="删除"> 删除栏目</a>
-
-
         </p>
     </form>
 
     <div class="foods">
         <ul>
-            版权所有@2015. 模板收集自 <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - More Templates<a
-                href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
+            Mercury管理后台
         </ul>
         <dl>
             <a href="" title="返回头部" class="am-icon-btn am-icon-arrow-up"></a>
         </dl>
     </div>
+
 </div>
 </body>
 </html>

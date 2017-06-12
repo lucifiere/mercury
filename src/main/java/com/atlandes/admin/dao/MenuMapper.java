@@ -22,4 +22,6 @@ public interface MenuMapper {
 
     List<Menu> getMenuList();
 
+    Integer getMenuListCount();
+
 }

@@ -29,6 +29,10 @@ public class MenuService {
         return getMenuListGroupByLevel(menuMapper.getMenuList());
     }
 
+    public List<MenuVO> getMenuListCount() {
+        return getMenuListGroupByLevel(menuMapper.getMenuList());
+    }
+
     private List<MenuVO> getMenuListGroupByLevel(List<Menu> sources) {
         List<MenuVO> pageMenuList = new ArrayList<MenuVO>();
         for (Menu source : sources) {

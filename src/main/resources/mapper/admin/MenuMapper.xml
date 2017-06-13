@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.atlandes.admin.dao.MenuMapper">
 
-    <resultMap id="BaseResultMap" type="com.atlandes.admin.po.Menu">
+    <resultMap id="BaseResultMap" type="com.atlandes.admin.vo.MenuVO">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="code" property="code" jdbcType="VARCHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
@@ -12,14 +12,15 @@
         <result column="sort_id" property="sortId" jdbcType="INTEGER"/>
         <result column="is_valid" property="isValid" jdbcType="TINYINT"/>
         <result column="is_visible" property="isVisible" jdbcType="TINYINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <resultMap id="ResultMapWithBLOBs" type="com.atlandes.admin.po.Menu" extends="BaseResultMap">
+    <resultMap id="ResultMapWithBLOBs" type="com.atlandes.admin.vo.MenuVO" extends="BaseResultMap">
         <result column="url" property="url" jdbcType="LONGVARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, code, name, remark, level, parent_code, sort_id, is_valid, is_visible
+        id, code, name, remark, level, parent_code, sort_id, is_valid, is_visible, create_time
     </sql>
 
     <sql id="Blob_Column_List">
@@ -35,7 +36,7 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
 
-    <select id="getMenuList" resultMap="ResultMapWithBLOBs">
+    <select id="getMenuList" resultMap="ResultMapWithBLOBs" parameterType="com.atlandes.admin.vo.MenuQuery">
         select
         <include refid="Base_Column_List"/>
         ,
@@ -43,6 +44,14 @@
         from admin_menu
         where is_valid = 1
         order by sort_id
+        LIMIT #{pageCurCount}, #{pageSize}
+    </select>
+
+    <select id="getMenuListCount" resultType="java.lang.Integer">
+        SELECT count(id)
+        FROM admin_menu
+        WHERE is_valid = 1
+        ORDER BY sort_id
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

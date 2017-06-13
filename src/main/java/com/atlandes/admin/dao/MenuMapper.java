@@ -1,6 +1,8 @@
 package com.atlandes.admin.dao;
 
 import com.atlandes.admin.po.Menu;
+import com.atlandes.admin.vo.MenuQuery;
+import com.atlandes.admin.vo.MenuVO;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ public interface MenuMapper {
 
     int updateByPrimaryKey(Menu record);
 
-    List<Menu> getMenuList();
+    List<MenuVO> getMenuList(MenuQuery query);
 
     Integer getMenuListCount();
 

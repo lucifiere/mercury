@@ -1,9 +1,12 @@
 package com.atlandes.admin.service;
 
-import com.atlandes.admin.constant.MenuConstant;
+import com.atlandes.admin.constant.DefaultPageConfig;
+import com.atlandes.admin.constant.MenuLevel;
 import com.atlandes.admin.dao.MenuMapper;
 import com.atlandes.admin.po.Menu;
+import com.atlandes.admin.vo.MenuQuery;
 import com.atlandes.admin.vo.MenuVO;
+import com.atlandes.common.pojo.PageCond;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -24,21 +27,30 @@ public class MenuService {
 
     private static Logger log = Logger.getLogger(MenuService.class);
 
-
-    public List<MenuVO> getMenuList() {
-        return getMenuListGroupByLevel(menuMapper.getMenuList());
+    public List<MenuVO> groupMenuList() {
+        return getMenuListGroupByLevel(menuMapper.getMenuList(new MenuQuery()));
     }
 
-    public List<MenuVO> getMenuListCount() {
-        return getMenuListGroupByLevel(menuMapper.getMenuList());
+    public List<MenuVO> getMenuList(MenuQuery query) {
+        query.setPageCurCount(query.getPageCurCount() * DefaultPageConfig.DEFAULT_PAGE_SIZE);
+        return menuMapper.getMenuList(query);
     }
 
-    private List<MenuVO> getMenuListGroupByLevel(List<Menu> sources) {
+    public PageCond getMenuPageCond(MenuQuery query) {
+        PageCond pageCond = new PageCond();
+        int pageTotalCount = menuMapper.getMenuListCount();
+        pageCond.setPageSize(DefaultPageConfig.DEFAULT_PAGE_SIZE);
+        pageCond.setPageCurCount(query.getPageCurCount() * DefaultPageConfig.DEFAULT_PAGE_SIZE);
+        pageCond.setPageTotalCount(Math.round(pageTotalCount / DefaultPageConfig.DEFAULT_PAGE_SIZE) + 1);
+        return pageCond;
+    }
+
+    private List<MenuVO> getMenuListGroupByLevel(List<MenuVO> sources) {
         List<MenuVO> pageMenuList = new ArrayList<MenuVO>();
-        for (Menu source : sources) {
-            if (source.getLevel() == MenuConstant.MODULE_MENU_LEVEL) {
+        for (MenuVO source : sources) {
+            if (source.getLevel() == MenuLevel.MODULE_MENU_LEVEL.getCode()) {
                 List<MenuVO> subMenuList = new ArrayList<MenuVO>();
-                for (Menu m : sources) {
+                for (MenuVO m : sources) {
                     if (m.getParentCode() != null && m.getParentCode().equals(source.getCode())) {
                         subMenuList.add(getMenuVOFromMenu(m, null));
                     }
@@ -49,7 +61,7 @@ public class MenuService {
         return pageMenuList;
     }
 
-    private MenuVO getMenuVOFromMenu(Menu menu, List<MenuVO> subMenuList) {
+    private MenuVO getMenuVOFromMenu(MenuVO menu, List<MenuVO> subMenuList) {
         MenuVO vo = new MenuVO();
         vo.setCode(menu.getCode());
         vo.setIsVisible(menu.getIsVisible());

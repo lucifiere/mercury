@@ -58,7 +58,7 @@
             欢迎系统管理员：${currUserName}</div>
         <div class="sideMenu">
             <c:forEach items="${menuList}" var="menu">
-                <h3 class="am-icon-flag"><em></em> <a href="#">${menu.name}</a></h3>
+                <h3 class="am-icon-flag"><a href="#">${menu.name}</a></h3>
                 <ul>
                     <c:forEach items="${menu.children}" var="child">
                         <li><a href="${child.url}" target="container">${child.name}</a></li>
@@ -89,8 +89,8 @@
         </div>
 
         <div class="admin">
-            <iframe src="${pageContext.request.contextPath}/html/admin_blank.html" width="100%" height="100%" class="admin" name="container">
-
+            <iframe src="${pageContext.request.contextPath}/html/admin_blank.html" width="100%" height="100%"
+                    name="container">
             </iframe>
         </div>
 

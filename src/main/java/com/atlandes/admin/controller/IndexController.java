@@ -27,7 +27,7 @@ public class IndexController {
     @RequestMapping("index")
     public ModelAndView toIndexPage() {
         ModelAndView mv = new ModelAndView("admin/index");
-        mv.addObject("menuList", menuService.getMenuList());
+        mv.addObject("menuList", menuService.groupMenuList());
         mv.addObject("currUserName", "XD.Wang");
         mv.addObject("moduleList", moduleService.getModuleList());
         return mv;

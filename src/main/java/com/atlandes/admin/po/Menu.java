@@ -1,6 +1,7 @@
 package com.atlandes.admin.po;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 系统菜单实体类
@@ -31,6 +32,16 @@ public class Menu implements Serializable {
     private int isValid;//是否有效
 
     private int isVisible;//是否可见
+
+    private Date createTime;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public int getId() {
         return id;

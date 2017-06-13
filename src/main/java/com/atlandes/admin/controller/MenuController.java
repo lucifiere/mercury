@@ -1,8 +1,10 @@
 package com.atlandes.admin.controller;
 
+import com.atlandes.admin.po.Menu;
 import com.atlandes.admin.service.MenuService;
 import com.atlandes.admin.vo.MenuQuery;
 import com.atlandes.admin.vo.MenuVO;
+import com.atlandes.common.pojo.PageCond;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,8 +27,9 @@ public class MenuController {
     @RequestMapping("list")
     public ModelAndView getMenuList(MenuQuery query) {
         ModelAndView mv = new ModelAndView("/admin/menu");
-        List<MenuVO> menuList = menuService.getMenuList();
+        List<MenuVO> menuList = menuService.getMenuList(query);
         mv.addObject("menuList", menuList);
+        mv.addObject("pageCond", menuService.getMenuPageCond(query));
         return mv;
     }
 

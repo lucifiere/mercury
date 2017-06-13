@@ -644,6 +644,7 @@ gallery.html css
     bottom: 0;
     right: 0;
     left: 0;
+    z-index: 100;
 }
 
 .foods ul {
@@ -1052,7 +1053,7 @@ form .form-group:last-child{padding-bottom:0;}
     top: 85px;
     left: 210px;
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
     background-color: #f1f2f7;
 }
 

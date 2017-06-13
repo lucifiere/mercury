@@ -10,7 +10,7 @@
 
     <sql id="Base_Column_List">
         id, name, type
-  </sql>
+    </sql>
 
     <sql id="limit_sql">
         <if test="page_sql != null and page_sql != ''">
@@ -30,14 +30,13 @@
     </sql>
 
     <insert id="initData">
-		{call init_shiro_demo()}
-	</insert>
+        {call init_shiro_demo()}
+    </insert>
 
     <select id="findRoleByUserId" resultType="java.lang.String">
-  		select
-  		  r.type
-  		from auth_role r,auth_re_user_and_role ur
-  		where ur.rid = r.id and ur.uid = #{id,jdbcType=BIGINT}
+        SELECT r.type
+        FROM auth_role r, auth_re_user_and_role ur
+        WHERE ur.rid = r.id AND ur.uid = #{id,jdbcType=BIGINT}
     </select>
 
     <!-- 普通的分页查询 -->
@@ -56,13 +55,15 @@
 
     <!-- 选择角色给用户 -->
     <select id="selectRoleByUserId" resultType="com.atlandes.auth.bo.RoleBO">
-        select
-          ur.id,
-          ur.name,
-          ur.type,
-          ifnull(uur.uid,0) as marker
-        from auth_role ur
-        left join (select * from auth_re_user_and_role where uid=#{id,jdbcType=BIGINT}) uur on uur.rid = ur.id
+        SELECT
+            ur.id,
+            ur.name,
+            ur.type,
+            ifnull(uur.uid, 0) AS marker
+        FROM auth_role ur
+            LEFT JOIN (SELECT *
+                       FROM auth_re_user_and_role
+                       WHERE uid = #{id,jdbcType=BIGINT}) uur ON uur.rid = ur.id
     </select>
 
     <!-- 权限分配的分页查询 -->
@@ -99,17 +100,19 @@
 
     <!-- 根据用户ID，查询所有权限 -->
     <select id="findNowAllPermission" resultMap="findNowAllPermission_resultMap">
-	    select
-	      ur.id,
-	      ur.name,
-	      ur.type,
-	      up.id pid,
-	      up.url,
-	      up.name as pname
-		from (select rid from auth_re_user_and_role where uid = #{userId,jdbcType=BIGINT}) uur 
-		left join auth_role ur on uur.rid = ur.id
-		left join auth_role_permission urp on urp.rid = ur.id
-		left join auth_permission up on up.id = urp.pid
+        SELECT
+            ur.id,
+            ur.name,
+            ur.type,
+            up.id      pid,
+            up.url,
+            up.name AS pname
+        FROM (SELECT rid
+              FROM auth_re_user_and_role
+              WHERE uid = #{userId,jdbcType=BIGINT}) uur
+            LEFT JOIN auth_role ur ON uur.rid = ur.id
+            LEFT JOIN auth_role_permission urp ON urp.rid = ur.id
+            LEFT JOIN auth_permission up ON up.id = urp.pid
     </select>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
@@ -120,13 +123,13 @@
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from auth_role
-        where id = #{id,jdbcType=BIGINT}
+        DELETE FROM auth_role
+        WHERE id = #{id,jdbcType=BIGINT}
     </delete>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.atlandes.auth.po.Role">
-        insert into auth_role (id, name, type)
-        values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR})
+        INSERT INTO auth_role (id, name, type)
+        VALUES (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR})
     </insert>
 
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.atlandes.auth.po.Role">
@@ -169,9 +172,9 @@
     </update>
 
     <update id="updateByPrimaryKey" parameterType="com.atlandes.auth.po.Role">
-        update auth_role
-        set name = #{name,jdbcType=VARCHAR}, type = #{type,jdbcType=VARCHAR}
-        where id = #{id,jdbcType=BIGINT}
-  </update>
+        UPDATE auth_role
+        SET name = #{name,jdbcType=VARCHAR}, type = #{type,jdbcType=VARCHAR}
+        WHERE id = #{id,jdbcType=BIGINT}
+    </update>
 
 </mapper>

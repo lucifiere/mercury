@@ -23,10 +23,11 @@ CREATE TABLE `admin_menu` (
   `sort_id` int(11) DEFAULT NULL COMMENT '排序',
   `is_valid` tinyint(3) unsigned NOT NULL COMMENT '是否有效',
   `is_visible` tinyint(3) unsigned DEFAULT NULL COMMENT '是否可见',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_code` (`code`) USING BTREE,
   KEY `index_module_id` (`code`) USING BTREE
-)ENGINE=InnoDB DEFAULT CHARSET=utf8 comment='系统菜单信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='系统菜单信息表';
 
 INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
   ('100000000', '安全管理', '管理用户、角色、权限等认证信息', '/', 1, '', 999, 1, 1);

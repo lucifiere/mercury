@@ -6,7 +6,9 @@ import com.atlandes.admin.dao.MenuMapper;
 import com.atlandes.admin.po.Menu;
 import com.atlandes.admin.vo.MenuQuery;
 import com.atlandes.admin.vo.MenuVO;
+import com.atlandes.common.enums.VisibleStatus;
 import com.atlandes.common.pojo.PageCond;
+import com.atlandes.common.util.EnumUtil;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +35,12 @@ public class MenuService {
 
     public List<MenuVO> getMenuList(MenuQuery query) {
         query.setPageCurCount(query.getPageCurCount() * DefaultPageConfig.DEFAULT_PAGE_SIZE);
-        return menuMapper.getMenuList(query);
+        List<MenuVO> list = menuMapper.getMenuList(query);
+        for (MenuVO menu : list) {
+            menu.setLevelStr(EnumUtil.getName(MenuLevel.values(), menu.getLevel()));
+            menu.setIsVisibleStr(EnumUtil.getName(VisibleStatus.values(), menu.getIsVisible()));
+        }
+        return list;
     }
 
     public PageCond getMenuPageCond(MenuQuery query) {
@@ -62,6 +69,7 @@ public class MenuService {
     }
 
     private MenuVO getMenuVOFromMenu(MenuVO menu, List<MenuVO> subMenuList) {
+        if (menu.getIsVisible() == VisibleStatus.INVISIBLE.getCode()) return null;
         MenuVO vo = new MenuVO();
         vo.setCode(menu.getCode());
         vo.setIsVisible(menu.getIsVisible());
@@ -72,7 +80,7 @@ public class MenuService {
         return vo;
     }
 
-    public Menu selectMenuById(int id) {
+    public MenuVO selectMenuById(int id) {
         return menuMapper.selectByPrimaryKey(id);
     }
 

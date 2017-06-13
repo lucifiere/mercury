@@ -11,8 +11,6 @@ public class MenuVO {
 
     private int id;
 
-    private int menuId;
-
     private String code;
 
     private String name;
@@ -37,6 +35,15 @@ public class MenuVO {
 
     // 页面字段
     private String levelStr;
+    private String isVisibleStr;
+
+    public String getIsVisibleStr() {
+        return isVisibleStr;
+    }
+
+    public void setIsVisibleStr(String isVisibleStr) {
+        this.isVisibleStr = isVisibleStr;
+    }
 
     public int getId() {
         return id;

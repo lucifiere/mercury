@@ -33,4 +33,12 @@ public class MenuController {
         return mv;
     }
 
+    @RequestMapping("detail")
+    public ModelAndView getMenuList(Integer id) {
+        ModelAndView mv = new ModelAndView("/admin/menu_detail");
+        MenuVO menu = id != null ? menuService.selectMenuById(id) : new MenuVO();
+        mv.addObject("menu", menu);
+        return mv;
+    }
+
 }

@@ -43,7 +43,7 @@
         <include refid="Blob_Column_List"/>
         from admin_menu
         where is_valid = 1
-        order by sort_id
+        order by level,sort_id
         LIMIT #{pageCurCount}, #{pageSize}
     </select>
 
@@ -51,7 +51,6 @@
         SELECT count(id)
         FROM admin_menu
         WHERE is_valid = 1
-        ORDER BY sort_id
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

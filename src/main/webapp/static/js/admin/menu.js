@@ -7,6 +7,7 @@ function toPage(pageCount) {
     window.open("/menu/list?pageCurCount=" + (pageCount - 1), "_self")
 }
 
-function toNext() {
-
+function editMenu(id) {
+    window.open("/menu/detail?id=" + id, "_self")
 }
+

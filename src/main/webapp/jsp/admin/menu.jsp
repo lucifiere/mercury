@@ -38,11 +38,6 @@
         <dl class="am-icon-home" style="float: right;">
             当前位置： 系统管理 > <a href="#">菜单管理</a>
         </dl>
-        <dl>
-            <button type="button" class="am-btn am-btn-danger am-round am-btn-xs am-icon-plus"
-                    data-am-modal="{target: '#my-popup'}">添加商品一级分类
-            </button>
-        </dl>
 
     </div>
 
@@ -50,28 +45,29 @@
         <table width="100%" class="am-table am-table-bordered am-table-radius am-table-striped am-table-hover">
             <thead>
             <tr class="am-success">
-                <th class="am-table-radius">选择</th>
-                <th class="table-id">CODE</th>
+                <th class="am-table-radius am-text-center">选择</th>
+                <th class="table-id am-text-center">级别</th>
+                <th class="table-id am-text-center">编号</th>
+                <th class="table-id am-text-center">父编号</th>
                 <th class="table-id am-text-center">名称</th>
-                <th class="table-title">URL</th>
-                <th class="table-type">是否可见</th>
-                <th class="table-author am-hide-sm-only">创建日期</th>
-                <th class="table-date am-hide-sm-only">备注</th>
-                <th class="table-set">快捷操作</th>
+                <th class="table-title am-text-center">URL</th>
+                <th class="table-type am-text-center">是否可见</th>
+                <th class="table-author am-text-center">创建日期</th>
+                <th class="table-date">备注</th>
+                <th>快捷操作</th>
             </tr>
             </thead>
             <tbody>
             <c:forEach items="${menuList}" var="menu">
                 <tr>
-                    <td><input type="radio" id="rid" value="${menu.id}"/></td>
+                    <td class="am-text-center"><input type="radio" id="rid" value="${menu.id}"/></td>
+                    <td class="am-text-center">${menu.levelStr}</td>
                     <td class="am-text-center">${menu.code}</td>
-                    <td><a href="#">${menu.name}</a></td>
+                    <td class="am-text-center">${menu.parentCode}</td>
+                    <td class="am-text-center"><a href="javascript:editMenu('${menu.id}')">${menu.name}</a></td>
                     <td class="am-text-center">${menu.url}</td>
-                    <td>
-                        <c:if test="${menu.isVisible == 1}">可见</c:if>
-                        <c:if test="${menu.isVisible == 0}">不可见</c:if>
-                    </td>
-                    <td class="am-hide-sm-only"><fmt:formatDate value="${menu.createTime}"
+                    <td class="am-text-center"> ${menu.isVisibleStr} </td>
+                    <td class="am-text-center"><fmt:formatDate value="${menu.createTime}"
                                                                 pattern="yyyy-MM-dd HH:mm:ss"/></td>
                     <td>${menu.remark}</td>
                     <td>
@@ -103,12 +99,12 @@
             <ul class="am-pagination am-fr">
                 <c:forEach var="i" begin="1" end="${pageCond.pageTotalCount}" step="1">
                     <c:if test="${i == 1}">
-                        <li><a href="javascript:toPage('${i} - 1')">«</a></li>
+                        <li><a href="javascript:toPage('${i}')">«</a></li>
                     </c:if>
                     <li id="pageCount${i}" class="am-active"><a href="javascript:toPage('${i}')"><c:out
                             value="${i}"/></a></li>
-                    <c:if test="${i == 1}">
-                        <li><a href="javascript:toPage('${i + 1}')">»</a></li>
+                    <c:if test="${i == pageCond.pageTotalCount}">
+                        <li><a href="javascript:toPage('${i}')">»</a></li>
                     </c:if>
                 </c:forEach>
             </ul>

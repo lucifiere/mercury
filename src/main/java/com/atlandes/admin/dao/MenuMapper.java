@@ -14,7 +14,7 @@ public interface MenuMapper {
 
     int insertSelective(Menu record);
 
-    Menu selectByPrimaryKey(Integer id);
+    MenuVO selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(Menu record);
 

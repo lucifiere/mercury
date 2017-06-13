@@ -8,7 +8,7 @@ import com.atlandes.common.enums.Enum;
  */
 public enum MenuLevel implements Enum {
 
-    MODULE_MENU_LEVEL("系统级别", 1), FUNCTION_MENU_LEVEL("功能级别", 2);
+    MODULE_MENU_LEVEL("系统（Sys）", 1), FUNCTION_MENU_LEVEL("功能（Func）", 2);
 
     private String value;
     private int code;

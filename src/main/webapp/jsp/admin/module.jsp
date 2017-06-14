@@ -12,11 +12,12 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>菜单管理</title>
+    <title>模块管理</title>
     <meta http-equiv="Expires" content="0">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="Cache" content="no-cache">
+    <meta name="description" content="菜单管理">
     <meta name="renderer" content="webkit">
     <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/static/admin/i/favicon.png">
     <link rel="apple-touch-icon-precomposed"
@@ -26,7 +27,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/admin/css/admin.css">
     <script src="${pageContext.request.contextPath}/static/admin/js/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/admin/js/app.js"></script>
-    <script src="${pageContext.request.contextPath}/static/js/admin/menu.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/admin/module.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/common.js"></script>
 </head>
 
@@ -34,10 +35,10 @@
 <div class="admin-biaogelist">
     <div class="listbiaoti am-cf">
         <ul class="am-icon-flag on">
-            菜单管理
+            模块管理
         </ul>
         <dl class="am-icon-home" style="float: right;">
-            当前位置： 系统管理 > 菜单管理
+            当前位置： 系统管理 > 模块管理
         </dl>
 
     </div>
@@ -47,27 +48,19 @@
             <thead>
             <tr class="am-success">
                 <th class="am-table-radius am-text-center">选择</th>
-                <th class="table-id am-text-center">级别</th>
-                <th class="table-id am-text-center">编号</th>
-                <th class="table-id am-text-center">父编号</th>
                 <th class="table-id am-text-center">名称</th>
                 <th class="table-title am-text-center">URL</th>
-                <th class="table-type am-text-center">是否可见</th>
                 <th class="table-author am-text-center">创建日期</th>
                 <th class="table-date">备注</th>
                 <th>快捷操作</th>
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${menuList}" var="module">
+            <c:forEach items="${moduleList}" var="module">
                 <tr>
                     <td class="am-text-center"><input type="radio" name="rid" value="${module.id}"/></td>
-                    <td class="am-text-center">${module.levelStr}</td>
-                    <td class="am-text-center">${module.code}</td>
-                    <td class="am-text-center">${module.parentCode}</td>
                     <td class="am-text-center"><a href="javascript:toEditPage('${module.id}')">${module.name}</a></td>
                     <td class="am-text-center">${module.url}</td>
-                    <td class="am-text-center"> ${module.isVisibleStr} </td>
                     <td class="am-text-center"><fmt:formatDate value="${module.createTime}"
                                                                pattern="yyyy-MM-dd HH:mm:ss"/></td>
                     <td>${module.remark}</td>

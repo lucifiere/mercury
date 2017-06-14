@@ -11,9 +11,7 @@ public class Menu implements Serializable {
 
     private static final long SerialzationUID = 1L;
 
-    private int id;
-
-    private int menuId;
+    private Integer id;
 
     private String code;
 
@@ -23,15 +21,15 @@ public class Menu implements Serializable {
 
     private String url;
 
-    private int level;//级别
+    private Integer level;//级别
 
     private String parentCode;//父编号
 
-    private int sortId;//排序
+    private Integer sortId;//排序
 
-    private int isValid;//是否有效
+    private Integer isValid;//是否有效
 
-    private int isVisible;//是否可见
+    private Integer isVisible;//是否可见
 
     private Date createTime;
 
@@ -43,20 +41,12 @@ public class Menu implements Serializable {
         this.createTime = createTime;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
-    }
-
-    public int getMenuId() {
-        return menuId;
-    }
-
-    public void setMenuId(int menuId) {
-        this.menuId = menuId;
     }
 
     public String getCode() {
@@ -91,11 +81,11 @@ public class Menu implements Serializable {
         this.url = url;
     }
 
-    public int getLevel() {
+    public Integer getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(Integer level) {
         this.level = level;
     }
 
@@ -107,27 +97,27 @@ public class Menu implements Serializable {
         this.parentCode = parentCode;
     }
 
-    public int getSortId() {
+    public Integer getSortId() {
         return sortId;
     }
 
-    public void setSortId(int sortId) {
+    public void setSortId(Integer sortId) {
         this.sortId = sortId;
     }
 
-    public int getIsValid() {
+    public Integer getIsValid() {
         return isValid;
     }
 
-    public void setIsValid(int isValid) {
+    public void setIsValid(Integer isValid) {
         this.isValid = isValid;
     }
 
-    public int getIsVisible() {
+    public Integer getIsVisible() {
         return isVisible;
     }
 
-    public void setIsVisible(int isVisible) {
+    public void setIsVisible(Integer isVisible) {
         this.isVisible = isVisible;
     }
 

@@ -2,6 +2,7 @@ package com.atlandes.admin.controller;
 
 import com.atlandes.admin.service.MenuService;
 import com.atlandes.admin.service.ModuleService;
+import com.atlandes.admin.vo.ModuleQuery;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,7 +30,7 @@ public class IndexController {
         ModelAndView mv = new ModelAndView("admin/index");
         mv.addObject("menuList", menuService.groupMenuList());
         mv.addObject("currUserName", "XD.Wang");
-        mv.addObject("moduleList", moduleService.getModuleList());
+        mv.addObject("moduleList", moduleService.getModuleList(new ModuleQuery()));
         return mv;
     }
 

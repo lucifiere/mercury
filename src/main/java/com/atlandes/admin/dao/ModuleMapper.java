@@ -1,6 +1,10 @@
 package com.atlandes.admin.dao;
 
 import com.atlandes.admin.po.Module;
+import com.atlandes.admin.vo.MenuQuery;
+import com.atlandes.admin.vo.MenuVO;
+import com.atlandes.admin.vo.ModuleQuery;
+import com.atlandes.admin.vo.ModuleVO;
 
 import java.util.List;
 
@@ -12,12 +16,16 @@ public interface ModuleMapper {
 
     int insertSelective(Module record);
 
-    Module selectByPrimaryKey(Integer id);
+    ModuleVO selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(Module record);
 
     int updateByPrimaryKey(Module record);
 
-    List<Module> getModuleList();
+    List<ModuleVO> getModuleList(ModuleQuery query);
+
+    Integer getModuleListCount();
+
+    void invalidByPrimaryKey(Integer id);
 
 }

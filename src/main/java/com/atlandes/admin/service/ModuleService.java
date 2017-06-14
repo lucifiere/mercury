@@ -2,6 +2,10 @@ package com.atlandes.admin.service;
 
 import com.atlandes.admin.dao.ModuleMapper;
 import com.atlandes.admin.po.Module;
+import com.atlandes.admin.vo.ModuleQuery;
+import com.atlandes.admin.vo.ModuleVO;
+import com.atlandes.common.enums.ValidStatus;
+import com.atlandes.common.pojo.PageCond;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,32 +19,37 @@ import java.util.List;
 public class ModuleService {
 
     @Resource
-    private ModuleMapper baseInfoMapper;
+    private ModuleMapper moduleMapper;
 
     //添加模块
-    public int add(Module baseInfo) {
-        return baseInfoMapper.insert(baseInfo);
+    public int addModule(Module baseInfo) {
+        baseInfo.setIsValid(ValidStatus.VALID.getCode());
+        return moduleMapper.insert(baseInfo);
     }
 
     //更新模块
-    public void update(Module baseInfo) {
-        baseInfoMapper.updateByPrimaryKey(baseInfo);
+    public void updateModule(Module baseInfo) {
+        moduleMapper.updateByPrimaryKey(baseInfo);
     }
 
     //删除模块
-    public void delete(Integer id) {
-        baseInfoMapper.deleteByPrimaryKey(id);
+    public void deleteModule(Integer id) {
+        moduleMapper.invalidByPrimaryKey(id);
     }
 
     //获取模块列表
-    public List<Module> getModuleList() {
-        List<Module> moduleList = baseInfoMapper.getModuleList();
-        return moduleList;
+    public List<ModuleVO> getModuleList(ModuleQuery query) {
+        return moduleMapper.getModuleList(query);
     }
 
     //根据id查询模块
-    public Module selectModuleById(Integer id) {
-        Module baseInfo = baseInfoMapper.selectByPrimaryKey(id);
-        return baseInfo;
+    public ModuleVO selectModuleById(Integer id) {
+        return moduleMapper.selectByPrimaryKey(id);
     }
+
+    public PageCond getModulePageCond(ModuleQuery query) {
+        int pageTotalCount = moduleMapper.getModuleListCount();
+        return PageCond.getDefaultPageCond(query.getPageCurCount(), pageTotalCount);
+    }
+
 }

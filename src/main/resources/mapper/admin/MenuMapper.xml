@@ -13,34 +13,23 @@
         <result column="is_valid" property="isValid" jdbcType="TINYINT"/>
         <result column="is_visible" property="isVisible" jdbcType="TINYINT"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-    </resultMap>
-
-    <resultMap id="ResultMapWithBLOBs" type="com.atlandes.admin.vo.MenuVO" extends="BaseResultMap">
-        <result column="url" property="url" jdbcType="LONGVARCHAR"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, code, name, remark, level, parent_code, sort_id, is_valid, is_visible, create_time
+        id, code, name, remark, level, parent_code, sort_id, is_valid, is_visible, create_time, url
     </sql>
 
-    <sql id="Blob_Column_List">
-        url
-    </sql>
-
-    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
-        ,
-        <include refid="Blob_Column_List"/>
         from admin_menu
         where id = #{id,jdbcType=INTEGER}
     </select>
 
-    <select id="getMenuList" resultMap="ResultMapWithBLOBs" parameterType="com.atlandes.admin.vo.MenuQuery">
+    <select id="getMenuList" resultMap="BaseResultMap" parameterType="com.atlandes.admin.vo.MenuQuery">
         select
         <include refid="Base_Column_List"/>
-        ,
-        <include refid="Blob_Column_List"/>
         from admin_menu
         where is_valid = 1
         order by level,sort_id
@@ -63,7 +52,7 @@
                                 name, remark, level,
                                 parent_code, sort_id, is_valid,
                                 is_visible, url)
-        VALUES (#{id,jdbcType=INTEGER}, #{moduleId,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR},
+        VALUES (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR},
                                         #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
                                         #{level,jdbcType=SMALLINT},
                                         #{parentCode,jdbcType=VARCHAR}, #{sortId,jdbcType=INTEGER},
@@ -108,9 +97,6 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
-            </if>
-            <if test="moduleId != null">
-                #{moduleId,jdbcType=INTEGER},
             </if>
             <if test="code != null">
                 #{code,jdbcType=VARCHAR},
@@ -182,6 +168,7 @@
             code        = #{code,jdbcType=VARCHAR},
             name        = #{name,jdbcType=VARCHAR},
             remark      = #{remark,jdbcType=VARCHAR},
+            url         = #{url,jdbcType=SMALLINT},
             level       = #{level,jdbcType=SMALLINT},
             parent_code = #{parentCode,jdbcType=VARCHAR},
             sort_id     = #{sortId,jdbcType=INTEGER},
@@ -198,10 +185,16 @@
             name        = #{name,jdbcType=VARCHAR},
             remark      = #{remark,jdbcType=VARCHAR},
             level       = #{level,jdbcType=SMALLINT},
+            url         = #{url,jdbcType=SMALLINT},
             parent_code = #{parentCode,jdbcType=VARCHAR},
             sort_id     = #{sortId,jdbcType=INTEGER},
             is_valid    = #{isValid,jdbcType=TINYINT},
             is_visible  = #{isVisible,jdbcType=TINYINT}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="invalidByPrimaryKey" parameterType="java.lang.Integer">
+        update admin_menu set is_valid = 0
         WHERE id = #{id,jdbcType=INTEGER}
     </update>
 

@@ -3,10 +3,11 @@ CREATE TABLE `admin_module` (
   `name` varchar(20) NOT NULL DEFAULT '' COMMENT '模块名称',
   `remark` varchar(100) DEFAULT '' COMMENT '备注',
   `sort_id` int(11) DEFAULT NULL COMMENT '排序',
-  `url` text COMMENT 'url',
-  `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT'创建时间',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `url` varchar(300) DEFAULT NULL,
+  `is_valid` tinyint(3) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 comment='系统模块信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统模块信息表';
 
 INSERT INTO admin_module (name, remark, sort_id, url) VALUES ('个人信息', '查看个人信息', 1, '/');
 INSERT INTO admin_module (name, remark, sort_id, url) VALUES ('备忘事项', '查看个人备忘录', 2, '/');
@@ -27,7 +28,7 @@ CREATE TABLE `admin_menu` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_code` (`code`) USING BTREE,
   KEY `index_module_id` (`code`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='系统菜单信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统菜单信息表';
 
 INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
   ('100000000', '安全管理', '管理用户、角色、权限等认证信息', '/', 1, '', 999, 1, 1);
@@ -55,3 +56,5 @@ INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is
   ('400000000', '系统管理', '管理菜单、模块等基础信息', '/', 1, '', 3, 1, 1);
 INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
   ('400100000', '菜单管理', '菜单的增删改查', '/menu/list', 2, '400000000', 1, 1, 1);
+INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
+  ('400200000', '模块管理', '模块的增删改查', '/module/list', 2, '400000000', 2, 1, 1);

@@ -8,10 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Mercury管理后台</title>
     <meta name="description" content="Mercury管理后台">
-    <meta name="keywords" content="mercury">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="renderer" content="webkit">
-    <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
     <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/static/admin/i/favicon.png">
     <link rel="apple-touch-icon-precomposed"
@@ -57,10 +54,10 @@
         <div class="sideMenu am-icon-dashboard" style="color:#aeb2b7; margin: 10px 0 0 0;">
             欢迎系统管理员：${currUserName}</div>
         <div class="sideMenu">
-            <c:forEach items="${menuList}" var="menu">
-                <h3 class="am-icon-flag"><a href="#">${menu.name}</a></h3>
+            <c:forEach items="${menuList}" var="module">
+                <h3 class="am-icon-flag"><a href="#">${module.name}</a></h3>
                 <ul>
-                    <c:forEach items="${menu.children}" var="child">
+                    <c:forEach items="${module.children}" var="child">
                         <li><a href="${child.url}" target="container">${child.name}</a></li>
                     </c:forEach>
                 </ul>

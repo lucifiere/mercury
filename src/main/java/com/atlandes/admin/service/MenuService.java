@@ -6,6 +6,7 @@ import com.atlandes.admin.dao.MenuMapper;
 import com.atlandes.admin.po.Menu;
 import com.atlandes.admin.vo.MenuQuery;
 import com.atlandes.admin.vo.MenuVO;
+import com.atlandes.common.enums.ValidStatus;
 import com.atlandes.common.enums.VisibleStatus;
 import com.atlandes.common.pojo.PageCond;
 import com.atlandes.common.util.EnumUtil;
@@ -44,25 +45,40 @@ public class MenuService {
     }
 
     public PageCond getMenuPageCond(MenuQuery query) {
-        PageCond pageCond = new PageCond();
         int pageTotalCount = menuMapper.getMenuListCount();
-        pageCond.setPageSize(DefaultPageConfig.DEFAULT_PAGE_SIZE);
-        pageCond.setPageCurCount(query.getPageCurCount() * DefaultPageConfig.DEFAULT_PAGE_SIZE);
-        pageCond.setPageTotalCount(Math.round(pageTotalCount / DefaultPageConfig.DEFAULT_PAGE_SIZE) + 1);
-        return pageCond;
+        return PageCond.getDefaultPageCond(query.getPageCurCount(), pageTotalCount);
+    }
+
+    public MenuVO selectMenuById(int id) {
+        return menuMapper.selectByPrimaryKey(id);
+    }
+
+    public int addMenu(Menu menu) {
+        menu.setIsValid(ValidStatus.VALID.getCode());
+        return menuMapper.insert(menu);
+    }
+
+    public void deleteMenu(int id) {
+        menuMapper.invalidByPrimaryKey(id);
+    }
+
+    public int updateMenu(Menu menu) {
+        return menuMapper.updateByPrimaryKey(menu);
     }
 
     private List<MenuVO> getMenuListGroupByLevel(List<MenuVO> sources) {
-        List<MenuVO> pageMenuList = new ArrayList<MenuVO>();
+        List<MenuVO> pageMenuList = new ArrayList<>();
         for (MenuVO source : sources) {
             if (source.getLevel() == MenuLevel.MODULE_MENU_LEVEL.getCode()) {
-                List<MenuVO> subMenuList = new ArrayList<MenuVO>();
+                List<MenuVO> subMenuList = new ArrayList<>();
                 for (MenuVO m : sources) {
                     if (m.getParentCode() != null && m.getParentCode().equals(source.getCode())) {
-                        subMenuList.add(getMenuVOFromMenu(m, null));
+                        MenuVO menu = getMenuVOFromMenu(m, null);
+                        if (menu != null) subMenuList.add(menu);
                     }
                 }
-                pageMenuList.add(getMenuVOFromMenu(source, subMenuList));
+                MenuVO menu = getMenuVOFromMenu(source, subMenuList);
+                if (menu != null) pageMenuList.add(menu);
             }
         }
         return pageMenuList;
@@ -78,22 +94,6 @@ public class MenuService {
         vo.setUrl(menu.getUrl());
         vo.setChildren(subMenuList);
         return vo;
-    }
-
-    public MenuVO selectMenuById(int id) {
-        return menuMapper.selectByPrimaryKey(id);
-    }
-
-    public int addMenu(Menu menu) {
-        return menuMapper.insert(menu);
-    }
-
-    public int deleteMenu(int id) {
-        return menuMapper.deleteByPrimaryKey(id);
-    }
-
-    public int updateMenu(Menu menu) {
-        return menuMapper.updateByPrimaryKey(menu);
     }
 
 }

@@ -11,14 +11,24 @@ public class Module {
     private Long id;
 
     private String name;
-
+    
     private String remark;//备注
 
     private Integer sortId;//排序
 
     private Date createTime;
 
+    private Integer isValid;
+
     private String url;
+
+    public Integer getIsValid() {
+        return isValid;
+    }
+
+    public void setIsValid(Integer isValid) {
+        this.isValid = isValid;
+    }
 
     public String getUrl() {
         return url;

@@ -26,4 +26,6 @@ public interface MenuMapper {
 
     Integer getMenuListCount();
 
+    void invalidByPrimaryKey(Integer id);
+
 }

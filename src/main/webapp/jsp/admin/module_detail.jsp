@@ -12,13 +12,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>菜单详情</title>
+    <title>模块管理</title>
     <meta name="description" content="菜单管理">
-    <meta name="renderer" content="webkit">
     <meta http-equiv="Expires" content="0">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="Cache" content="no-cache">
+    <meta name="renderer" content="webkit">
     <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/static/admin/i/favicon.png">
     <link rel="apple-touch-icon-precomposed"
           href="${pageContext.request.contextPath}/static/admin/i/app-icon72x72@2x.png">
@@ -27,11 +27,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/admin/css/admin.css">
     <script src="${pageContext.request.contextPath}/static/admin/js/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/admin/js/app.js"></script>
-    <script src="${pageContext.request.contextPath}/static/js/admin/menu.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/admin/module.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/common.js"></script>
 </head>
 
-<body onload="checkValid()">
+<body>
 <div class="admin-biaogelist">
     <div class="listbiaoti am-cf">
         <ul class="am-icon-flag on">
@@ -44,39 +44,14 @@
     </div>
 
     <div class="fbneirong">
-        <spring:form commandName="menu" action="/menu/edit" cssClass="am-form" id="menuForm">
+        <spring:form commandName="module" action="/module/edit" cssClass="am-form" id="moduleForm">
             <spring:hidden path="id"/>
             <spring:hidden path="isValid"/>
+
             <div class="am-form-group am-cf">
                 <div class="zuo">名称：</div>
                 <div class="you">
                     <spring:input path="name" cssClass="am-input-sm" placeholder="请输入名称" maxlength="15"/>
-                </div>
-            </div>
-            <div class="am-form-group am-cf">
-                <div class="zuo">编号：</div>
-                <div class="you">
-                    <spring:input path="code" cssClass="am-input-sm" placeholder="请输入编号" maxlength="10"/>
-                </div>
-            </div>
-            <div class="am-form-group am-cf">
-                <div class="zuo">级别：</div>
-                <div class="you">
-                    <spring:radiobutton path="level" onchange="pCodeValidCheck()" cssClass="am-input-sm" value="1"/>&nbsp;&nbsp;系统（Sys）
-                    <spring:radiobutton path="level" onchange="pCodeValidCheck()" cssClass="am-input-sm" value="2"/>&nbsp;&nbsp;功能（Func）
-                </div>
-            </div>
-            <div class="am-form-group am-cf">
-                <div class="zuo">父编号：</div>
-                <div class="you">
-                    <spring:input path="parentCode" cssClass="am-input-sm" placeholder="请输入父编号"/>
-                </div>
-            </div>
-            <div class="am-form-group am-cf">
-                <div class="zuo">可见性：</div>
-                <div class="you">
-                    <spring:radiobutton path="isVisible" cssClass="am-input-sm" value="1"/> &nbsp; 可见&nbsp;&nbsp;
-                    <spring:radiobutton path="isVisible" cssClass="am-input-sm" value="0"/> &nbsp; 不可见&nbsp;&nbsp;
                 </div>
             </div>
             <div class="am-form-group am-cf">
@@ -100,7 +75,8 @@
             </div>
             <div class="am-form-group am-cf">
                 <div class="you" style="margin-left: 11%;">
-                    <button type="submit" class="am-btn am-btn-success am-radius" onclick="editMenu()">发布</button>&nbsp; &nbsp;&nbsp;&nbsp;
+                    <button type="submit" class="am-btn am-btn-success am-radius" onclick="editMenu()">发布</button>&nbsp;
+                    &nbsp;&nbsp;&nbsp;
                     <button type="button" class="am-btn am-btn-danger am-radius" onclick="window.history.go(-1)">取消
                     </button>
                 </div>

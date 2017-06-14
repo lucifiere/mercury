@@ -1,7 +1,6 @@
 package com.atlandes.common.pojo;
 
 import com.atlandes.admin.constant.DefaultPageConfig;
-import com.atlandes.admin.vo.MenuQuery;
 
 /**
  * Created by XD.Wang on 2017/6/13.

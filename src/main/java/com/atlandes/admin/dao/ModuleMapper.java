@@ -1,8 +1,6 @@
 package com.atlandes.admin.dao;
 
 import com.atlandes.admin.po.Module;
-import com.atlandes.admin.vo.MenuQuery;
-import com.atlandes.admin.vo.MenuVO;
 import com.atlandes.admin.vo.ModuleQuery;
 import com.atlandes.admin.vo.ModuleVO;
 

@@ -44,7 +44,7 @@ public class PropertiesUtil {
         return getProperties(propertiesName).getProperty(key);
     }
 
-    public static String getMercuryBaseUrl(){
+    public static String getMercuryBaseUrl() {
         String ENV_PROPERTIES = "/config/env.properties";
         return getPropertiesByKey(ENV_PROPERTIES, "baseUrl");
     }

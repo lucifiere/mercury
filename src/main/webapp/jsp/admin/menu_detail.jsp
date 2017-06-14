@@ -38,7 +38,7 @@
             菜单管理
         </ul>
         <dl class="am-icon-home" style="float: right;">
-            当前位置： 系统管理 > 菜单管理 > 编辑菜单</a>
+            当前位置： 系统管理 > 菜单管理 > 编辑菜单
         </dl>
 
     </div>

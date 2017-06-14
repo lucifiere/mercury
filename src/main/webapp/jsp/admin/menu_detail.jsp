@@ -44,7 +44,7 @@
     </div>
 
     <div class="fbneirong">
-        <spring:form commandName="menu" action="/menu/edit" cssClass="am-form" id="menuForm">
+        <spring:form commandName="menu" action="/menu/edit" cssClass="am-form" id="menuForm" method="post">
             <spring:hidden path="id"/>
             <spring:hidden path="isValid"/>
             <div class="am-form-group am-cf">
@@ -100,7 +100,8 @@
             </div>
             <div class="am-form-group am-cf">
                 <div class="you" style="margin-left: 11%;">
-                    <button type="submit" class="am-btn am-btn-success am-radius" onclick="editMenu()">发布</button>&nbsp; &nbsp;&nbsp;&nbsp;
+                    <button type="submit" class="am-btn am-btn-success am-radius" onclick="editMenu()">发布</button>&nbsp;
+                    &nbsp;&nbsp;&nbsp;
                     <button type="button" class="am-btn am-btn-danger am-radius" onclick="window.history.go(-1)">取消
                     </button>
                 </div>

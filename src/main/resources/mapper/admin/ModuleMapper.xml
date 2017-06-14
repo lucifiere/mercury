@@ -39,9 +39,9 @@
 
     <insert id="insert" parameterType="com.atlandes.admin.vo.ModuleVO">
         INSERT INTO admin_module (id, name, remark, url,
-                                  sort_id, is_valid, create_time)
+        sort_id, is_valid, create_time)
         VALUES (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
-                #{sortId,jdbcType=INTEGER}, #{isValid,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
+        #{sortId,jdbcType=INTEGER}, #{isValid,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     <insert id="insertSelective" parameterType="com.atlandes.admin.po.Module">
@@ -121,12 +121,12 @@
 
     <update id="updateByPrimaryKey" parameterType="com.atlandes.admin.po.Module">
         UPDATE admin_module
-        SET name        = #{name,jdbcType=VARCHAR},
-            remark      = #{remark,jdbcType=VARCHAR},
-            url         = #{url,jdbcType=VARCHAR},
-            sort_id     = #{sortId,jdbcType=INTEGER},
-            is_valid    = #{isValid,jdbcType=INTEGER},
-            create_time = #{createTime,jdbcType=TIMESTAMP}
+        SET name = #{name,jdbcType=VARCHAR},
+        remark = #{remark,jdbcType=VARCHAR},
+        url = #{url,jdbcType=VARCHAR},
+        sort_id = #{sortId,jdbcType=INTEGER},
+        is_valid = #{isValid,jdbcType=INTEGER},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
         WHERE id = #{id,jdbcType=INTEGER}
     </update>
 

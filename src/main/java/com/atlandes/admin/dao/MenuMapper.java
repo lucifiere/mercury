@@ -24,6 +24,8 @@ public interface MenuMapper {
 
     List<MenuVO> getMenuList(MenuQuery query);
 
+    List<MenuVO> getAllMenuList(MenuQuery query);
+
     Integer getMenuListCount();
 
     void invalidByPrimaryKey(Integer id);

@@ -31,7 +31,7 @@ public class MenuService {
     private static Logger log = Logger.getLogger(MenuService.class);
 
     public List<MenuVO> groupMenuList() {
-        return getMenuListGroupByLevel(menuMapper.getMenuList(new MenuQuery()));
+        return getMenuListGroupByLevel(menuMapper.getAllMenuList(new MenuQuery()));
     }
 
     public List<MenuVO> getMenuList(MenuQuery query) {
@@ -72,28 +72,18 @@ public class MenuService {
             if (source.getLevel() == MenuLevel.MODULE_MENU_LEVEL.getCode()) {
                 List<MenuVO> subMenuList = new ArrayList<>();
                 for (MenuVO m : sources) {
-                    if (m.getParentCode() != null && m.getParentCode().equals(source.getCode())) {
-                        MenuVO menu = getMenuVOFromMenu(m, null);
-                        if (menu != null) subMenuList.add(menu);
+                    if (m.getParentCode() != null && m.getParentCode().equals(source.getCode())
+                            && m.getIsVisible() == VisibleStatus.VISIBLE.getCode()) {
+                        subMenuList.add(m);
                     }
                 }
-                MenuVO menu = getMenuVOFromMenu(source, subMenuList);
-                if (menu != null) pageMenuList.add(menu);
+                if (source.getIsVisible() == VisibleStatus.VISIBLE.getCode()) {
+                    source.setChildren(subMenuList);
+                    pageMenuList.add(source);
+                }
             }
         }
         return pageMenuList;
-    }
-
-    private MenuVO getMenuVOFromMenu(MenuVO menu, List<MenuVO> subMenuList) {
-        if (menu.getIsVisible() == VisibleStatus.INVISIBLE.getCode()) return null;
-        MenuVO vo = new MenuVO();
-        vo.setCode(menu.getCode());
-        vo.setIsVisible(menu.getIsVisible());
-        vo.setName(menu.getName());
-        vo.setRemark(menu.getRemark());
-        vo.setUrl(menu.getUrl());
-        vo.setChildren(subMenuList);
-        return vo;
     }
 
 }

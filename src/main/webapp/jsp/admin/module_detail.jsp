@@ -44,7 +44,7 @@
     </div>
 
     <div class="fbneirong">
-        <spring:form commandName="module" action="/module/edit" cssClass="am-form" id="moduleForm">
+        <spring:form commandName="module" action="/module/edit" cssClass="am-form" id="moduleForm" method="post">
             <spring:hidden path="id"/>
             <spring:hidden path="isValid"/>
 

@@ -11,7 +11,7 @@ public class Module {
     private Long id;
 
     private String name;
-    
+
     private String remark;//备注
 
     private Integer sortId;//排序

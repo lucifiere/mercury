@@ -1,4 +1,4 @@
-package com.atlandes.auth.shiro.util;
+package com.atlandes.auth.util;
 
 import com.atlandes.auth.shiro.cache.JedisManager;
 import redis.clients.jedis.Jedis;

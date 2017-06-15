@@ -1,4 +1,4 @@
-package com.atlandes.auth.shiro.util;
+package com.atlandes.auth.util;
 
 import com.alibaba.fastjson.JSON;
 import com.atlandes.common.constant.HttpCode;

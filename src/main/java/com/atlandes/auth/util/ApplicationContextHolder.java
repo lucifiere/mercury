@@ -1,4 +1,4 @@
-package com.atlandes.auth.shiro.util;
+package com.atlandes.auth.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;

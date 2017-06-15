@@ -88,7 +88,7 @@
     </select>
 
     <!-- 根据邮箱|帐号查询 -->
-    <select id="findUserByNickname" resultMap="BaseResultMap">
+    <select id="findUserByNickname" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
         <include refid="Base_Column_List"/>
         from auth_user

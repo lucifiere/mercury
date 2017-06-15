@@ -1,13 +1,16 @@
 package com.atlandes.auth.controller;
 
-import com.atlandes.auth.po.User;
+import com.atlandes.auth.bo.Login;
 import com.atlandes.auth.shiro.authentication.LoginService;
 import com.atlandes.common.pojo.Result;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -22,6 +25,8 @@ public class LoginController {
     @Resource
     private LoginService loginService;
 
+    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+
     @RequestMapping("admin/login")
     public String toLoginPage() {
         return "auth/login";
@@ -29,7 +34,7 @@ public class LoginController {
 
     @RequestMapping("auth/login")
     @ResponseBody
-    public Result login(User user) {
+    public Result login(@RequestBody Login user) {
         try {
             loginService.login(user);
             return Result.suc("登录成功！");

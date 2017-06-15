@@ -1,5 +1,6 @@
 package com.atlandes.auth.shiro.authentication;
 
+import com.atlandes.auth.bo.Login;
 import com.atlandes.auth.po.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginService {
 
-    public void login(User user) {
+    public void login(Login user) {
         //  获取SecurityManager工厂
         Factory<SecurityManager> factory =
                 new IniSecurityManagerFactory("classpath:config/shiro-auth.ini");

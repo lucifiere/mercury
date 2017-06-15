@@ -3,8 +3,13 @@ package com.atlandes.auth.shiro.realm;
 import com.atlandes.auth.po.User;
 import com.atlandes.auth.service.UserService;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 
@@ -13,7 +18,7 @@ import javax.annotation.Resource;
  * DB Realm
  */
 @Component(value = "nickPasswordRealm")
-public class MercuryRealm implements Realm {
+public class MercuryRealm extends AuthorizingRealm implements Realm, InitializingBean {
 
     @Resource
     private UserService userService;
@@ -29,7 +34,7 @@ public class MercuryRealm implements Realm {
     }
 
     @Override
-    public AuthenticationInfo getAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         // 获取凭证
         String nickname = (String) authenticationToken.getPrincipal();
         String password = new String((char[]) authenticationToken.getCredentials());
@@ -44,4 +49,13 @@ public class MercuryRealm implements Realm {
         return new SimpleAuthenticationInfo(nickname, userInfo.getPassword(), this.getName());
     }
 
+    @Override
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+        return null;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        Assert.notNull(userService);
+    }
 }

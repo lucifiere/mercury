@@ -21,7 +21,7 @@ public interface UserMapper {
 
     User login(Map<String, Object> map);
 
-    User findUserByEmail(String email);
+    User findUserByNickname(String email);
 
     List<User> selectRoleByUserId(Long id);
 

@@ -10,18 +10,11 @@
     <meta name="description" content="Mercury管理后台">
     <meta name="renderer" content="webkit">
     <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
-    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/static/admin/i/favicon.png">
-    <link rel="apple-touch-icon-precomposed"
-          href="${pageContext.request.contextPath}/static/admin/i/app-icon72x72@2x.png">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/admin/css/amazeui.min.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/admin/css/admin.css">
-    <script src="${pageContext.request.contextPath}/static/admin/js/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/admin/js/app.js"></script>
 </head>
 
 <body>
 <header class="am-topbar admin-header">
-    <div class="am-topbar-brand"><img src="${pageContext.request.contextPath}/static/admin/i/logo.png"></div>
+    <div class="am-topbar-brand"><img src="${pageContext.request.contextPath}/static/lib/amaze_ui/i/logo.png"></div>
 
     <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
         <ul class="am-nav am-nav-pills am-topbar-nav admin-header-list">

@@ -30,7 +30,7 @@
     </bean>
 
     <import resource="springMybatis.xml"/>
-    <import resource="springRedis.xml"/>
+    <!--<import resource="springRedis.xml"/>-->
     <!--<import resource="springShiro.xml"/>-->
 
 </beans>

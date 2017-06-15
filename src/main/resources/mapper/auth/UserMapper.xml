@@ -84,15 +84,15 @@
         select
         <include refid="Base_Column_List"/>
         from auth_user
-        where email = #{email,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}
+        where nickname = #{nickname,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}
     </select>
 
     <!-- 根据邮箱|帐号查询 -->
-    <select id="findUserByEmail" resultMap="BaseResultMap">
+    <select id="findUserByNickname" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from auth_user
-        where email = #{email,jdbcType=VARCHAR}
+        where nickname = #{nickname,jdbcType=VARCHAR}
     </select>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">

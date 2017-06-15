@@ -18,13 +18,15 @@ public class UserService {
     UserMapper userMapper;
 
     public User selectByPrimaryKey(Long id) {
-        User u = userMapper.selectByPrimaryKey(id);
-        return u;
+        return userMapper.selectByPrimaryKey(id);
     }
 
     public Integer insert(User user) {
-        Integer newId = userMapper.insert(user);
-        return newId;
+        return userMapper.insert(user);
+    }
+
+    public User findUserByNickname(String uq) {
+        return userMapper.findUserByNickname(uq);
     }
 
 }

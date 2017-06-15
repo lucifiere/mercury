@@ -16,7 +16,15 @@
 
 
 </script>
-<script type="text/javascript" src="../../static/lib/jquery-3.2.1.js"></script>
+<!-- Jquery -->
+<script src="${pageContext.request.contextPath}/static/lib/jquery.min.js"></script>
+<!-- Amaze UI -->
+<link rel="icon" type="image/png" href="${pageContext.request.contextPath}/static/lib/amaze_ui/i/favicon.png">
+<link rel="apple-touch-icon-precomposed"
+      href="${pageContext.request.contextPath}/static/lib/amaze_ui/i/app-icon72x72@2x.png">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/lib/amaze_ui/css/amazeui.min.css"/>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/lib/amaze_ui/css/admin.css">
+<script src="${pageContext.request.contextPath}/static/lib/amaze_ui/js/app.js"></script>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>

@@ -19,14 +19,6 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="Cache" content="no-cache">
-    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/static/admin/i/favicon.png">
-    <link rel="apple-touch-icon-precomposed"
-          href="${pageContext.request.contextPath}/static/admin/i/app-icon72x72@2x.png">
-    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/admin/css/amazeui.min.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/admin/css/admin.css">
-    <script src="${pageContext.request.contextPath}/static/admin/js/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/admin/js/app.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/admin/menu.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/common.js"></script>
 </head>

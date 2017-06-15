@@ -20,8 +20,9 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>**/*.xml</include>
-                    <include>config/*.properties</include>
                     <include>/*.xml</include>
+                    <include>config/*.properties</include>
+                    <include>config/*.ini</include>
                 </includes>
                 <filtering>true</filtering>
             </resource>

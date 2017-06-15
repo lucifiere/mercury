@@ -75,11 +75,11 @@
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs" style="z-index: 0">
                                 <button class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
-                                        data-am-modal="{target: '#my-popups'}" title="修改"
-                                        onclick="toEditPage('${module.id}')"><span
+                                        title="修改"
+                                        onclick="toEditPage(${module.id})"><span
                                         class="am-icon-pencil-square-o"></span></button>
                                 <button class="am-btn am-btn-default am-btn-xs am-text-danger am-round" title="删除"
-                                        onclick="delMenu('${module.id}')"><span
+                                        onclick="delMenu(${module.id})"><span
                                         class="am-icon-trash-o"></span></button>
                             </div>
                         </div>

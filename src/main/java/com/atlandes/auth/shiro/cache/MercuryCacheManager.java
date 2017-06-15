@@ -11,14 +11,24 @@ import org.apache.shiro.util.Destroyable;
  */
 public class MercuryCacheManager implements CacheManager, Destroyable {
 
+    private ShiroCacheManager shiroCacheManager;
+
     @Override
-    public <K, V> Cache<K, V> getCache(String s) throws CacheException {
-        return null;
+    public <K, V> Cache<K, V> getCache(String name) throws CacheException {
+        return getShiroCacheManager().getCache(name);
     }
 
     @Override
     public void destroy() throws Exception {
+        shiroCacheManager.destroy();
+    }
 
+    public ShiroCacheManager getShiroCacheManager() {
+        return shiroCacheManager;
+    }
+
+    public void setShiroCacheManager(ShiroCacheManager shiroCacheManager) {
+        this.shiroCacheManager = shiroCacheManager;
     }
 
 }

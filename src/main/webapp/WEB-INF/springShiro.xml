@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+
     <description>Shiro Config</description>
+    <import resource="springRedis.xml"/>
 
     <!-- 会话Session ID生成器 -->
     <bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator"/>
@@ -107,7 +110,7 @@
     <!--<bean id="jedisShiroCacheManager" class="xx"/>-->
 
     <!-- session 校验单个用户是否多次登录 -->
-    <bean id="kickoutSessionFilter" class="com.atlandes.auth.shiro.filter.KickOutSessionFilter"/>
+    <bean id="kickOutSessionFilter" class="com.atlandes.auth.shiro.filter.KickOutSessionFilter"/>
 
     <!-- 静态注入 jedisShiroSessionRepository-->
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -116,22 +119,17 @@
         <property name="arguments" ref="jedisShiroSessionRepository"/>
     </bean>
 
-    <!-- session 创建、删除、查询 -->
-    <bean id="jedisShiroSessionRepository" class="com.atlandes.auth.shiro.session.JedisShiroSessionRepository">
-        <property name="jedisManager" ref="jedisManager"/>
-    </bean>
-
     <!--
         自定义角色过滤器 支持多个角色可以访问同一个资源 eg:/home.jsp = authc,roleOR[admin,user]
         用户有admin或者user角色 就可以访问
     -->
 
     <!-- 认证数据库存储-->
-    <bean id="shiroManager" class="com.sojson.core.shiro.service.impl.ShiroManagerImpl"/>
-    <bean id="login" class="com.sojson.core.shiro.filter.LoginFilter"/>
-    <bean id="role" class="com.sojson.core.shiro.filter.RoleFilter"/>
-    <bean id="permission" class="com.sojson.core.shiro.filter.PermissionFilter"/>
-    <bean id="simple" class="com.sojson.core.shiro.filter.SimpleAuthFilter"/>
+    <bean id="shiroManager" class="com.atlandes.auth.shiro.component.ShiroManager"/>
+    <bean id="login" class="com.atlandes.auth.shiro.filter.LoginFilter"/>
+    <bean id="role" class="com.atlandes.auth.shiro.filter.RoleFilter"/>
+    <bean id="permission" class="com.atlandes.auth.shiro.filter.PermissionFilter"/>
+    <bean id="simple" class="com.atlandes.auth.shiro.filter.SimpleAuthFilter"/>
 
 
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
@@ -155,19 +153,49 @@
         <!--				/page/updateItem*=authc,roles[数据管理员]-->
         <!--            </value>-->
         <!--		</property>-->
+
         <!-- 读取初始自定义权限内容-->
         <property name="filterChainDefinitions" value="#{shiroManager.loadFilterChainDefinitions()}"/>
         <property name="filters">
             <util:map>
-                <entry key="login" value-ref="login"></entry>
-                <entry key="role" value-ref="role"></entry>
-                <entry key="simple" value-ref="simple"></entry>
-                <entry key="permission" value-ref="permission"></entry>
-                <entry key="kickout" value-ref="kickoutSessionFilter"></entry>
+                <entry key="login" value-ref="login"/>
+                <entry key="role" value-ref="role"/>
+                <entry key="simple" value-ref="simple"/>
+                <entry key="permission" value-ref="permission"/>
+                <entry key="kickout" value-ref="kickOutSessionFilter"/>
             </util:map>
         </property>
     </bean>
+
     <!-- Shiro生命周期处理器-->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- session 创建、删除、查询 -->
+    <bean id="jedisShiroSessionRepository" class="com.atlandes.auth.shiro.session.JedisShiroSessionRepository">
+        <property name="jedisManager" ref="jedisManager"/>
+    </bean>
+
+    <!-- redis 的缓存 -->
+    <bean id="jedisManager" class="com.atlandes.auth.shiro.cache.JedisManager">
+        <property name="jedisPool" ref="jedisPool"/>
+    </bean>
+
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg index="0" ref="jedisPoolConfig"/>
+        <!-- 端口，默认6379 -->
+        <constructor-arg index="2" value="6379" name="port" type="int"/>
+        <constructor-arg index="3" value="5000" name="timeout" type="int"/>
+        <constructor-arg index="1" value="127.0.0.1" name="host" type="java.lang.String"/>
+        <!--<constructor-arg index="4" value="你的密码" name="password" type="java.lang.String"/>-->
+    </bean>
+
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <!-- 最大闲置 -->
+        <property name="maxIdle" value="100"/>
+        <!-- 最小闲置 -->
+        <property name="minIdle" value="10"/>
+        <!-- 可以获取 -->
+        <property name="testOnBorrow" value="true"/>
+    </bean>
 
 </beans>

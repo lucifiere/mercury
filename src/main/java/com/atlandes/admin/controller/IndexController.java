@@ -3,6 +3,7 @@ package com.atlandes.admin.controller;
 import com.atlandes.admin.service.MenuService;
 import com.atlandes.admin.service.ModuleService;
 import com.atlandes.admin.vo.ModuleQuery;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;

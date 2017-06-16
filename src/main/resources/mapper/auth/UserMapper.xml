@@ -64,7 +64,7 @@
         group by u.id
     </select>
 
-    <select id="selectRoleByUserId" resultType="com.atlandes.auth.bo.UserBO">
+    <select id="selectRoleByNickname" resultType="com.atlandes.auth.bo.UserBO">
         SELECT
             ur.id,
             ur.name,
@@ -75,7 +75,7 @@
             LEFT JOIN auth_re_user_and_role uur ON uur.rid = ur.id
             LEFT JOIN (SELECT id
                        FROM auth_user
-                       WHERE id = #{id,jdbcType=BIGINT}) uu ON uu.id = uur.uid
+                       WHERE nickname = #{nickname,jdbcType=BIGINT}) uu ON uu.id = uur.uid
         GROUP BY ur.id
     </select>
 

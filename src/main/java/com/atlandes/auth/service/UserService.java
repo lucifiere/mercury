@@ -1,10 +1,12 @@
 package com.atlandes.auth.service;
 
+import com.atlandes.auth.bo.UserBO;
 import com.atlandes.auth.dao.UserMapper;
 import com.atlandes.auth.po.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by XD.Wang on 2017/6/2.
@@ -28,5 +30,10 @@ public class UserService {
     public User findUserByNickname(String uq) {
         return userMapper.findUserByNickname(uq);
     }
+
+    public List<UserBO> selectRoleByName(String nickname) {
+        return userMapper.selectRoleByNickname(nickname);
+    }
+
 
 }

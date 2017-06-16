@@ -5,11 +5,7 @@ import com.atlandes.auth.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.realm.Realm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 
@@ -17,15 +13,14 @@ import javax.annotation.Resource;
  * Created by XD.Wang on 2017/6/15.
  * DB Realm
  */
-@Component(value = "nickPasswordRealm")
-public class MercuryRealm extends AuthorizingRealm implements Realm, InitializingBean {
+public class MercuryRealm extends AuthorizingRealm {
 
     @Resource
     private UserService userService;
 
     @Override
     public String getName() {
-        return "nickPasswordRealm";
+        return "mercuryRealm";
     }
 
     @Override
@@ -55,7 +50,32 @@ public class MercuryRealm extends AuthorizingRealm implements Realm, Initializin
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-        Assert.notNull(userService);
+    public void clearCachedAuthorizationInfo(PrincipalCollection principals) {
+        super.clearCachedAuthorizationInfo(principals);
+    }
+
+    @Override
+    public void clearCachedAuthenticationInfo(PrincipalCollection principals) {
+        super.clearCachedAuthenticationInfo(principals);
+    }
+
+    @Override
+    public void clearCache(PrincipalCollection principals) {
+        super.clearCache(principals);
+    }
+
+    public void clearAllCachedAuthorizationInfo() {
+        getAuthorizationCache().clear();
+    }
+
+    public void clearAllCachedAuthenticationInfo() {
+        getAuthenticationCache().clear();
+    }
+
+    public void clearAllCache() {
+        clearAllCachedAuthenticationInfo();
+        clearAllCachedAuthorizationInfo();
     }
 }
+
+

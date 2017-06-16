@@ -1,5 +1,6 @@
 package com.atlandes.auth.dao;
 
+import com.atlandes.auth.bo.UserBO;
 import com.atlandes.auth.po.User;
 
 import java.util.List;
@@ -21,8 +22,8 @@ public interface UserMapper {
 
     User login(Map<String, Object> map);
 
-    User findUserByNickname(String email);
+    User findUserByNickname(String name);
 
-    List<User> selectRoleByUserId(Long id);
+    List<UserBO> selectRoleByNickname(String nickname);
 
 }

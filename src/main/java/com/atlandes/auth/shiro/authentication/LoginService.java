@@ -18,12 +18,6 @@ import org.springframework.stereotype.Service;
 public class LoginService {
 
     public void login(Login user) {
-        //  获取SecurityManager工厂
-        Factory<SecurityManager> factory =
-                new IniSecurityManagerFactory("classpath:config/shiro-auth.ini");
-        //  获取SecurityManager实例，绑定到SecurityUtils
-        SecurityManager securityManager = factory.getInstance();
-        SecurityUtils.setSecurityManager(securityManager);
         // 身份验证
         UsernamePasswordToken token = new UsernamePasswordToken(user.getNickname(), user.getPassword());
         Subject subject = SecurityUtils.getSubject();

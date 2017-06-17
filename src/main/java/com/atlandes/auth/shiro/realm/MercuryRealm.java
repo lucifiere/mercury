@@ -35,7 +35,7 @@ public class MercuryRealm extends AuthorizingRealm {
         String password = new String((char[]) authenticationToken.getCredentials());
         // 检查凭证
         User userInfo = userService.findUserByNickname(nickname);
-        if (!nickname.equals(userInfo.getNickname())) {
+        if (userInfo == null) {
             throw new UnknownAccountException();
         }
         if (!password.equals(userInfo.getPassword())) {

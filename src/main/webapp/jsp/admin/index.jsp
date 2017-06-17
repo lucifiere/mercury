@@ -45,7 +45,7 @@
     <div class="nav-navicon admin-main admin-sidebar">
 
         <div class="sideMenu am-icon-dashboard" style="color:#aeb2b7; margin: 10px 0 0 0;">
-            欢迎系统管理员：${currUserName}</div>
+            欢迎系统管理员：<shiro:principal/></div>
         <div class="sideMenu">
             <c:forEach items="${menuList}" var="module">
                 <h3 class="am-icon-flag"><a href="#">${module.name}</a></h3>

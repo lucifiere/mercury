@@ -30,7 +30,6 @@ public class IndexController {
     public ModelAndView toIndexPage() {
         ModelAndView mv = new ModelAndView("admin/index");
         mv.addObject("menuList", menuService.groupMenuList());
-        mv.addObject("currUserName", "XD.Wang");
         mv.addObject("moduleList", moduleService.getModuleList(new ModuleQuery()));
         return mv;
     }

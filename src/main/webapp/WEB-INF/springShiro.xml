@@ -11,11 +11,11 @@
         <property name="unauthorizedUrl" value="/login/unauthorized"/>
         <property name="filterChainDefinitions">
             <value>
-                /admin/index = user
                 /static/** = anon
-                /unauthorized = anon
                 /auth/login = anon
                 /admin/login = anon
+                /unauthorized = anon
+                /admin/index = user
                 /logout = logout
                 /** = user
             </value>
@@ -24,13 +24,13 @@
 
     <!-- 缓存管理器 使用Ehcache实现 -->
     <!--<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">-->
-        <!--<property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>-->
+    <!--<property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>-->
     <!--</bean>-->
 
     <!--<bean id="mercuryCache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"-->
-          <!--p:shared="false"-->
-          <!--p:configLocation="classpath:ehcache.xml"-->
-          <!--p:cacheManagerName="cacheManager"/>-->
+    <!--p:shared="false"-->
+    <!--p:configLocation="classpath:ehcache.xml"-->
+    <!--p:cacheManagerName="cacheManager"/>-->
 
     <!-- 凭证匹配器 -->
     <!--<bean id="credentialsMatcher" class="-->

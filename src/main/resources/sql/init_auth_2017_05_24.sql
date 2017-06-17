@@ -1,3 +1,9 @@
+drop table if exists auth_permission;
+drop table if exists auth_role;
+drop table if exists auth_re_role_and_permission;
+drop table if exists auth_user;
+drop table if exists auth_re_user_and_role;
+
 -- 权限表
 CREATE TABLE `auth_permission` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',

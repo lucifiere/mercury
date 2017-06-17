@@ -65,4 +65,10 @@ public class LoginController {
         }
     }
 
+    @RequestMapping("auth/loginOut")
+    public String loginOut() {
+        loginService.loginOut();
+        return "auth/login";
+    }
+
 }

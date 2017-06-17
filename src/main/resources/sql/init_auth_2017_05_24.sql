@@ -35,6 +35,13 @@ CREATE TABLE `auth_user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
+insert into auth_user (nickname, email, password, create_time, last_login_time, status) VALUES
+  ('xd.wang', 'lucifiere@126.com','123', now(), now(), 1);
+insert into auth_user (nickname, email, password, create_time, last_login_time, status) VALUES
+  ('c.liu', 'sb1@qq.com','456', now(), now(), 1);
+insert into auth_user (nickname, email, password, create_time, last_login_time, status) VALUES
+  ('xl.ma', 'sb2@qq.com','789', now(), now(), 1);
+
 -- 用户角色关系表
 CREATE TABLE `auth_re_user_and_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',

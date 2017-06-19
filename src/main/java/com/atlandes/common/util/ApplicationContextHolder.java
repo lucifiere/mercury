@@ -1,4 +1,4 @@
-package com.atlandes.auth.util;
+package com.atlandes.common.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;

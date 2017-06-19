@@ -1,6 +1,5 @@
 package com.atlandes.admin.service;
 
-import com.atlandes.admin.constant.DefaultPageConfig;
 import com.atlandes.admin.constant.MenuLevel;
 import com.atlandes.admin.dao.MenuMapper;
 import com.atlandes.admin.po.Menu;
@@ -8,8 +7,9 @@ import com.atlandes.admin.vo.MenuQuery;
 import com.atlandes.admin.vo.MenuVO;
 import com.atlandes.common.enums.ValidStatus;
 import com.atlandes.common.enums.VisibleStatus;
-import com.atlandes.common.pojo.PageCond;
+import com.atlandes.common.service.BaseFuncSupport;
 import com.atlandes.common.util.EnumUtil;
+import com.atlandes.common.pojo.Pagination;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ import java.util.List;
  * Created by C.Liu on 2017/06/04.
  */
 @Service
-public class MenuService {
+public class MenuService extends BaseFuncSupport<MenuMapper> {
 
     @Resource
     private
@@ -35,18 +35,13 @@ public class MenuService {
     }
 
     public List<MenuVO> getMenuList(MenuQuery query) {
-        query.setPageCurCount(query.getPageCurCount() * DefaultPageConfig.DEFAULT_PAGE_SIZE);
+        Pagination p = exePaging("getMenuList", query, MenuVO.class);
         List<MenuVO> list = menuMapper.getMenuList(query);
         for (MenuVO menu : list) {
             menu.setLevelStr(EnumUtil.getName(MenuLevel.values(), menu.getLevel()));
             menu.setIsVisibleStr(EnumUtil.getName(VisibleStatus.values(), menu.getIsVisible()));
         }
         return list;
-    }
-
-    public PageCond getMenuPageCond(MenuQuery query) {
-        int pageTotalCount = menuMapper.getMenuListCount();
-        return PageCond.getDefaultPageCond(query.getPageCurCount(), pageTotalCount);
     }
 
     public MenuVO selectMenuById(int id) {

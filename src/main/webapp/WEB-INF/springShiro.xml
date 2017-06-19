@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
-
-    <!--<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">-->
-    <!--<property name="authenticator" ref="authenticator"/>-->
-    <!--<property name="sessionManager" ref="sessionManager"/>-->
-    <!--<property name="realms">-->
-    <!--<list>-->
-    <!--<bean class="com.atlandes.auth.shiro.realm.MercuryRealm">-->
-    <!--<property name="credentialsMatcher" ref="hashedCredentialsMatcher"/>-->
-    <!--</bean>-->
-    <!--</list>-->
-    <!--</property>-->
-    <!--</bean>-->
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
@@ -22,33 +10,25 @@
         <property name="unauthorizedUrl" value="/login/unauthorized"/>
         <property name="filterChainDefinitions">
             <value>
-                /index.jsp = anon
-                /unauthorized.jsp = anon
-                /admin/login.jsp = authc
-                /logout = logout
+                /static/** = anon
+                /auth/login = anon
+                /auth/loginOut = anon
+                /admin/login = anon
+                /unauthorized = anon
                 /** = user
             </value>
         </property>
     </bean>
 
-    <!--<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator"/>-->
-
-    <!--<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">-->
-    <!--<property name="sessionDAO" ref="sessionDAO"/>-->
-    <!--</bean>-->
-
-    <!--<bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.MemorySessionDAO"/>-->
-
-    <!--<bean id="hashedCredentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">-->
-    <!--<property name="hashAlgorithmName" value="MD5"/>-->
-    <!--<property name="storedCredentialsHexEncoded" value="true"/>-->
-    <!--<property name="hashIterations" value="1"/>-->
-    <!--</bean>-->
-
     <!-- 缓存管理器 使用Ehcache实现 -->
-    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
-        <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
-    </bean>
+    <!--<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">-->
+    <!--<property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="mercuryCache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"-->
+    <!--p:shared="false"-->
+    <!--p:configLocation="classpath:ehcache.xml"-->
+    <!--p:cacheManagerName="cacheManager"/>-->
 
     <!-- 凭证匹配器 -->
     <!--<bean id="credentialsMatcher" class="-->
@@ -88,18 +68,18 @@
     </bean>
 
     <!-- 安全管理器 -->
-    <bean id="securityManager" class="org.apache.shiro.mgt.DefaultSecurityManager">
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realms">
             <list>
                 <ref bean="userRealm"/>
             </list>
         </property>
         <property name="sessionManager" ref="sessionManager"/>
-        <property name="cacheManager" ref="cacheManager"/>
+        <!--<property name="cacheManager" ref="cacheManager"/>-->
     </bean>
 
     <!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
-       <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="staticMethod"
                   value="org.apache.shiro.SecurityUtils.setSecurityManager"/>
         <property name="arguments" ref="securityManager"/>

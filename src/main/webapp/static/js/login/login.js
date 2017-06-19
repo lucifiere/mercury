@@ -2,6 +2,11 @@
  *  Created by XD.Wang on 2016/10/20.
  */
 
+var res = $("#msg").val();
+if (!isNull(res)) {
+    alert(res);
+}
+
 function login() {
     var pw = $("#password").val();
     var nick = $("#nickname").val();

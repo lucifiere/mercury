@@ -1,3 +1,9 @@
+drop table if exists auth_permission;
+drop table if exists auth_role;
+drop table if exists auth_re_role_and_permission;
+drop table if exists auth_user;
+drop table if exists auth_re_user_and_role;
+
 -- 权限表
 CREATE TABLE `auth_permission` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -34,6 +40,13 @@ CREATE TABLE `auth_user` (
   `status` bigint(1) DEFAULT '1' COMMENT '1:有效，0:禁止登录',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+
+insert into auth_user (nickname, email, password, create_time, last_login_time, status) VALUES
+  ('xd.wang', 'lucifiere@126.com','123', now(), now(), 1);
+insert into auth_user (nickname, email, password, create_time, last_login_time, status) VALUES
+  ('c.liu', 'sb1@qq.com','456', now(), now(), 1);
+insert into auth_user (nickname, email, password, create_time, last_login_time, status) VALUES
+  ('xl.ma', 'sb2@qq.com','789', now(), now(), 1);
 
 -- 用户角色关系表
 CREATE TABLE `auth_re_user_and_role` (

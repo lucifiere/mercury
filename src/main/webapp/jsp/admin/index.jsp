@@ -17,8 +17,8 @@
     <div class="am-topbar-brand"><img src="${pageContext.request.contextPath}/static/lib/amaze_ui/i/logo.png"></div>
 
     <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
-        <ul class="am-nav am-nav-pills am-topbar-nav admin-header-list">
 
+        <ul class="am-nav am-nav-pills am-topbar-nav admin-header-list">
             <li class="am-dropdown tognzhi" data-am-dropdown>
                 <button class="am-btn am-btn-primary am-dropdown-toggle am-btn-xs am-radius am-icon-bell-o"
                         data-am-dropdown-toggle> 消息管理<span class="am-badge am-badge-danger am-round">6</span></button>
@@ -30,10 +30,12 @@
                 </ul>
             </li>
 
+
             <li class="kuanjie">
                 <c:forEach items="${moduleList}" var="module">
                     <a href="${module.url}">${module.name} </a>
                 </c:forEach>
+                <a style="color: red" href="${pageContext.request.contextPath}/auth/loginOut">退出登录</a>
             </li>
 
         </ul>
@@ -45,7 +47,10 @@
     <div class="nav-navicon admin-main admin-sidebar">
 
         <div class="sideMenu am-icon-dashboard" style="color:#aeb2b7; margin: 10px 0 0 0;">
-            欢迎系统管理员：${currUserName}</div>
+            欢迎系统管理员：<shiro:principal/>
+            <br>
+        </div>
+
         <div class="sideMenu">
             <c:forEach items="${menuList}" var="module">
                 <h3 class="am-icon-flag"><a href="#">${module.name}</a></h3>

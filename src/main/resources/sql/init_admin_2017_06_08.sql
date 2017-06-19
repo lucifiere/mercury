@@ -1,3 +1,6 @@
+drop table if exists admin_module;
+drop table if exists admin_menu;
+
 CREATE TABLE `admin_module` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` varchar(20) NOT NULL DEFAULT '' COMMENT '模块名称',

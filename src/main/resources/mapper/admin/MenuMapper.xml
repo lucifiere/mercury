@@ -41,7 +41,6 @@
         from admin_menu
         where is_valid = 1
         order by level,sort_id
-        LIMIT #{pageCurCount}, #{pageSize}
     </select>
 
     <select id="getMenuListCount" resultType="java.lang.Integer">

@@ -5,12 +5,14 @@ import com.atlandes.common.util.ApplicationContextHolder;
 import com.atlandes.common.pojo.Pagination;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -20,19 +22,23 @@ import java.util.List;
  * func 1：桥接Mybatis和JDBC，将分页给JDBC
  */
 @SuppressWarnings("unchecked")
-@Service
-public abstract class BaseFuncSupport<T> extends SqlSessionDaoSupport {
+public class BaseFuncSupport<T> extends SqlSessionDaoSupport {
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseFuncSupport.class);
 
     private String namespace;
+
+    @Resource
+    public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
+        super.setSqlSessionFactory(sqlSessionFactory);
+    }
 
     public BaseFuncSupport() {
         try {
             Type genericClazz = this.getClass().getGenericSuperclass();
             if (genericClazz instanceof ParameterizedType) {
                 Class<T> entityClass = (Class<T>) ((ParameterizedType) genericClazz).getActualTypeArguments()[0];
-                this.namespace = entityClass.getPackage().getName() + entityClass.getSimpleName();
+                this.namespace = entityClass.getPackage().getName() + "." + entityClass.getSimpleName();
             }
         } catch (Exception e) {
             this.namespace = null;
@@ -50,7 +56,7 @@ public abstract class BaseFuncSupport<T> extends SqlSessionDaoSupport {
         String sourceSql = boundSql.getSql();
         String limitSql = appendLimitSql(paging.getOffset(), paging.getPageSize());
         String pageSql = sourceSql + limitSql;
-        LOG.debug("source sql is : " + pageSql);
+        LOG.debug("page sql is : \n\t" + pageSql);
 
         JdbcTemplate jdbcTemplate = ApplicationContextHolder.getBean("jdbcTemplate", JdbcTemplate.class);
         List<R> list = jdbcTemplate.queryForList(pageSql, clazz);

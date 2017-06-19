@@ -34,16 +34,19 @@
         <property name="filters" value="stat"/>
     </bean>
 
-    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-
     <!-- mybatis文件配置，扫描所有mapper文件 -->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" p:dataSource-ref="dataSource"
-          p:configLocation="classpath:mybatis-config.xml" p:mapperLocations="classpath:mapper/**/*Mapper.xml"/>
+    <bean id="sqlSessionFactory"
+          class="org.mybatis.spring.SqlSessionFactoryBean"
+          p:dataSource-ref="dataSource"
+          p:configLocation="classpath:mybatis-config.xml"
+          p:mapperLocations="classpath:mapper/**/*Mapper.xml"/>
 
     <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
         <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="baseFuncSupport" class="com.atlandes.common.service.BaseFuncSupport">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
     </bean>
 
     <!-- spring与mybatis整合配置，扫描所有dao -->
@@ -53,6 +56,10 @@
     <!-- 对dataSource 数据源进行事务管理 -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
           p:dataSource-ref="dataSource"/>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
 
     <!-- 整合Spring事务 -->
     <tx:advice id="txAdvice" transaction-manager="transactionManager">

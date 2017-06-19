@@ -10,6 +10,7 @@ import java.util.Collection;
 
 /**
  * Created by XD.Wang on 2017/6/19.
+ * 分页工具
  */
 public class PageUtil<R> {
 
@@ -17,27 +18,20 @@ public class PageUtil<R> {
 
     private PageQueryProxy<R> service;
 
-    public Pagination(PageQueryProxy<R> service, int pageSize) {
+    public PageUtil(PageQueryProxy<R> service) {
         this.service = service;
-        this.pageSize = pageSize;
     }
 
-    public Pagination(PageQueryProxy<R> service) {
-        this(service, DefaultPageConfig.DEFAULT_PAGE_SIZE);
+    public Pagination<R> getRowList(Pagination pageCond) {
+        return this.service.getList4Page(pageCond);
     }
 
-
-    public Collection<R> getRowList(Pagination pageCond) {
-        return this.service.queryList(pageCond);
-    }
-
-    public static <R> Collection<R> getPaginList(Pagination par, PageQueryProxy<R> service) {
-        Pagination<R> pagination = new Pagination<>(service);
-        String sql = String.format(" limit %d,%d ", par.getPageCurCount(), pagination.getPageSize());
-        par.setLimitSql(sql);
-        int curr = par.getPageCurCount() != null ? par.getPageCurCount() : 1;
-        par.setOffset((curr - 1) * pagination.pageSize);
-        return pagination.getRowList(par);
+    public static <R> Pagination<R> getPagingList(PageQueryProxy<R> service, Pagination page) {
+        PageUtil<R> pagination = new PageUtil<>(service);
+        page.setPageSize(page.getPageSize() != null ? page.getPageSize() : DefaultPageConfig.DEFAULT_PAGE_SIZE);
+        int curr = page.getPageCurCount() != null ? page.getPageCurCount() : 1;
+        page.setOffset((curr - 1) * page.getPageSize());
+        return pagination.getRowList(page);
     }
 
 }

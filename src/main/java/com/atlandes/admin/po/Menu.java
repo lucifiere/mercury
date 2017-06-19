@@ -7,7 +7,7 @@ import java.util.Date;
  * 系统菜单实体类
  * Created by C.Liu on 2017/06/04.
  */
-public class Menu implements Serializable {
+public class Menu {
 
     private static final long SerialzationUID = 1L;
 
@@ -21,15 +21,15 @@ public class Menu implements Serializable {
 
     private String url;
 
-    private Integer level;//级别
+    private Integer level;
 
-    private String parentCode;//父编号
+    private String parentCode;
 
-    private Integer sortId;//排序
+    private Integer sortId;
 
-    private Integer isValid;//是否有效
+    private Integer isValid;
 
-    private Integer isVisible;//是否可见
+    private Integer isVisible;
 
     private Date createTime;
 

@@ -1,5 +1,6 @@
 package com.atlandes.common.service;
 
+import com.atlandes.common.constant.DefaultPageConfig;
 import com.atlandes.common.util.ApplicationContextHolder;
 import com.atlandes.common.pojo.Pagination;
 import org.apache.ibatis.mapping.BoundSql;
@@ -8,6 +9,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -18,6 +20,7 @@ import java.util.List;
  * func 1：桥接Mybatis和JDBC，将分页给JDBC
  */
 @SuppressWarnings("unchecked")
+@Service
 public abstract class BaseFuncSupport<T> extends SqlSessionDaoSupport {
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseFuncSupport.class);
@@ -36,11 +39,11 @@ public abstract class BaseFuncSupport<T> extends SqlSessionDaoSupport {
         }
     }
 
-    protected <R> Pagination exePaging(String statementId, Pagination paging, Class<R> clazz) {
+    protected <R> Pagination<R> exePaging(String statementId, Pagination paging, Class<R> clazz) {
         return exePaging(statementId, this.namespace, paging, clazz);
     }
 
-    protected <R> Pagination exePaging(String statementId, String namespace, Pagination paging, Class<R> clazz) {
+    protected <R> Pagination<R> exePaging(String statementId, String namespace, Pagination paging, Class<R> clazz) {
         String statementFullName = namespace + "." + statementId;
         Configuration configuration = this.getSqlSession().getConfiguration();
         BoundSql boundSql = configuration.getMappedStatement(statementFullName).getBoundSql(paging);
@@ -48,7 +51,7 @@ public abstract class BaseFuncSupport<T> extends SqlSessionDaoSupport {
         String limitSql = appendLimitSql(paging.getOffset(), paging.getPageSize());
         String pageSql = sourceSql + limitSql;
         LOG.debug("source sql is : " + pageSql);
-        // 后续记得做count的性能优化
+
         JdbcTemplate jdbcTemplate = ApplicationContextHolder.getBean("jdbcTemplate", JdbcTemplate.class);
         List<R> list = jdbcTemplate.queryForList(pageSql, clazz);
         paging.setResult(list);
@@ -63,7 +66,7 @@ public abstract class BaseFuncSupport<T> extends SqlSessionDaoSupport {
             sourceSql = sourceSql.substring(0, sourceSql.length() - 1
                     - ";".length());
         }
-        return ("SELECT COUNT(1) AS " + Pagination.COUNT_COLUMN + " FROM  ( ") + sourceSql + ")a";
+        return ("SELECT COUNT(1) AS " + DefaultPageConfig.COUNT_COLUMN + " FROM  ( ") + sourceSql + ")a";
     }
 
     private String appendLimitSql(Integer offset, Integer pageSize) {

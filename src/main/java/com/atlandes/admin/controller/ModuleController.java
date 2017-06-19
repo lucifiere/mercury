@@ -29,7 +29,7 @@ public class ModuleController {
         ModelAndView mv = new ModelAndView("/admin/module");
         List<ModuleVO> moduleList = moduleService.getModuleList(query);
         mv.addObject("moduleList", moduleList);
-        mv.addObject("pageCond", moduleService.getModulePageCond(query));
+//        mv.addObject("pageCond", moduleService.getModulePageCond(query));
         return mv;
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class Pagination<R> {
 
-    private int pageSize;
+    private Integer pageSize;
 
     private Integer pageCurCount;
 
@@ -60,12 +60,11 @@ public class Pagination<R> {
         this.limitSql = limitSql;
     }
 
-    public int getPageSize() {
+    public Integer getPageSize() {
         return pageSize;
     }
 
-    public void setPageSize(int pageSize) {
+    public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
     }
-
 }

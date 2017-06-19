@@ -1,6 +1,5 @@
 package com.atlandes.admin.vo;
 
-import com.atlandes.common.proxy.PageQueryProxy;
 import com.atlandes.common.pojo.Pagination;
 
 /**
@@ -9,12 +8,5 @@ import com.atlandes.common.pojo.Pagination;
  */
 public class MenuQuery extends Pagination {
 
-    public MenuQuery(PageQueryProxy service, int pageSize) {
-        super(service, pageSize);
-    }
-
-    public MenuQuery(PageQueryProxy service) {
-        super(service);
-    }
 
 }

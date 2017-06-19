@@ -5,12 +5,16 @@ import com.atlandes.admin.po.Menu;
 import com.atlandes.admin.service.MenuService;
 import com.atlandes.admin.vo.MenuQuery;
 import com.atlandes.admin.vo.MenuVO;
+import com.atlandes.common.pojo.Pagination;
 import com.atlandes.common.pojo.Result;
+import com.atlandes.common.proxy.PageQueryProxy;
+import com.atlandes.common.util.PageUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -28,9 +32,10 @@ public class MenuController {
     @RequestMapping("list")
     public ModelAndView getMenuList(MenuQuery query) {
         ModelAndView mv = new ModelAndView("/admin/menu");
-        List<MenuVO> menuList = menuService.getMenuList(query);
-        mv.addObject("menuList", menuList);
-        mv.addObject("pageCond", menuService.getMenuPageCond(query));
+        Pagination<MenuVO> paging = PageUtil.getPagingList(var ->
+                menuService.getMenuList4Page(var), query);
+        mv.addObject("menuList", paging.getResult());
+        mv.addObject("pageCond", paging.getPageTotalCount());
         return mv;
     }
 

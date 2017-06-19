@@ -34,14 +34,17 @@ public class MenuService extends BaseFuncSupport<MenuMapper> {
         return getMenuListGroupByLevel(menuMapper.getAllMenuList(new MenuQuery()));
     }
 
-    public List<MenuVO> getMenuList(MenuQuery query) {
-        Pagination p = exePaging("getMenuList", query, MenuVO.class);
-        List<MenuVO> list = menuMapper.getMenuList(query);
+    public void setPageInfo(List<MenuVO> list) {
         for (MenuVO menu : list) {
             menu.setLevelStr(EnumUtil.getName(MenuLevel.values(), menu.getLevel()));
             menu.setIsVisibleStr(EnumUtil.getName(VisibleStatus.values(), menu.getIsVisible()));
         }
-        return list;
+    }
+
+    public Pagination<MenuVO> getMenuList4Page(Pagination query) {
+        Pagination<MenuVO> p = exePaging("getMenuList", query, MenuVO.class);
+        setPageInfo(p.getResult());
+        return p;
     }
 
     public MenuVO selectMenuById(int id) {

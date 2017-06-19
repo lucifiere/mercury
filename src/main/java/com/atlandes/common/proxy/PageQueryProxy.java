@@ -10,6 +10,6 @@ import java.util.Collection;
  */
 public interface PageQueryProxy<R> {
 
-    Collection<R> queryList(Pagination var1);
+    Pagination<R> getList4Page(Pagination var1);
 
 }

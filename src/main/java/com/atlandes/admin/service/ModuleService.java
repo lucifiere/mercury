@@ -46,9 +46,4 @@ public class ModuleService {
         return moduleMapper.selectByPrimaryKey(id);
     }
 
-    public PageCond getModulePageCond(ModuleQuery query) {
-        int pageTotalCount = moduleMapper.getModuleListCount();
-        return PageCond.getDefaultPageCond(query.getPageCurCount(), pageTotalCount);
-    }
-
 }

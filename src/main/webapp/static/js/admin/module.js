@@ -4,7 +4,7 @@
  */
 
 function toListPage(pageCount) {
-    window.open("/module/list?pageCurCount=" + (pageCount - 1), "_self")
+    window.open("/module/list?pageCurCount=" + pageCount , "_self")
 }
 
 function delMenu(id) {

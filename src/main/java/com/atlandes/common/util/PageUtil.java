@@ -26,10 +26,24 @@ public class PageUtil<R> {
 
     public static <R> Pagination<R> getPagingList(PaginationQueryService<R> service, Pagination page) {
         PageUtil<R> pagination = new PageUtil<>(service);
-        page.setPageSize(page.getPageSize() != null ? page.getPageSize() : DefaultPageConfig.DEFAULT_PAGE_SIZE);
         int curr = page.getPageCurCount() != null ? page.getPageCurCount() : 1;
+        page.setPageSize(page.getPageSize() != null ? page.getPageSize() : DefaultPageConfig.DEFAULT_PAGE_SIZE);
+        page.setPageCurCount(curr);
         page.setOffset((curr - 1) * page.getPageSize());
         return pagination.getRowList(page);
+    }
+
+    public static <R> Pagination<R> getPagingList(PaginationQueryService<R> service, Integer currPageCount, Integer pageSize) {
+        Pagination page = new Pagination();
+        page.setPageCurCount(currPageCount);
+        page.setPageSize(pageSize);
+        return getPagingList(service, page);
+    }
+
+    public static <R> Pagination<R> getPagingList(PaginationQueryService<R> service, Integer currPageCount) {
+        Pagination page = new Pagination();
+        page.setPageCurCount(currPageCount);
+        return getPagingList(service, page);
     }
 
 }

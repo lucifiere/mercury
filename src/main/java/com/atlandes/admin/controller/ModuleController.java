@@ -5,7 +5,10 @@ import com.atlandes.admin.po.Module;
 import com.atlandes.admin.service.ModuleService;
 import com.atlandes.admin.vo.ModuleQuery;
 import com.atlandes.admin.vo.ModuleVO;
+import com.atlandes.common.pojo.Pagination;
 import com.atlandes.common.pojo.Result;
+import com.atlandes.common.service.PaginationQueryService;
+import com.atlandes.common.util.PageUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,9 +30,9 @@ public class ModuleController {
     @RequestMapping("list")
     public ModelAndView getModuleList(ModuleQuery query) {
         ModelAndView mv = new ModelAndView("/admin/module");
-        List<ModuleVO> moduleList = moduleService.getModuleList(query);
-        mv.addObject("moduleList", moduleList);
-//        mv.addObject("pageCond", moduleService.getModulePageCond(query));
+        Pagination<ModuleVO> p = PageUtil.getPagingList(var1 -> moduleService.getModuleList4Page(var1), query);
+        mv.addObject("moduleList", p.getResult());
+        mv.addObject("pageTotalCount", p.getPageTotalCount());
         return mv;
     }
 

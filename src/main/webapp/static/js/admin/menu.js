@@ -7,7 +7,7 @@ function checkValid() {
 }
 
 function toListPage(pageCount) {
-    window.open("/menu/list?pageCurCount=" + (pageCount - 1), "_self")
+    window.open("/menu/list?pageCurCount=" + pageCount, "_self")
 }
 
 function delMenu(id) {

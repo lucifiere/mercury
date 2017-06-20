@@ -1,6 +1,5 @@
 package com.atlandes.admin.po;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,8 +7,6 @@ import java.util.Date;
  * Created by C.Liu on 2017/06/04.
  */
 public class Menu {
-
-    private static final long SerialzationUID = 1L;
 
     private Integer id;
 

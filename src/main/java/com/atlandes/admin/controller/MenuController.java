@@ -29,8 +29,7 @@ public class MenuController {
     @RequestMapping("list")
     public ModelAndView getMenuList(MenuQuery query) {
         ModelAndView mv = new ModelAndView("/admin/menu");
-        Pagination<MenuVO> paging = PageUtil.getPagingList(var ->
-                menuService.getMenuList4Page(var), query);
+        Pagination<MenuVO> paging = PageUtil.getPagingList(var -> menuService.getMenuList4Page(var), query);
         mv.addObject("menuList", paging.getResult());
         mv.addObject("pageTotalCount", paging.getPageTotalCount());
         return mv;

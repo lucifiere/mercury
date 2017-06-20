@@ -2,21 +2,17 @@ package com.atlandes.common.service;
 
 import com.atlandes.common.component.MercuryFrameException;
 import com.atlandes.common.constant.DefaultPageConfig;
-import com.atlandes.common.util.ApplicationContextHolder;
 import com.atlandes.common.pojo.Pagination;
+import com.atlandes.common.util.ApplicationContextHolder;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.IncorrectResultSetColumnCountException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.lang.reflect.ParameterizedType;
@@ -47,6 +43,7 @@ public class BaseFuncSupport<T> extends SqlSessionDaoSupport {
                 this.namespace = entityClass.getPackage().getName() + "." + entityClass.getSimpleName();
             }
         } catch (Exception e) {
+            logger.warn("Mybatis命名空间解析失败，请使用泛型BaseFuncSupport，或手动指定Mybatis命名空间");
             this.namespace = null;
         }
     }
@@ -56,19 +53,19 @@ public class BaseFuncSupport<T> extends SqlSessionDaoSupport {
     }
 
     protected <R> Pagination<R> exePaging(String statementId, String namespace, Pagination paging, Class<R> clazz) {
+        if (paging.getPageCurCount() < 1) throw new MercuryFrameException("页码只能为正整数！");
         String statementFullName = namespace + "." + statementId;
         Configuration configuration = this.getSqlSession().getConfiguration();
         BoundSql boundSql = configuration.getMappedStatement(statementFullName).getBoundSql(paging);
         String sourceSql = boundSql.getSql();
         String limitSql = appendLimitSql(paging.getOffset(), paging.getPageSize());
         String pageSql = sourceSql + limitSql;
-
         JdbcTemplate jdbcTemplate = ApplicationContextHolder.getBean("jdbcTemplate", JdbcTemplate.class);
         RowMapper<R> rowMapper = new BeanPropertyRowMapper<>(clazz);
         List<R> list = jdbcTemplate.query(pageSql, rowMapper);
         paging.setResult(list);
         Integer count = jdbcTemplate.queryForObject(appendCountSql(sourceSql), Integer.class);
-        paging.setPageTotalCount(count);
+        paging.setPageTotalCount((int) Math.ceil((double) count / paging.getPageSize()));
         return paging;
     }
 

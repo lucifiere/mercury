@@ -5,17 +5,20 @@ import com.atlandes.admin.po.Module;
 import com.atlandes.admin.vo.ModuleQuery;
 import com.atlandes.admin.vo.ModuleVO;
 import com.atlandes.common.enums.ValidStatus;
+import com.atlandes.common.pojo.Pagination;
+import com.atlandes.common.service.BaseFuncSupport;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+
 
 /**
  * 类描述：基础信息service层
  * Created by C.Liu on 2017/05/26.
  */
 @Service
-public class ModuleService {
+public class ModuleService extends BaseFuncSupport<ModuleMapper> {
 
     @Resource
     private ModuleMapper moduleMapper;
@@ -37,6 +40,10 @@ public class ModuleService {
     }
 
     //获取模块列表
+    public Pagination<ModuleVO> getModuleList4Page(Pagination query) {
+        return exePaging("getMenuList", query, ModuleVO.class);
+    }
+
     public List<ModuleVO> getModuleList(ModuleQuery query) {
         return moduleMapper.getModuleList(query);
     }

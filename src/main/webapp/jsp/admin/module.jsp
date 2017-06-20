@@ -88,13 +88,13 @@
 
         <div class="am-btn-group am-btn-group-xs" style="z-index: 0">
             <ul class="am-pagination am-fr">
-                <c:forEach var="i" begin="1" end="${pageCond.pageTotalCount}" step="1">
+                <c:forEach var="i" begin="1" end="${pageTotalCount}" step="1">
                     <c:if test="${i == 1}">
                         <li><a href="javascript:toListPage('${i}')">«</a></li>
                     </c:if>
                     <li id="pageCount${i}" class="am-active"><a href="javascript:toListPage('${i}')"><c:out
                             value="${i}"/></a></li>
-                    <c:if test="${i == pageCond.pageTotalCount}">
+                    <c:if test="${i == pageTotalCount}">
                         <li><a href="javascript:toListPage('${i}')">»</a></li>
                     </c:if>
                 </c:forEach>

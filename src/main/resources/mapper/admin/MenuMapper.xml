@@ -20,6 +20,12 @@
         id, code, name, remark, level, parent_code, sort_id, is_valid, is_visible, create_time, url
     </sql>
 
+    <sql id="Base_Column_List_Alias">
+        id, code, name, remark, level, parent_code as parentCode,
+        sort_id as sortId, is_valid as isValid, is_visible as isVisible,
+        create_time as createTime, url
+    </sql>
+
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
@@ -37,7 +43,7 @@
 
     <select id="getMenuList" resultMap="BaseResultMap" parameterType="com.atlandes.admin.vo.MenuQuery">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List_Alias"/>
         from admin_menu
         where is_valid = 1
         order by level,sort_id
@@ -56,15 +62,15 @@
 
     <insert id="insert" parameterType="com.atlandes.admin.po.Menu">
         INSERT INTO admin_menu (id, code,
-        name, remark, level,
-        parent_code, sort_id, is_valid,
-        is_visible, url)
+                                name, remark, level,
+                                parent_code, sort_id, is_valid,
+                                is_visible, url)
         VALUES (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR},
-        #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
-        #{level,jdbcType=SMALLINT},
-        #{parentCode,jdbcType=VARCHAR}, #{sortId,jdbcType=INTEGER},
-        #{isValid,jdbcType=TINYINT},
-        #{isVisible,jdbcType=TINYINT}, #{url,jdbcType=LONGVARCHAR})
+                #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+                #{level,jdbcType=SMALLINT},
+                #{parentCode,jdbcType=VARCHAR}, #{sortId,jdbcType=INTEGER},
+                #{isValid,jdbcType=TINYINT},
+                #{isVisible,jdbcType=TINYINT}, #{url,jdbcType=LONGVARCHAR})
     </insert>
 
     <insert id="insertSelective" parameterType="com.atlandes.admin.po.Menu">
@@ -172,36 +178,37 @@
     <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.atlandes.admin.po.Menu">
         UPDATE admin_menu
         SET
-        code = #{code,jdbcType=VARCHAR},
-        name = #{name,jdbcType=VARCHAR},
-        remark = #{remark,jdbcType=VARCHAR},
-        url = #{url,jdbcType=SMALLINT},
-        level = #{level,jdbcType=SMALLINT},
-        parent_code = #{parentCode,jdbcType=VARCHAR},
-        sort_id = #{sortId,jdbcType=INTEGER},
-        is_valid = #{isValid,jdbcType=TINYINT},
-        is_visible = #{isVisible,jdbcType=TINYINT},
-        url = #{url,jdbcType=LONGVARCHAR}
+            code        = #{code,jdbcType=VARCHAR},
+            name        = #{name,jdbcType=VARCHAR},
+            remark      = #{remark,jdbcType=VARCHAR},
+            url         = #{url,jdbcType=SMALLINT},
+            level       = #{level,jdbcType=SMALLINT},
+            parent_code = #{parentCode,jdbcType=VARCHAR},
+            sort_id     = #{sortId,jdbcType=INTEGER},
+            is_valid    = #{isValid,jdbcType=TINYINT},
+            is_visible  = #{isVisible,jdbcType=TINYINT},
+            url         = #{url,jdbcType=LONGVARCHAR}
         WHERE id = #{id,jdbcType=INTEGER}
     </update>
 
     <update id="updateByPrimaryKey" parameterType="com.atlandes.admin.po.Menu">
         UPDATE admin_menu
         SET
-        code = #{code,jdbcType=VARCHAR},
-        name = #{name,jdbcType=VARCHAR},
-        remark = #{remark,jdbcType=VARCHAR},
-        level = #{level,jdbcType=SMALLINT},
-        url = #{url,jdbcType=SMALLINT},
-        parent_code = #{parentCode,jdbcType=VARCHAR},
-        sort_id = #{sortId,jdbcType=INTEGER},
-        is_valid = #{isValid,jdbcType=TINYINT},
-        is_visible = #{isVisible,jdbcType=TINYINT}
+            code        = #{code,jdbcType=VARCHAR},
+            name        = #{name,jdbcType=VARCHAR},
+            remark      = #{remark,jdbcType=VARCHAR},
+            level       = #{level,jdbcType=SMALLINT},
+            url         = #{url,jdbcType=SMALLINT},
+            parent_code = #{parentCode,jdbcType=VARCHAR},
+            sort_id     = #{sortId,jdbcType=INTEGER},
+            is_valid    = #{isValid,jdbcType=TINYINT},
+            is_visible  = #{isVisible,jdbcType=TINYINT}
         WHERE id = #{id,jdbcType=INTEGER}
     </update>
 
     <update id="invalidByPrimaryKey" parameterType="java.lang.Integer">
-        update admin_menu set is_valid = 0
+        UPDATE admin_menu
+        SET is_valid = 0
         WHERE id = #{id,jdbcType=INTEGER}
     </update>
 

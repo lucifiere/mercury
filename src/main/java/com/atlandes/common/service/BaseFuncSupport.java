@@ -1,5 +1,6 @@
 package com.atlandes.common.service;
 
+import com.atlandes.common.component.MercuryFrameException;
 import com.atlandes.common.constant.DefaultPageConfig;
 import com.atlandes.common.util.ApplicationContextHolder;
 import com.atlandes.common.pojo.Pagination;
@@ -9,7 +10,12 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.IncorrectResultSetColumnCountException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -56,10 +62,10 @@ public class BaseFuncSupport<T> extends SqlSessionDaoSupport {
         String sourceSql = boundSql.getSql();
         String limitSql = appendLimitSql(paging.getOffset(), paging.getPageSize());
         String pageSql = sourceSql + limitSql;
-        LOG.debug("page sql is : \n\t" + pageSql);
 
         JdbcTemplate jdbcTemplate = ApplicationContextHolder.getBean("jdbcTemplate", JdbcTemplate.class);
-        List<R> list = jdbcTemplate.queryForList(pageSql, clazz);
+        RowMapper<R> rowMapper = new BeanPropertyRowMapper<>(clazz);
+        List<R> list = jdbcTemplate.query(pageSql, rowMapper);
         paging.setResult(list);
         Integer count = jdbcTemplate.queryForObject(appendCountSql(sourceSql), Integer.class);
         paging.setPageTotalCount(count);

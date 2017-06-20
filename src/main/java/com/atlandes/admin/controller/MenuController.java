@@ -7,15 +7,12 @@ import com.atlandes.admin.vo.MenuQuery;
 import com.atlandes.admin.vo.MenuVO;
 import com.atlandes.common.pojo.Pagination;
 import com.atlandes.common.pojo.Result;
-import com.atlandes.common.proxy.PageQueryProxy;
 import com.atlandes.common.util.PageUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by XD.Wang on 2017/6/9.
@@ -35,7 +32,7 @@ public class MenuController {
         Pagination<MenuVO> paging = PageUtil.getPagingList(var ->
                 menuService.getMenuList4Page(var), query);
         mv.addObject("menuList", paging.getResult());
-        mv.addObject("pageCond", paging.getPageTotalCount());
+        mv.addObject("pageTotalCount", paging.getPageTotalCount());
         return mv;
     }
 

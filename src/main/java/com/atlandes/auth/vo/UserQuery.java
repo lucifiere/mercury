@@ -1,12 +1,14 @@
-package com.atlandes.auth.po;
+package com.atlandes.auth.vo;
+
+import com.atlandes.common.pojo.Pagination;
 
 import java.util.Date;
 
 /**
- * Created by XD.Wang on 2017/5/25.
- * 用户
+ * Created by XD.Wang on 2017/6/20.
+ * 查询条件
  */
-public class User {
+public class UserQuery extends Pagination {
 
     private Long id;
 
@@ -20,37 +22,7 @@ public class User {
 
     private Date lastLoginTime;
 
-    private Integer isValid;
-
-    private Integer isLocked;
-
-    private String salt;
-
     private Integer status;
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public Integer getIsValid() {
-        return isValid;
-    }
-
-    public void setIsValid(Integer isValid) {
-        this.isValid = isValid;
-    }
-
-    public Integer getIsLocked() {
-        return isLocked;
-    }
-
-    public void setIsLocked(Integer isLocked) {
-        this.isLocked = isLocked;
-    }
 
     public Long getId() {
         return id;

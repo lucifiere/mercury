@@ -10,10 +10,13 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP"/>
         <result column="status" property="status" jdbcType="SMALLINT"/>
+        <result column="is_valid" property="isValid" jdbcType="SMALLINT"/>
+        <result column="is_locked" property="isLocked" jdbcType="SMALLINT"/>
+        <result column="salt" property="salt" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        nickname, id, email, password, create_time, last_login_time, status
+        nickname, id, email, password, create_time, last_login_time, status, salt, is_locked, is_valid
     </sql>
 
     <sql id="limit_sql">
@@ -32,6 +35,12 @@
             </if>
         </where>
     </sql>
+
+    <select id="getUserList" parameterType="com.atlandes.auth.vo.UserQuery" resultType="com.atlandes.auth.vo.UserVO">
+        select
+        <include refid="Base_Column_List"/>
+        from auth_user
+    </select>
 
     <select id="findAll" resultMap="BaseResultMap">
         select

@@ -34,7 +34,7 @@ public class MenuService extends BaseFuncSupport<MenuMapper> {
         return getMenuListGroupByLevel(menuMapper.getAllMenuList(new MenuQuery()));
     }
 
-    public void setPageInfo(List<MenuVO> list) {
+    private void setPageInfo(List<MenuVO> list) {
         for (MenuVO menu : list) {
             menu.setLevelStr(EnumUtil.getName(MenuLevel.values(), menu.getLevel()));
             menu.setIsVisibleStr(EnumUtil.getName(VisibleStatus.values(), menu.getIsVisible()));

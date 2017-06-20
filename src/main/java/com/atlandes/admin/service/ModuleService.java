@@ -41,7 +41,7 @@ public class ModuleService extends BaseFuncSupport<ModuleMapper> {
 
     //获取模块列表
     public Pagination<ModuleVO> getModuleList4Page(Pagination query) {
-        return exePaging("getMenuList", query, ModuleVO.class);
+        return exePaging("getModuleList", query, ModuleVO.class);
     }
 
     public List<ModuleVO> getModuleList(ModuleQuery query) {

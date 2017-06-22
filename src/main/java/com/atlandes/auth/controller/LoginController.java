@@ -65,10 +65,9 @@ public class LoginController {
             log.debug(tip + JSON.toJSONString(user));
             model.addAttribute("result", Result.suc(tip));
             return "auth/login";
-        }
-        catch (AuthenticationException e) {
-            tip = "内部错误，请联系lucifiere@126.com！";
-            log.debug(tip + JSON.toJSONString(user));
+        } catch (AuthenticationException e) {
+            tip = "底层服务出错，请联系lucifiere@126.com！";
+            log.debug(tip + JSON.toJSONString(user), e);
             model.addAttribute("result", Result.suc(tip));
             return "auth/login";
         }

@@ -46,7 +46,7 @@
     </bean>
 
     <bean id="baseFuncSupport" class="com.atlandes.common.service.BaseFuncSupport">
-        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
 
     <!-- spring与mybatis整合配置，扫描所有dao -->
@@ -79,6 +79,6 @@
     </tx:advice>
 
     <!-- 启用对事务注解的支持 -->
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="false"/>
 
 </beans>

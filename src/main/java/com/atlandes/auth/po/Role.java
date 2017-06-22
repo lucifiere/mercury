@@ -6,17 +6,37 @@ package com.atlandes.auth.po;
  */
 public class Role {
 
-    private Long id;
+    private Integer id;
 
     private String name;
 
     private Integer type;
 
-    public Long getId() {
+    private Integer isValid;
+
+    private Integer status;
+
+    public Integer getIsValid() {
+        return isValid;
+    }
+
+    public void setIsValid(Integer isValid) {
+        this.isValid = isValid;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

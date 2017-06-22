@@ -1,6 +1,7 @@
 package com.atlandes.auth.dao;
 
 import com.atlandes.auth.po.Role;
+import com.atlandes.auth.vo.RoleVO;
 
 import java.util.List;
 import java.util.Map;
@@ -8,21 +9,23 @@ import java.util.Set;
 
 public interface RoleMapper {
 
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(Integer id);
+
+    void invalidByPrimaryKey(Integer id);
 
     int insert(Role record);
 
     int insertSelective(Role record);
 
-    Role selectByPrimaryKey(Long id);
+    RoleVO selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(Role record);
 
     int updateByPrimaryKey(Role record);
 
-    Set<String> findRoleByUserId(Long id);
+    Set<String> findRoleByUserId(Integer id);
 
-    List<Role> findNowAllPermission(Map<String, Object> map);
+    List<RoleVO> findNowAllPermission(Map<String, Object> map);
 
     void initData();
 

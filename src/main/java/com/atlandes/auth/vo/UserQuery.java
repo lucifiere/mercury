@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class UserQuery extends Pagination {
 
-    private Long id;
+    private Integer id;
 
     private String nickname;
 
@@ -24,11 +24,11 @@ public class UserQuery extends Pagination {
 
     private Integer status;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

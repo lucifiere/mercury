@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class User {
 
-    private Long id;
+    private Integer id;
 
     private String nickname;
 
@@ -52,11 +52,11 @@ public class User {
         this.isLocked = isLocked;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -107,4 +107,9 @@ public class User {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+    public String getPasswordCredit() {
+        return this.getNickname() + this.getSalt();
+    }
+
 }

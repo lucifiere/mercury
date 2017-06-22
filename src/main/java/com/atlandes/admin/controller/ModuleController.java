@@ -7,14 +7,12 @@ import com.atlandes.admin.vo.ModuleQuery;
 import com.atlandes.admin.vo.ModuleVO;
 import com.atlandes.common.pojo.Pagination;
 import com.atlandes.common.pojo.Result;
-import com.atlandes.common.service.PaginationQueryService;
 import com.atlandes.common.util.PageUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * Created by XD.Wang on 2017/6/14.

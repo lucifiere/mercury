@@ -12,14 +12,14 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>模块管理</title>
+    <title>用户管理</title>
     <meta http-equiv="Expires" content="0">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="Cache" content="no-cache">
-    <meta name="description" content="菜单管理">
+    <meta name="description" content="用户管理">
     <meta name="renderer" content="webkit">
-    <script src="${pageContext.request.contextPath}/static/js/admin/module.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/auth/user.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/common.js"></script>
 </head>
 
@@ -27,10 +27,10 @@
 <div class="admin-biaogelist">
     <div class="listbiaoti am-cf">
         <ul class="am-icon-flag on">
-            模块管理
+            用户管理
         </ul>
         <dl class="am-icon-home" style="float: right;">
-            当前位置： 系统管理 > 模块管理
+            当前位置： 安全管理 > 用户管理
         </dl>
 
     </div>
@@ -40,31 +40,41 @@
             <thead>
             <tr class="am-success">
                 <th class="am-table-radius am-text-center">选择</th>
-                <th class="table-id am-text-center">名称</th>
-                <th class="table-title am-text-center">URL</th>
+                <th class="table-id am-text-center">账户</th>
+                <th class="table-title am-text-center">邮箱</th>
+                <th class="table-title am-text-center">状态</th>
+                <th class="table-title am-text-center">锁定</th>
+                <th class="table-title am-text-center">Salt</th>
+                <th class="table-author am-text-center">最后登录时间</th>
                 <th class="table-author am-text-center">创建日期</th>
-                <th class="table-date">备注</th>
                 <th>快捷操作</th>
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${moduleList}" var="module">
+            <c:forEach items="${userList}" var="user">
                 <tr>
-                    <td class="am-text-center"><input type="radio" name="rid" value="${module.id}"/></td>
-                    <td class="am-text-center"><a href="javascript:toEditPage('${module.id}')">${module.name}</a></td>
-                    <td class="am-text-center">${module.url}</td>
-                    <td class="am-text-center"><fmt:formatDate value="${module.createTime}"
+                    <td class="am-text-center">
+                        <input type="radio" name="rid" value="${user.id}"/>
+                        <input type="hidden" name="isLocked" value="${user.isLocked}"/>
+                    </td>
+                    <td class="am-text-center"><a href="javascript:toEditPage('${user.id}')">${user.nickname}</a></td>
+                    <td class="am-text-center">${user.email}</td>
+                    <td class="am-text-center">${user.statusStr}</td>
+                    <td class="am-text-center">${user.isLockedStr}</td>
+                    <td class="am-text-center">${user.salt}</td>
+                    <td class="am-text-center"><fmt:formatDate value="${user.lastLoginTime}"
                                                                pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                    <td>${module.remark}</td>
+                    <td class="am-text-center"><fmt:formatDate value="${user.createTime}"
+                                                               pattern="yyyy-MM-dd HH:mm:ss"/></td>
                     <td>
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs" style="z-index: 0">
                                 <button class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
                                         data-am-modal="{target: '#my-popups'}" title="修改"
-                                        onclick="toEditPage('${module.id}')"><span
+                                        onclick="toEditPage('${user.id}')"><span
                                         class="am-icon-pencil-square-o"></span></button>
                                 <button class="am-btn am-btn-default am-btn-xs am-text-danger am-round" title="删除"
-                                        onclick="delMenu('${module.id}')"><span
+                                        onclick="del('${user.id}')"><span
                                         class="am-icon-trash-o"></span></button>
                             </div>
                         </div>
@@ -78,11 +88,14 @@
             <button type="button" class="am-btn am-btn-default" onclick="toEditPage('')"><span
                     class="am-icon-plus"></span> 新增
             </button>
-            <button type="button" class="am-btn am-btn-default" onclick="toEditPage('-1')"><span
+            <button type="button" class="am-btn am-btn-default" onclick="toEditPage()"><span
                     class="am-icon-save"></span> 修改
             </button>
-            <button type="button" class="am-btn am-btn-default" onclick="delMenu('-1')"><span
+            <button type="button" class="am-btn am-btn-default" onclick="del()"><span
                     class="am-icon-trash-o"></span> 删除
+            </button>
+            <button type="button" class="am-btn am-btn-default" onclick="lock()"><span
+                    class="am-icon-lock"></span> 锁定/解锁
             </button>
         </div>
 
@@ -104,8 +117,8 @@
         <hr/>
         <p>
             备注：操作图标含义
-            <a class="am-icon-pencil-square-o am-text-secondary" title="修改"> 修改模块</a>
-            <a class="am-icon-trash-o am-text-danger" title="删除"> 删除模块</a>
+            <a class="am-icon-pencil-square-o am-text-secondary" title="修改"> 修改用户</a>
+            <a class="am-icon-trash-o am-text-danger" title="删除"> 删除用户</a>
         </p>
     </form>
 

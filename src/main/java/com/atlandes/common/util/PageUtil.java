@@ -16,11 +16,11 @@ public class PageUtil<R> {
 
     private PaginationQueryService<R> service;
 
-    public PageUtil(PaginationQueryService<R> service) {
+    private PageUtil(PaginationQueryService<R> service) {
         this.service = service;
     }
 
-    public Pagination<R> getRowList(Pagination pageCond) {
+    private Pagination<R> getRowList(Pagination pageCond) {
         return this.service.getList4Page(pageCond);
     }
 

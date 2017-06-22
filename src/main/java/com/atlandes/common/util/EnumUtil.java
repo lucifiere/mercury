@@ -8,6 +8,8 @@ import com.atlandes.common.enums.Enum;
  */
 public class EnumUtil {
 
+    private EnumUtil(){}
+
     // 获取枚举名
     public static String getName(Enum[] arrays, int code) {
         for (Enum status : arrays) {

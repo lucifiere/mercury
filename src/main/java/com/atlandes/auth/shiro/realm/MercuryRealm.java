@@ -1,11 +1,13 @@
 package com.atlandes.auth.shiro.realm;
 
+import com.atlandes.auth.enums.LockedStatus;
 import com.atlandes.auth.po.User;
 import com.atlandes.auth.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 
 import javax.annotation.Resource;
 
@@ -32,16 +34,15 @@ public class MercuryRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         // 获取凭证
         String nickname = (String) authenticationToken.getPrincipal();
-        String password = new String((char[]) authenticationToken.getCredentials());
         // 检查凭证
         User userInfo = userService.findUserByNickname(nickname);
         if (userInfo == null) {
             throw new UnknownAccountException();
         }
-        if (!password.equals(userInfo.getPassword())) {
-            throw new IncorrectCredentialsException();
+        if (userInfo.getIsLocked() == LockedStatus.LOCKED.getCode()) {
+            throw new LockedAccountException();
         }
-        return new SimpleAuthenticationInfo(nickname, userInfo.getPassword(), this.getName());
+        return new SimpleAuthenticationInfo(nickname, userInfo.getPassword(), ByteSource.Util.bytes(userInfo.getPasswordCredit()), this.getName());
     }
 
     @Override

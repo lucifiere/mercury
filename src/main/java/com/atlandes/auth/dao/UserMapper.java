@@ -11,7 +11,11 @@ public interface UserMapper {
 
     int deleteByPrimaryKey(Integer id);
 
+    void invalidByPrimaryKey(Integer id);
+
     int insert(User record);
+
+    void lockUser(Map user);
 
     int insertSelective(User record);
 

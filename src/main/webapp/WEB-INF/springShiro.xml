@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
         <property name="loginUrl" value="/admin/login"/>
         <property name="successUrl" value="/admin/index"/>
         <property name="unauthorizedUrl" value="/login/unauthorized"/>
+        <property name="filters">
+            <util:map>
+            </util:map>
+        </property>
         <property name="filterChainDefinitions">
             <value>
                 /static/** = anon
@@ -31,17 +35,15 @@
     <!--p:cacheManagerName="cacheManager"/>-->
 
     <!-- 凭证匹配器 -->
-    <!--<bean id="credentialsMatcher" class="-->
-    <!--com.github.zhangkaitao.shiro.chapter12.credentials.RetryLimitHashedCredentialsMatcher">-->
-    <!--<constructor-arg ref="cacheManager"/>-->
-    <!--<property name="hashAlgorithmName" value="md5"/>-->
-    <!--<property name="hashIterations" value="2"/>-->
-    <!--<property name="storedCredentialsHexEncoded" value="true"/>-->
-    <!--</bean>-->
+    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <property name="hashAlgorithmName" value="md5"/>
+        <property name="hashIterations" value="2"/>
+        <property name="storedCredentialsHexEncoded" value="true"/>
+    </bean>
 
     <!-- Realm实现 -->
     <bean id="userRealm" class="com.atlandes.auth.shiro.realm.MercuryRealm">
-        <!--<property name="credentialsMatcher" ref="credentialsMatcher"/>-->
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
         <property name="cachingEnabled" value="true"/>
         <property name="authenticationCachingEnabled" value="true"/>
         <property name="authenticationCacheName" value="authenticationCache"/>

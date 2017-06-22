@@ -8,7 +8,8 @@
         <!-- demo -->
         <typeAlias type="com.atlandes.demo.po.Demo" alias="com.atlandes.demo"/>
         <!-- auth -->
-        <typeAlias type="com.atlandes.auth.bo.PermissionBO" alias="perBO"/>
+        <package name="com.atlandes.auth"/>
+        <package name="com.atlandes.admin"/>
     </typeAliases>
 
     <!-- 对事务的管理和连接池的配置 -->

@@ -1,7 +1,5 @@
 package com.atlandes.auth.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.atlandes.auth.po.User;
 import com.atlandes.auth.service.UserService;
 import com.atlandes.auth.vo.UserQuery;
 import com.atlandes.auth.vo.UserVO;
@@ -9,8 +7,12 @@ import com.atlandes.common.pojo.Pagination;
 import com.atlandes.common.pojo.Result;
 import com.atlandes.common.service.PaginationQueryService;
 import com.atlandes.common.util.PageUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -26,6 +28,8 @@ public class UserController {
     @Resource
     private
     UserService userService;
+
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @RequestMapping("list")
     public ModelAndView getUserList(UserQuery query) {
@@ -50,26 +54,45 @@ public class UserController {
     }
 
     @RequestMapping("edit")
-    public String edit(User User) {
+    @ResponseBody
+    public Result edit(@RequestBody UserVO user) {
         try {
-            if (User.getId() != null) {
-                userService.updateUser(User);
-            } else {
-                userService.addUser(User);
+            if (!user.getConfirmPassword().equals(user.getPassword())) {
+                return Result.fail("两次输入的密码不一致，请重新输入！");
             }
-            return "redirect:/user/list";
+            if (user.getId() != null) {
+                userService.updateUser(user);
+            } else {
+                userService.addUser(user);
+            }
+            return Result.suc("操作成功！");
         } catch (Exception e) {
-            return JSON.toJSONString(Result.fail(e.getMessage()));
+            log.error("业务代码出错！", e);
+            return Result.fail("内部错误！" + e.getMessage());
         }
     }
 
     @RequestMapping("del")
-    public String del(Integer id) {
+    @ResponseBody
+    public Result del(Integer id) {
         try {
             userService.deleteUser(id);
-            return "redirect:/User/list";
+            return Result.suc("操作成功！");
         } catch (Exception e) {
-            return JSON.toJSONString(Result.fail(e.getMessage()));
+            log.error("业务代码出错！", e);
+            return Result.fail("内部错误！" + e.getMessage());
+        }
+    }
+
+    @RequestMapping("lock")
+    @ResponseBody
+    public Result lock(Integer id, Integer pastStatus) {
+        try {
+            userService.lockUser(id, pastStatus);
+            return Result.suc("操作成功！");
+        } catch (Exception e) {
+            log.error("业务代码出错！", e);
+            return Result.fail("内部错误！" + e.getMessage());
         }
     }
 

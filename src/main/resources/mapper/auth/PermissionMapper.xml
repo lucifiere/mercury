@@ -42,7 +42,7 @@
         <include refid="where_all"/>
     </select>
 
-    <select id="selectPermissionById" resultType="perBO">
+    <select id="selectPermissionById" resultType="permissionVO">
         SELECT
             p.id,
             r.id               AS roleId,

@@ -1,6 +1,7 @@
 package com.atlandes.admin.vo;
 
 import com.atlandes.admin.po.Menu;
+import org.apache.ibatis.type.Alias;
 
 import java.util.List;
 
@@ -8,6 +9,7 @@ import java.util.List;
  * Created by XD.Wang on 2017/6/8.
  * 菜单
  */
+@Alias("menuVO")
 public class MenuVO extends Menu {
 
     private List<MenuVO> children;

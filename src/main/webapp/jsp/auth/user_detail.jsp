@@ -19,80 +19,53 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="Cache" content="no-cache">
-    <script src="${pageContext.request.contextPath}/static/js/admin/menu.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/auth/user.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/common.js"></script>
 </head>
 
-<body onload="checkValid()">
+<body>
 <div class="admin-biaogelist">
     <div class="listbiaoti am-cf">
         <ul class="am-icon-flag on">
             用户管理
         </ul>
         <dl class="am-icon-home" style="float: right;">
-            当前位置： 系统管理 > 用户管理 > 编辑用户
+            当前位置： 安全管理 > 用户管理 > 编辑用户
         </dl>
 
     </div>
 
     <div class="fbneirong">
-        <spring:form commandName="user" action="/menu/edit" cssClass="am-form" id="menuForm" method="post">
+        <spring:form commandName="user" action="/user/edit" cssClass="am-form" id="detailForm" method="post">
             <spring:hidden path="id"/>
             <spring:hidden path="isValid"/>
             <div class="am-form-group am-cf">
-                <div class="zuo">名称：</div>
+                <div class="zuo">账户（昵称）：</div>
                 <div class="you">
-                    <spring:input path="name" cssClass="am-input-sm" placeholder="请输入名称" maxlength="15"/>
+                    <spring:input path="nickname" cssClass="am-input-sm" placeholder="请输入昵称" maxlength="15" width="20px"/>
                 </div>
             </div>
             <div class="am-form-group am-cf">
-                <div class="zuo">编号：</div>
+                <div class="zuo">邮箱：</div>
                 <div class="you">
-                    <spring:input path="code" cssClass="am-input-sm" placeholder="请输入编号" maxlength="10"/>
+                    <spring:input path="email" cssClass="am-input-sm" placeholder="请输入邮箱" maxlength="50" />
                 </div>
             </div>
             <div class="am-form-group am-cf">
-                <div class="zuo">级别：</div>
+                <div class="zuo">密码：</div>
                 <div class="you">
-                    <spring:radiobutton path="level" onchange="pCodeValidCheck()" cssClass="am-input-sm" value="1"/>&nbsp;&nbsp;系统（Sys）
-                    <spring:radiobutton path="level" onchange="pCodeValidCheck()" cssClass="am-input-sm" value="2"/>&nbsp;&nbsp;功能（Func）
+                    <spring:password path="password" cssClass="am-input-sm" placeholder="请输入密码" maxlength="50"/>
                 </div>
             </div>
             <div class="am-form-group am-cf">
-                <div class="zuo">父编号：</div>
+                <div class="zuo">确认密码：</div>
                 <div class="you">
-                    <spring:input path="parentCode" cssClass="am-input-sm" placeholder="请输入父编号"/>
-                </div>
-            </div>
-            <div class="am-form-group am-cf">
-                <div class="zuo">可见性：</div>
-                <div class="you">
-                    <spring:radiobutton path="isVisible" cssClass="am-input-sm" value="1"/> &nbsp; 可见&nbsp;&nbsp;
-                    <spring:radiobutton path="isVisible" cssClass="am-input-sm" value="0"/> &nbsp; 不可见&nbsp;&nbsp;
-                </div>
-            </div>
-            <div class="am-form-group am-cf">
-                <div class="zuo">排序标识：</div>
-                <div class="you">
-                    <spring:input path="sortId" cssClass="am-input-sm" onchange="sortIdCheck()"
-                                  placeholder="请输入排序标识，只能为大于0的整数"/>
-                </div>
-            </div>
-            <div class="am-form-group am-cf">
-                <div class="zuo">URL：</div>
-                <div class="you">
-                    <spring:input path="url" cssClass="am-input-sm" placeholder="请输入路径地址" maxlength="100"/>
-                </div>
-            </div>
-            <div class="am-form-group am-cf">
-                <div class="zuo">描述：</div>
-                <div class="you">
-                    <spring:input path="remark" cssClass="am-input-sm" placeholder="请输入用户描述" maxlength="100"/>
+                    <spring:password path="confirmPassword" cssClass="am-input-sm" placeholder="请确认密码" maxlength="50"/>
                 </div>
             </div>
             <div class="am-form-group am-cf">
                 <div class="you" style="margin-left: 11%;">
-                    <button type="submit" class="am-btn am-btn-success am-radius" onclick="editMenu()">发布</button>&nbsp;
+                    <button type="button" class="am-btn am-btn-success am-radius" onclick="edit()">发布</button>&nbsp;
                     &nbsp;&nbsp;&nbsp;
                     <button type="button" class="am-btn am-btn-danger am-radius" onclick="window.history.go(-1)">取消
                     </button>

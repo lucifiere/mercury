@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.atlandes.admin.dao.MenuMapper">
 
-    <resultMap id="BaseResultMap" type="com.atlandes.admin.vo.MenuVO">
+    <resultMap id="BaseResultMap" type="menuVO">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="code" property="code" jdbcType="VARCHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
@@ -35,7 +35,7 @@
         order by level,sort_id
     </select>
 
-    <select id="getMenuList" resultMap="BaseResultMap" parameterType="com.atlandes.admin.vo.MenuQuery">
+    <select id="getMenuList" resultMap="BaseResultMap" parameterType="menuQuery">
         select
         <include refid="Base_Column_List"/>
         from admin_menu

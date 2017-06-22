@@ -35,7 +35,7 @@
         <property name="securityManager" ref="securityManager"/>
     </bean>
 
-    <!--<aop:aspectj-autoproxy proxy-target-class="false"/>-->
+    <aop:aspectj-autoproxy proxy-target-class="false"/>
 
     <import resource="springMybatis.xml"/>
     <!--<import resource="springRedis.xml"/>-->

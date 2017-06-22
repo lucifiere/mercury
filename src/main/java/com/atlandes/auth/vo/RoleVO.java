@@ -16,7 +16,17 @@ public class RoleVO extends Role {
 
     private String statusStr;
 
+    private String typeStr;
+
     private String permissionStr;
+
+    public String getTypeStr() {
+        return typeStr;
+    }
+
+    public void setTypeStr(String typeStr) {
+        this.typeStr = typeStr;
+    }
 
     public String getPermissionStr() {
         return permissionStr;

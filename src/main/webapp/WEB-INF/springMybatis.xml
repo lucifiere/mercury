@@ -79,6 +79,6 @@
     </tx:advice>
 
     <!-- 启用对事务注解的支持 -->
-    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="false"/>
+    <tx:annotation-driven transaction-manager="transactionManager" />
 
 </beans>

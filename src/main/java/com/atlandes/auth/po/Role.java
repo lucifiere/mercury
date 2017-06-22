@@ -1,5 +1,7 @@
 package com.atlandes.auth.po;
 
+import java.util.Date;
+
 /**
  * Created by XD.Wang on 2017/5/25.
  * 角色
@@ -15,6 +17,16 @@ public class Role {
     private Integer isValid;
 
     private Integer status;
+
+    private Date createTime;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public Integer getIsValid() {
         return isValid;

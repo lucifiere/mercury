@@ -4,7 +4,7 @@
  */
 
 function toListPage(pageCount) {
-    window.open("/user/list?pageCurCount=" + pageCount, "_self")
+    window.open("/role/list?pageCurCount=" + pageCount, "_self")
 }
 
 function del(id) {
@@ -13,13 +13,13 @@ function del(id) {
         if (id === null) return;
     }
     $.ajax({
-        url: "/user/del?id=" + id,
+        url: "/role/del?id=" + id,
         dataType: "json",
         type: "GET",
         success: function (result) {
             if (result.code == 1) {
                 alert(result.msg);
-                window.location.href = "/user/list";
+                window.location.href = "/role/list";
             } else {
                 alert(result.msg);
             }
@@ -30,18 +30,17 @@ function del(id) {
     });
 }
 
-function lock() {
+function changeStatus(status) {
     var id = getIdChecked();
     if (id == null) return;
-    var isLocked = $("input[name='rid']:checked").next().val();
     $.ajax({
-        url: "/user/lock?id=" + id + "&pastStatus=" + isLocked,
+        url: "/role/changeStatus?status=" + status ,
         dataType: "json",
         type: "GET",
         success: function (result) {
             if (result.code == 1) {
                 alert(result.msg);
-                window.location.href = "/user/list";
+                window.location.href = "/role/list";
             } else {
                 alert(result.msg);
             }
@@ -57,22 +56,22 @@ function toEditPage(id) {
         id = getIdChecked();
         if (id === null) return;
     }
-    window.open("/user/detail?id=" + id, "_self")
+    window.open("/role/detail?id=" + id, "_self")
 }
 
 function edit() {
-    var user = getUser();
-    if (user == null) return;
+    var role = getRole();
+    if (role == null) return;
     $.ajax({
-        url: "/user/edit",
+        url: "/role/edit",
         contentType: "application/json",
         dataType: "json",
         type: "POST",
-        data: JSON.stringify(user),
+        data: JSON.stringify(role),
         success: function (result) {
             if (result.code == 1) {
                 alert(result.msg);
-                window.location.href = "/user/list";
+                window.location.href = "/role/list";
             } else {
                 alert(result.msg);
             }
@@ -83,32 +82,26 @@ function edit() {
     });
 }
 
-function getUser() {
-    var user = {};
-    var nickname = $("#nickname").val();
-    if (isNull(nickname)) {
-        alert("账户名不能为空！");
+function getRole() {
+    var role = {};
+    var name = $("#name").val();
+    if (isNull(name)) {
+        alert("名称不能为空！");
         return null;
     }
-    user.nickname = nickname;
-    user.id = $("#id").val();
-    var password = $("#password").val();
-    if (isNull(password)) {
-        alert("密码不能为空！");
+    role.name = name;
+    role.id = $("#id").val();
+    var type = $("#type").val();
+    if (isNull(type)) {
+        alert("类型不能为空！");
         return null;
     }
-    user.password = password;
-    var confirmPassword = $("#confirmPassword").val();
-    if (isNull(confirmPassword)) {
-        alert("请确认输入的密码！");
+    role.type = type;
+    var status = $("#status").val();
+    if (isNull(status)) {
+        alert("状态不能为空！");
         return null;
     }
-    user.confirmPassword = confirmPassword;
-    var email = $("#email").val();
-    if (isNull(email)) {
-        alert("邮箱不能为空！");
-        return null;
-    }
-    user.email = email;
-    return user;
+    role.status = status;
+    return role;
 }

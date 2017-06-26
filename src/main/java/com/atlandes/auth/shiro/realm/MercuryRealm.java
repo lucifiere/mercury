@@ -93,6 +93,7 @@ public class MercuryRealm extends AuthorizingRealm {
         clearAllCachedAuthenticationInfo();
         clearAllCachedAuthorizationInfo();
     }
+
 }
 
 

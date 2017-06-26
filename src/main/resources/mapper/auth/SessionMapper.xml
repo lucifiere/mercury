@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atlandes.auth.dao.SessionMapper">
+
+    <insert id="insertSession" parameterType="java.util.Map">
+        INSERT INTO auth_sessions
+        (id, session)
+        VALUES
+            (#{id}, #{session})
+    </insert>
+
+    <update id="updateSession" parameterType="java.util.Map">
+        UPDATE auth_sessions
+        SET session = #{session}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteSession" parameterType="java.io.Serializable">
+        DELETE FROM sessions
+        WHERE id = #{id}
+    </delete>
+
+    <select id="getSessionById" parameterType="java.io.Serializable" resultType="java.lang.String">
+        SELECT session
+        FROM sessions
+        WHERE id = #{id}
+    </select>
+
+</mapper>

@@ -66,3 +66,9 @@ CREATE TABLE `auth_re_user_and_role` (
   `rid` bigint(20) DEFAULT NULL COMMENT '角色ID',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE auth_sessions (
+  id varchar(200),
+  session varchar(2000),
+  PRIMARY KEY (`id`)
+) charset=utf8 ENGINE=InnoDB;

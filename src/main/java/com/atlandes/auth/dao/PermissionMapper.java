@@ -1,25 +1,28 @@
 package com.atlandes.auth.dao;
 
 import com.atlandes.auth.po.Permission;
+import com.atlandes.auth.vo.PermissionVO;
 
 import java.util.List;
 import java.util.Set;
 
 public interface PermissionMapper {
 
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(Integer id);
+
+    void invalidByPrimaryKey(Integer id);
 
     int insert(Permission record);
 
     int insertSelective(Permission record);
 
-    Permission selectByPrimaryKey(Long id);
+    PermissionVO selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(Permission record);
 
     int updateByPrimaryKey(Permission record);
 
-    List<Permission> selectPermissionById(Long id);
+    List<PermissionVO> selectPermissionById(Long id);
 
     Set<String> findPermissionUrlByUserId(Long id);
 

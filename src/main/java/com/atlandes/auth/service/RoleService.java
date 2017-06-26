@@ -42,7 +42,7 @@ public class RoleService extends BaseFuncSupport<RoleMapper> {
     }
 
     public Integer addRole(RoleVO role) {
-        return roleMapper.insert(role);
+        return roleMapper.insertSelective(role);
     }
 
     public void deleteRole(Integer id) {
@@ -54,10 +54,6 @@ public class RoleService extends BaseFuncSupport<RoleMapper> {
         role.setStatus(status);
         role.setId(id);
         roleMapper.updateByPrimaryKeySelective(role);
-    }
-
-    public Integer insert(Role role) {
-        return roleMapper.insert(role);
     }
 
 }

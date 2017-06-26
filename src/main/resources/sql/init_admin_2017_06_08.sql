@@ -6,9 +6,9 @@ CREATE TABLE `admin_module` (
   `name` varchar(20) NOT NULL DEFAULT '' COMMENT '模块名称',
   `remark` varchar(100) DEFAULT '' COMMENT '备注',
   `sort_id` int(11) DEFAULT NULL COMMENT '排序',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `url` varchar(300) DEFAULT NULL,
   `is_valid` tinyint(3) NOT NULL DEFAULT '1',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统模块信息表';
 
@@ -34,21 +34,21 @@ CREATE TABLE `admin_menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统菜单信息表';
 
 INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
-  ('100000000', '安全管理', '管理用户、角色、权限等认证信息', '/', 1, '', 999, 1, 1);
+  ('100000000', '安全管理', '管理用户、角色、权限等认证信息', '', 1, '', 999, 1, 1);
 INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
-  ('100100000', '用户管理', '管理用户的增删改查', '/', 2, '100000000', 1, 1, 1);
+  ('100100000', '用户管理', '管理用户的增删改查', '/user/list', 2, '100000000', 1, 1, 1);
 INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
-  ('100200000', '角色管理', '管理角色的增删改查', '/', 2, '100000000', 2, 1, 1);
+  ('100200000', '角色管理', '管理角色的增删改查', '/role/list', 2, '100000000', 2, 1, 1);
 INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
-  ('100300000', '权限管理', '为资源配置权限', '/', 2, '100000000', 3, 1, 1);
+  ('100300000', '权限管理', '为资源配置权限', '/permission/list', 2, '100000000', 3, 1, 1);
 
 INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
-  ('200000000', '发布管理', '发表日志等', '/', 1, '', 1, 1, 1);
+  ('200000000', '发布管理', '发表日志等', '', 1, '', 1, 1, 1);
 INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
   ('200100000', '日志管理', '日志的增删改查', '/', 2, '200000000', 1, 1, 1);
 
 INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
-  ('300000000', '消息中心', '消息的发送和接受', '/', 1, '', 2, 1, 1);
+  ('300000000', '消息中心', '消息的发送和接受', '', 1, '', 2, 1, 1);
 INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
   ('300100000', '发件箱', '发送消息', '/', 2, '300000000', 1, 1, 1);
 INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
@@ -56,7 +56,7 @@ INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is
 
 -- 2017.6.9
 INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
-  ('400000000', '系统管理', '管理菜单、模块等基础信息', '/', 1, '', 3, 1, 1);
+  ('400000000', '系统管理', '管理菜单、模块等基础信息', '', 1, '', 3, 1, 1);
 INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES
   ('400100000', '菜单管理', '菜单的增删改查', '/menu/list', 2, '400000000', 1, 1, 1);
 INSERT INTO admin_menu (code, name, remark, url, level, parent_code, sort_id, is_valid, is_visible) VALUES

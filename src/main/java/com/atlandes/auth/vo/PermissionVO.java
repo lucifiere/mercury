@@ -8,4 +8,34 @@ import org.apache.ibatis.type.Alias;
  */
 @Alias("permissionVO")
 public class PermissionVO extends Permission {
+
+    private String isValidStr;
+
+    private String statusStr;
+
+    private String typeStr;
+
+    public String getIsValidStr() {
+        return isValidStr;
+    }
+
+    public void setIsValidStr(String isValidStr) {
+        this.isValidStr = isValidStr;
+    }
+
+    public String getStatusStr() {
+        return statusStr;
+    }
+
+    public void setStatusStr(String statusStr) {
+        this.statusStr = statusStr;
+    }
+
+    public String getTypeStr() {
+        return typeStr;
+    }
+
+    public void setTypeStr(String typeStr) {
+        this.typeStr = typeStr;
+    }
 }

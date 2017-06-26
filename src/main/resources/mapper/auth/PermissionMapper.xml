@@ -2,14 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.atlandes.auth.dao.PermissionMapper">
 
-    <resultMap id="BaseResultMap" type="com.atlandes.auth.po.Permission">
+    <resultMap id="BaseResultMap" type="permissionVO">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="url" property="url" jdbcType="VARCHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="des" property="des" jdbcType="VARCHAR"/>
+        <result column="is_valid" property="isValid" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, url, name
+        id, url, name, is_valid, type, status, create_time
     </sql>
 
     <sql id="limit_sql">
@@ -19,23 +24,21 @@
     </sql>
 
     <sql id="where_all">
-        <where>
-            <if test="findContent != null and findContent !='' ">
-                and (
-                LOWER(name) like CONCAT("%",#{findContent,jdbcType=VARCHAR},"%") or
-                LOWER(url) like CONCAT("%",#{findContent,jdbcType=VARCHAR},"%")
-                )
-            </if>
-        </where>
+
     </sql>
 
-    <select id="findAll" resultMap="BaseResultMap">
+    <select id="getPermissionList" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from auth_permission
         <include refid="where_all"/>
-        <include refid="limit_sql"/>
     </select>
+
+    <update id="invalidByPrimaryKey" parameterType="java.lang.Integer">
+        UPDATE auth_permission
+        SET is_valid = 0
+        WHERE id = ${id}
+    </update>
 
     <select id="findCount" resultMap="BaseResultMap">
         select count(id) from auth_permission
@@ -101,6 +104,15 @@
             <if test="name != null">
                 name,
             </if>
+            <if test="isValid != null">
+                is_valid,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -111,6 +123,15 @@
             </if>
             <if test="name != null">
                 #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="isValid != null">
+                #{isValid,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -123,6 +144,15 @@
             </if>
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="isValid != null">
+                is_valid = #{isValid,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}

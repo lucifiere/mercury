@@ -20,6 +20,16 @@ public class UserVO extends User {
 
     private List<RoleVO> roleList;
 
+    private String roleStr;
+
+    public String getRoleStr() {
+        return roleStr;
+    }
+
+    public void setRoleStr(String roleStr) {
+        this.roleStr = roleStr;
+    }
+
     public List<RoleVO> getRoleList() {
         return roleList;
     }

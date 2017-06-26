@@ -8,16 +8,23 @@ drop table if exists auth_re_user_and_role;
 CREATE TABLE `auth_permission` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `url` varchar(256) DEFAULT NULL COMMENT 'url地址',
-  `name` varchar(64) DEFAULT NULL COMMENT '功能描述',
+  `name` varchar(64) DEFAULT NULL COMMENT '权限名称',
+  `des` varchar(64) DEFAULT NULL COMMENT '功能描述',
+  `status` smallint(2) DEFAULT null COMMENT '功能描述',
+  `is_valid` smallint(2) DEFAULT 1 COMMENT '是否有效',
+  `type` smallint(4) DEFAULT NULL COMMENT '类型',
+  `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `u_role`;
 
 -- 角色表
 CREATE TABLE `auth_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` varchar(32) DEFAULT NULL COMMENT '角色名称',
   `type` SMALLINT (10) DEFAULT NULL COMMENT '角色类型',
+  `is_valid` SMALLINT (10) DEFAULT NULL COMMENT '有效与否',
+  `status` SMALLINT (10) DEFAULT NULL COMMENT '状态',
+  `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 

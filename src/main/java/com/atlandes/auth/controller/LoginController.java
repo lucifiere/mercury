@@ -4,8 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.atlandes.admin.service.MenuService;
 import com.atlandes.admin.service.ModuleService;
 import com.atlandes.auth.bo.Login;
-import com.atlandes.auth.service.Test;
-import com.atlandes.auth.service.TestService;
 import com.atlandes.auth.shiro.authentication.LoginService;
 import com.atlandes.common.pojo.Result;
 import org.apache.shiro.authc.AuthenticationException;
@@ -16,9 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
@@ -36,10 +32,6 @@ public class LoginController {
     @Resource
     private
     ModuleService moduleService;
-
-    @Resource
-    private
-    Test testService;
 
     @Resource
     private LoginService loginService;
@@ -84,13 +76,6 @@ public class LoginController {
     @RequestMapping("auth/loginOut")
     public String loginOut() {
         loginService.loginOut();
-        return "auth/login";
-    }
-
-    @RequestMapping("test")
-    @ResponseBody
-    public String test() {
-        testService.doIt();
         return "auth/login";
     }
 

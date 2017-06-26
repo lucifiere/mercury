@@ -2,14 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.atlandes.auth.dao.RoleMapper">
 
-    <resultMap id="BaseResultMap" type="com.atlandes.auth.po.Role">
+    <resultMap id="BaseResultMap" type="com.atlandes.auth.vo.RoleVO">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="is_valid" property="isValid" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, name, type
+        id, name, type, status, is_valid, create_time
     </sql>
 
     <sql id="limit_sql">
@@ -19,14 +22,7 @@
     </sql>
 
     <sql id="where_all">
-        <where>
-            <if test="findContent != null and findContent !='' ">
-                and (
-                LOWER(name) like CONCAT("%",#{findContent,jdbcType=VARCHAR},"%") or
-                LOWER(type) like CONCAT("%",#{findContent,jdbcType=VARCHAR},"%")
-                )
-            </if>
-        </where>
+
     </sql>
 
     <insert id="initData">
@@ -45,7 +41,13 @@
         <include refid="Base_Column_List"/>
         from auth_role
         <include refid="where_all"/>
-        <include refid="limit_sql"/>
+    </select>
+
+    <select id="getRoleList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from auth_role
+        <include refid="where_all"/>
     </select>
 
     <select id="findCount" resultMap="BaseResultMap">
@@ -122,6 +124,12 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
+    <update id="invalidByPrimaryKey" parameterType="java.lang.Integer">
+        UPDATE auth_role
+        SET is_valid = 0
+        WHERE id = ${id}
+    </update>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         DELETE FROM auth_role
         WHERE id = #{id,jdbcType=BIGINT}
@@ -138,6 +146,12 @@
             <if test="id != null">
                 id,
             </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="isValid != null">
+                is_valid,
+            </if>
             <if test="name != null">
                 name,
             </if>
@@ -148,6 +162,12 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 #{id,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=BIGINT},
+            </if>
+            <if test="isValid != null">
+                #{isValid,jdbcType=BIGINT},
             </if>
             <if test="name != null">
                 #{name,jdbcType=VARCHAR},
@@ -166,6 +186,12 @@
             </if>
             <if test="type != null">
                 type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="isValid != null">
+                name = #{isValid,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                type = #{status,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}

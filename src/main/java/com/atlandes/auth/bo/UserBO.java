@@ -6,7 +6,7 @@ package com.atlandes.auth.bo;
  */
 public class UserBO {
 
-    private Long id;
+    private Integer id;
 
     private String name;
 
@@ -26,11 +26,11 @@ public class UserBO {
         this.nickname = nickname;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

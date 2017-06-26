@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by XD.Wang on 2017/6/2.
@@ -55,5 +56,10 @@ public class PermissionService extends BaseFuncSupport<PermissionMapper> {
         permission.setId(id);
         permissionMapper.updateByPrimaryKeySelective(permission);
     }
+
+    public Set<String> findPermissionUrlByRoleIds(String ids){
+        return permissionMapper.findPermissionUrlByRoleIds(ids);
+    }
+
 
 }

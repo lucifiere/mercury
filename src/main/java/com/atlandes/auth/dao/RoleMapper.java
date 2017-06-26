@@ -27,6 +27,4 @@ public interface RoleMapper {
 
     List<RoleVO> findNowAllPermission(Map<String, Object> map);
 
-    void initData();
-
 }

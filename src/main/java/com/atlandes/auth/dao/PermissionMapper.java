@@ -22,8 +22,8 @@ public interface PermissionMapper {
 
     int updateByPrimaryKey(Permission record);
 
-    List<PermissionVO> selectPermissionById(Long id);
+    List<PermissionVO> selectPermissionById(Integer id);
 
-    Set<String> findPermissionUrlByUserId(Long id);
+    Set<String> findPermissionUrlByRoleIds(String ids);
 
 }

@@ -12,9 +12,7 @@ import com.atlandes.common.util.EnumUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by XD.Wang on 2017/6/2.
@@ -78,5 +76,15 @@ public class UserService extends BaseFuncSupport<UserMapper> {
     public List<UserBO> selectRoleByName(String nickname) {
         return userMapper.selectRoleByNickname(nickname);
     }
+
+    public Set<String> selectRoleByNickname(String nickname) {
+        List<UserBO> pList = userMapper.selectRoleByNickname(nickname);
+        Set<String> idList = new HashSet<>();
+        for (UserBO bo : pList) {
+            idList.add(String.valueOf(bo.getId()));
+        }
+        return idList;
+    }
+
 
 }

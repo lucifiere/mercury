@@ -22,9 +22,11 @@
     <meta http-equiv="Cache" content="no-cache">
     <script src="${pageContext.request.contextPath}/static/js/admin/menu.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/common.js"></script>
+    <script src="${pageContext.request.contextPath}/static/lib/jquery.min.js"></script>
+
 </head>
 
-<body onload="checkValid()">
+<body>
 <div class="admin-biaogelist">
     <div class="listbiaoti am-cf">
         <ul class="am-icon-flag on">
@@ -35,63 +37,74 @@
     <div class="fbneirong">
         <form class="am-form" id="menuForm">
             <div class="am-form-group am-cf">
-                <div class="zuo">sku：</div>
-                <div class="you">
+                <div class="zuo">sku：
                     <input id="productCode" class="am-input-sm" placeholder="请输入sku"/>
                 </div>
             </div>
             <div class="am-form-group am-cf">
                 <div class="zuo">
                     <input type="checkbox" id="selectAll" onclick="selectAllBaseCheck()">
+                    <b>全选</b>
                 </div>
-                <div class="you"><b>全选</b></div>
             </div>
             <div class="am-form-group am-cf">
                 <div class="zuo">
                     <input type="checkbox" id="underWrite" name="baseCheckCB">
+                    核保检测
                 </div>
-                <div class="you">核保检测</div>
             </div>
 
             <div class="am-form-group am-cf">
                 <div class="zuo">
                     <input type="checkbox" id="issue" name="baseCheckCB">
+                    出单检测
                 </div>
-                <div class="you">出单检测</div>
             </div>
             <div class="am-form-group am-cf">
                 <div class="zuo">
                     <input type="checkbox" id="onLinePolicy" name="baseCheckCB">
+                    电子保单检测
                 </div>
-                <div class="you">电子保单检测</div>
             </div>
             <div class="am-form-group am-cf">
                 <div class="zuo">
                     <input type="checkbox" id="underWriteOnceMore" name="baseCheckCB">
+                    核保份数校验
                 </div>
-                <div class="you">核保份数校验</div>
             </div>
             <div class="am-form-group am-cf">
                 <div class="zuo">
                     <input type="checkbox" id="issueOnceMore" name="baseCheckCB">
+                    出单份数校验
                 </div>
-                <div class="you">出单份数校验</div>
             </div>
             <div class="am-form-group am-cf">
                 <div class="zuo">
                     <input type="checkbox" id="issueIdempotent" name="baseCheckCB">
+                    出单幂等校验
                 </div>
-                <div class="you">出单幂等校验</div>
             </div>
 
             <div class="am-form-group am-cf">
-                <div class="zuo">是否进行费率检测</div>
-                <lable class="am-radio-inline">
-                    <input type="radio" name="isFeeCheck" value="true" onclick="">是
-                </lable>
-                <lable class="am-radio-inline">
-                    <input type="radio" name="isFeeCheck" value="false" checked="checked">否
-                </lable>
+                <div class="zuo">是否进行费率检测
+                    <lable class="am-radio-inline">
+                        <input type="radio" name="isFeeCheck" value="true" onclick="displayFeeType()">是
+                    </lable>
+                    <lable class="am-radio-inline">
+                        <input type="radio" name="isFeeCheck" value="false" checked="checked"
+                               onclick="displayFeeType()">否
+                    </lable>
+                </div>
+                <div class="am-form-group am-cf" name="feeCheck" hidden="true">
+                    <lable>性别：</lable>
+                    <select name="sex">
+                        <option value="1" <c:if test="${sex=='1'}"></c:if> 男
+                        </option>
+                        <option value="2" <c:if test="${sex=='2'}"></c:if> 女
+                        </option>
+                    </select><br>
+
+                </div>
             </div>
 
             <div class="am-form-group am-cf">
@@ -124,24 +137,47 @@
             type: "GET",
             dataType: "json",
             success: function (result) {
-               var res1 = result.underWriteResult;
-               var res2 = result.issueResult;
-               $("#underWriteResult").val(res1);
-               $("#issueResult").val(res2);
+                var res1 = result.underWriteResult;
+                var res2 = result.issueResult;
+                $("#underWriteResult").val(res1);
+                $("#issueResult").val(res2);
             },
             error: function () {
                 alert("内部错误，请联系开发人员！")
             }
         });
     }
+
     function selectAllBaseCheck() {
-        var isSelected =$("#selectAll").prop('checked');
-        if (isSelected){
-            $("input[name='baseCheckCB']").prop('checked',true);
+        var isSelected = $("#selectAll").prop('checked');
+        if (isSelected) {
+            $("input[name='baseCheckCB']").prop('checked', true);
         }
-        else{
-            $("input[name='baseCheckCB']").prop('checked',false);
+        else {
+            $("input[name='baseCheckCB']").prop('checked', false);
         }
+    }
+
+
+       /* function displayFeeType() {
+            var value = $("input [name='isFeeCheck']").val();
+            if (value == "true") {
+                $("div [name='feeCheck']").show();
+            } else {
+
+                $("div [name='feeCheck']").hide();
+            }
+        }
+*/
+    function displayFeeType(){
+    $("input[name='isFeeCheck']").change(function(){
+        var value = $(this).val();
+        if (value == "true") {
+            $("div[name='feeCheck']").show();
+        } else {
+            $("div[name='feeCheck']").hide();
+        }
+    });
     }
 </script>
 

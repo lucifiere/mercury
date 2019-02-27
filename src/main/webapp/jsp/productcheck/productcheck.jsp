@@ -39,6 +39,8 @@
             <div class="am-form-group am-cf">
                 <div class="zuo">sku：
                     <input id="productCode" class="am-input-sm" placeholder="请输入sku"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="am-btn am-btn-success am-radius" onclick="startCheck()">开始</button>&nbsp;
                 </div>
             </div>
             <div class="am-form-group am-cf">
@@ -155,17 +157,13 @@
                     <textarea id="issueResult" cols="30" rows="4" class="am-input-sm"></textarea>
                 </div>
             </div>
-            <div class="am-form-group am-cf">
-                <div class="you" style="margin-left: 11%;">
-                    <button type="button" class="am-btn am-btn-success am-radius" onclick="startCheck()">开始</button>&nbsp;
-                </div>
-            </div>
+
         </form>
     </div>
 
 </div>
 
-<div name="baseResult" >
+<div name="baseResult">
     <div class="am-form-group am-cf">
         <b>检测结果</b>
     </div>

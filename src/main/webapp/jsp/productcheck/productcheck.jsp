@@ -102,7 +102,43 @@
                         </option>
                         <option value="2" <c:if test="${sex=='2'}"></c:if> 女
                         </option>
-                    </select><br>
+                    </select>
+                    &nbsp;&nbsp;&nbsp;
+                    <lable>年龄：</lable>
+                    <select name="paymentPeriod">
+                        <%--<%
+                            List<TypeVo> ls = (ArrayList<TypeVo>)request.getAttribute("bookType");
+                            for (TypeVo typeVo : ls) {%>
+                        <option value="<%=typeVo.getId()%>"><%=typeVo.getName() %></option>
+                        <%
+                            }
+                        %>--%>
+                    </select>
+                    <br>
+                    <lable>缴费期间：</lable>
+                    <select name="paymentPeriod">
+                        <option value="1" <c:if test="${paymentPeriod=='1'}"></c:if> 10年
+                        </option>
+                        <option value="2" <c:if test="${paymentPeriod=='2'}"></c:if> 20年
+                        </option>
+                        <option value="3" <c:if test="${paymentPeriod=='3'}"></c:if> 30年
+                        </option>
+                    </select>
+                    &nbsp;&nbsp;&nbsp;
+                    <lable>保障期间：</lable>
+                    <select name="insurancePeriod">
+                        <option value="1" <c:if test="${insurancePeriod=='1'}"></c:if> 10年
+                        </option>
+                        <option value="2" <c:if test="${insurancePeriod=='2'}"></c:if> 20年
+                        </option>
+                        <option value="3" <c:if test="${insurancePeriod=='3'}"></c:if> 30年
+                        </option>
+                        <option value="4" <c:if test="${insurancePeriod=='4'}"></c:if> 50年
+                        </option>
+                        <option value="4" <c:if test="${insurancePeriod=='5'}"></c:if> 终身
+                        </option>
+                    </select>
+                    <br>
 
                 </div>
             </div>
@@ -127,6 +163,30 @@
         </form>
     </div>
 
+</div>
+
+<div name="baseResult" >
+    <div class="am-form-group am-cf">
+        <b>检测结果</b>
+    </div>
+    <table border="1">
+        <thead>
+        <tr>
+            <td>检测项</td>
+            <td>检测结果</td>
+            <td>结果描述</td>
+            <td>备注</td>
+        </tr>
+        <thead>
+        <tbody id="tb">
+        <tr id="1st">
+            <td>张</td>
+            <td>三</td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 <script>
@@ -158,26 +218,28 @@
         }
     }
 
-
-       /* function displayFeeType() {
-            var value = $("input [name='isFeeCheck']").val();
+    function displayFeeType() {
+        $("input[name='isFeeCheck']").change(function () {
+            var value = $(this).val();
             if (value == "true") {
-                $("div [name='feeCheck']").show();
+                $("div[name='feeCheck']").show();
             } else {
-
-                $("div [name='feeCheck']").hide();
+                $("div[name='feeCheck']").hide();
             }
-        }
-*/
-    function displayFeeType(){
-    $("input[name='isFeeCheck']").change(function(){
-        var value = $(this).val();
-        if (value == "true") {
-            $("div[name='feeCheck']").show();
-        } else {
-            $("div[name='feeCheck']").hide();
-        }
-    });
+        });
+    }
+
+    function add() {
+        var trObj = document.createElement("tr");
+        trObj.id = new Date().getTime();
+        trObj.innerHTML = "<td><input name='firstName'/></td><td><input name='lastName'/></td><td><input type='button' value='Add' onclick='add()'> <input type='button' value='Del' onclick='del(this)'></td>";
+        document.getElementById("tb").appendChild(trObj);
+    }
+
+    function del(obj) {
+        var trId = obj.parentNode.parentNode.id;
+        var trObj = document.getElementById(trId);
+        document.getElementById("tb").removeChild(trObj);
     }
 </script>
 

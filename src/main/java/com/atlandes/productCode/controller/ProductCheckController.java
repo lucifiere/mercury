@@ -13,6 +13,8 @@ import com.jd.baoxian.product.export.vo.res.ProductDetail;
 import com.jd.baoxian.service.platform.domain.response.BaseResponse;
 import com.jd.baoxian.service.platform.domain.response.UnderWriteResponse;
 
+import java.util.Objects;
+
 @Controller
 @RequestMapping("productCheck")
 public class ProductCheckController {
@@ -28,8 +30,30 @@ public class ProductCheckController {
 
     @RequestMapping("startCheck")
     @ResponseBody
-    public ProductCheckResult startCheck(String sku) {
+    public ProductCheckResult startCheck(String sku, String baseCheckIds) {
 
+        String[] baseCheckItem = baseCheckIds.split(",");
+        for (String btnId : baseCheckItem) {
+            if(Objects.equals(btnId,"underWrite")){
+                //todo 调用核保检测case
+
+            }if(Objects.equals(btnId,"issue")){
+                //todo 调用出单检测case
+
+            }if(Objects.equals(btnId,"onLinePolicy")){
+                //todo 调用电子保单检测case
+
+            }if(Objects.equals(btnId,"underWriteOnceMore")){
+                //todo 调用重复核保检测case
+
+            }if(Objects.equals(btnId,"issueOnceMore")){
+                //todo 调用重复出单检测case
+
+            }if(Objects.equals(btnId,"issueIdempotent")){
+                //todo 调用出单幂等检测case
+
+            }
+        }
         String underWriteRes = productBaseInfo.getUnderWriteRes(sku);
         // String underWriteRes ="核保结果";
         ProductCheckResult productCheckResult = new ProductCheckResult();

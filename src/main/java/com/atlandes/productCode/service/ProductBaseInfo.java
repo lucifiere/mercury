@@ -272,7 +272,7 @@ public class ProductBaseInfo extends BaseConfig {
     }
 
     // @Test
-    public void test() {
+  /*  public void test() {
 
         BaseResponse<ProductDetail> productdetail = getProductDetailBySkuId("2019011001");
         UnderWriteRequest under = getGeneralUnderWriteOb(productdetail);
@@ -280,7 +280,7 @@ public class ProductBaseInfo extends BaseConfig {
         issuePolicy(res);
         System.out.println("Fdfds" + res.toString());
 
-    }
+    }*/
 
     public String getUnderWriteRes(String sku) {
         UnderWriteResponse underWriteResponse = underWrite(sku);

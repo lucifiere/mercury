@@ -191,8 +191,13 @@
 <script>
     function startCheck() {
         var productCode = $("#productCode").val();
+        var baseCheckIdList = [];
+        var baseChecked = $("input[name='baseCheckCB']:checked").each(function (i, checkCB) {
+            baseCheckIdList.push($(checkCB).prop("id"));
+        });
+        var baseCheckIdStr = baseCheckIdList.join(",");
         $.ajax({
-            url: "/productCheck/startCheck?sku=" + productCode,
+            url: "/productCheck/startCheck?sku=" + productCode + "&baseCheckIds=" + baseCheckIdStr,
             type: "GET",
             dataType: "json",
             success: function (result) {
@@ -205,6 +210,7 @@
                 alert("faslhdkgfH")
             }
         });
+
     }
 
     function selectAllBaseCheck() {

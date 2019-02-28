@@ -1,3 +1,4 @@
+/*
 package com.atlandes.auth.util;
 
 import com.alibaba.fastjson.JSON;
@@ -10,10 +11,12 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+*/
 /**
  * Created by XD.Wang on 2017/5/28.
  * 拦截器工具类
- */
+ *//*
+
 public class ShiroFilterUtils {
 
     public final static Class<? extends ShiroFilterUtils> CLAZZ = ShiroFilterUtils.class;
@@ -25,22 +28,26 @@ public class ShiroFilterUtils {
     //没有权限提醒
     public final static String UNAUTHORIZED = "/open/unauthorized.shtml";
 
-    /**
+    */
+/**
      * 是否是Ajax请求
      *
      * @param request 请求
      * @return 判断结果
-     */
+     *//*
+
     public static boolean isAjax(ServletRequest request) {
         return "XMLHttpRequest".equalsIgnoreCase(((HttpServletRequest) request).getHeader("X-Requested-With"));
     }
 
-    /**
+    */
+/**
      * response 输出JSON
      *
      * @param response  response
      * @param resultMap 结果
-     */
+     *//*
+
     public static void out(ServletResponse response, Map<String, String> resultMap) {
         PrintWriter out = null;
         try {
@@ -67,3 +74,4 @@ public class ShiroFilterUtils {
     }
 
 }
+*/

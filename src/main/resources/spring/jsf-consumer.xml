@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jsf="http://jsf.jd.com/schema/jsf"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://jsf.jd.com/schema/jsf  http://jsf.jd.com/schema/jsf/jsf.xsd">
+    
+	<jsf:registry id="jsfRegistry" protocol="jsfRegistry" index="i.jsf.jd.com" />
+    <!-- 产品接口 -->
+	<jsf:consumer id="jsfProductResource" interface="com.jd.baoxian.service.platform.export.resource.product.ProductResource" protocol="jsf"
+				   alias="bx_service_p_product_test"   timeout="5000">
+	</jsf:consumer>
+	<!-- 试算接口
+	<jsf:consumer id="jsfNewProductService" interface="com.jd.baoxian.trade.newproductlistservice.NewProductService"
+                  protocol="jsf" alias="jr_bx_newproduct" timeout="6000" >
+    </jsf:consumer>
+     -->
+    
+    <!-- 核保接口 -->
+	<jsf:consumer id="jsfUnderWriteResource" interface="com.jd.baoxian.service.platform.export.resource.contract.UnderWriteResource"
+                  protocol="jsf" alias="bx_service_p_underwrite_test" timeout="6000" >
+    </jsf:consumer>
+  
+    <!-- 生成订单号接口 -->
+    <jsf:consumer id="orderCreateService" 
+               interface="com.jd.baoxian.order.trade.export.resource.OrderCreateService"
+               protocol="jsf" alias="orderCreateService_test" timeout="5000" retries="0">
+    </jsf:consumer>
+    
+    <!-- 出单接口 -->
+	<jsf:consumer id="jsfIssueResource" interface="com.jd.baoxian.service.platform.export.resource.contract.IssueResource"
+                  protocol="jsf" alias="bx_service_p_issue_test" timeout="6000" >
+    </jsf:consumer>
+
+
+</beans>

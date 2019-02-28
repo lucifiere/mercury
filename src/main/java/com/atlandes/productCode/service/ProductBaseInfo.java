@@ -283,7 +283,7 @@ public class ProductBaseInfo extends BaseConfig {
     }
 
     public String getUnderWriteRes(String sku) {
-        UnderWriteResponse underWriteResponse = underwrite(sku);
+        UnderWriteResponse underWriteResponse = underWrite(sku);
         UnderWriteOrder underWriteOrder = underWriteResponse.getUnderWriteOrder();
         if (underWriteOrder != null) {
             return underWriteOrder.getOrderId();
@@ -298,7 +298,7 @@ public class ProductBaseInfo extends BaseConfig {
      * @param sku 商品编码
      * @return 核保结果
      */
-    public UnderWriteResponse underwrite(String sku) {
+    public UnderWriteResponse underWrite(String sku) {
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
         UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes);
         BaseResponse<UnderWriteResponse> underwriteRes = jsfUnderWriteResource.underwrite(under);

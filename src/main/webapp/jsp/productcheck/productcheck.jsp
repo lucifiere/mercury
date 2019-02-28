@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%--<%@ include file="/jsp/common/base.jsp"%>--%>
+<context:component-scan base-package="com.atlandes.productCode.controller"></context:component-scan>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -201,7 +202,7 @@
                 $("#issueResult").val(res2);
             },
             error: function () {
-                alert("内部错误，请联系开发人员！")
+                alert("faslhdkgfH")
             }
         });
     }

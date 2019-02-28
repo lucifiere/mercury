@@ -31,257 +31,258 @@ import com.jd.baoxian.trade.export.contract.vo.ClientInfo;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductBaseInfo extends BaseConfig{
-	@Autowired
-	public ProductResource jsfProductResource;
-	@Autowired  
-	public UnderWriteResource jsfUnderWriteResource;  
-	@Autowired  
-	public OrderCreateService orderCreateService;  
-	@Autowired
-	public IssueResource  jsfIssueResource;
-	
-	
-	public BaseResponse<ProductDetail> getProductDetailBySkuId(String itemId){
-		Merchant merchant = new Merchant();
+public class ProductBaseInfo extends BaseConfig {
+    @Autowired
+    public ProductResource jsfProductResource;
+    @Autowired
+    public UnderWriteResource jsfUnderWriteResource;
+    @Autowired
+    public OrderCreateService orderCreateService;
+    @Autowired
+    public IssueResource jsfIssueResource;
+
+
+    public BaseResponse<ProductDetail> getProductDetailBySkuId(String itemId) {
+        Merchant merchant = new Merchant();
         merchant.setMerchantNo("1018120001");
         merchant.setMerchantName("京东金融");
-       
-		ProductRequest preq= new ProductRequest();
-		preq.setMerchant(merchant);
-		preq.setItemId(itemId);
-		BaseResponse<ProductDetail> resProductDetail =  jsfProductResource.productInfoV1(preq);
-	    return resProductDetail;
-	}
-	
-	public UnderWriteRequest getGeneralUnderWriteOb( BaseResponse<ProductDetail> productDetail){
-		UnderWriteRequest underWriteRequest = new UnderWriteRequest();
-		underWriteRequest.setAccount("cpjcpin");
-		underWriteRequest.setAccountType("JD_PIN");
-		//判断是否是续期产品
-		ProductRenewal productRenewal = productDetail.getResponse().getProductRenewal();
-		
-		if(productDetail.getResponse().getProductRenewal() != null ){
-			CardSign cardsign = new CardSign();
-			if(productDetail.getResponse().getProductRenewal().getCollection()!=null){
-				cardsign.setBankAccountNo("银行卡号");
-				cardsign.setBankCode("银行编码");
-				cardsign.setBankHolderName("投保人姓名");
-			}
-			underWriteRequest.setCardSign(cardsign);
-		}
-		//投被保人关系列表，即给 本人、子女、父母、配偶
-		List<BaseClass> holderRelationList = productDetail.getResponse().getProductBase().getHolderInsuredRelations();
-		//0-本人 ,1-父母, 2-子女, 5-配偶
-		int holderRelation =0;
-		if(holderRelationList.size() ==1){
-			holderRelation = Integer.parseInt(holderRelationList.get(0).getValue());
-		}else{
-			holderRelation =0;//默认给本人
-		}
-		boolean isLimitSex = false;
-		//产品是否限制性别购买 sex =2 是女  1是男 
-		if(productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getLimitSex() !=null && productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getLimitSex()!=""){
-		    if(productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getLimitSex().equalsIgnoreCase("2")){
-		    	isLimitSex = false;	//限制女性购买
-		    }else{
-		    	isLimitSex = true;//限制男性购买
-		    }
 
-		}else{
-			isLimitSex = false;//默认女
-		}
-		
-		int minAge = productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMinAge();
-		int maxAge = productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMaxAge();
-		
-		Calendar ageInsuerd = getAgeInsured(holderRelation+"",minAge);
-		//投保人信息
-		Applicant applicant= getApplicantInfo(ageInsuerd, isLimitSex);
-		underWriteRequest.setApplicant(applicant);
-		
-	
-		//默认价格
-		String dde =productDetail.getResponse().getProductBase().getDefaultPrice();
-		BigDecimal df = new BigDecimal(dde);
-		BigDecimal hs = df.multiply(new BigDecimal("100"));
-		Long defaultPrice = hs.longValue();
-		
-		//保单信息
-		Insurance insureance= new Insurance();
-		insureance.setAmount(productDetail.getResponse().getProductFee().getInsureAmount().get(0).getValue());
-		insureance.setBeginDate(getNextDay(1));
-		insureance.setInsurancePeriod(productDetail.getResponse().getProductFee().getPeriods().get(0).getValue());
-		insureance.setInsurancePeriodType(productDetail.getResponse().getProductFee().getPeriods().get(0).getValueType());
-		insureance.setItemId(productDetail.getResponse().getProductBase().getProductCode());
+        ProductRequest preq = new ProductRequest();
+        preq.setMerchant(merchant);
+        preq.setItemId(itemId);
+        BaseResponse<ProductDetail> resProductDetail = jsfProductResource.productInfoV1(preq);
+        return resProductDetail;
+    }
+
+    public UnderWriteRequest getGeneralUnderWriteOb(BaseResponse<ProductDetail> productDetail) {
+        UnderWriteRequest underWriteRequest = new UnderWriteRequest();
+        underWriteRequest.setAccount("cpjcpin");
+        underWriteRequest.setAccountType("JD_PIN");
+        //判断是否是续期产品
+        ProductRenewal productRenewal = productDetail.getResponse().getProductRenewal();
+
+        if (productDetail.getResponse().getProductRenewal() != null) {
+            CardSign cardsign = new CardSign();
+            if (productDetail.getResponse().getProductRenewal().getCollection() != null) {
+                cardsign.setBankAccountNo("银行卡号");
+                cardsign.setBankCode("银行编码");
+                cardsign.setBankHolderName("投保人姓名");
+            }
+            underWriteRequest.setCardSign(cardsign);
+        }
+        //投被保人关系列表，即给 本人、子女、父母、配偶
+        List<BaseClass> holderRelationList = productDetail.getResponse().getProductBase().getHolderInsuredRelations();
+        //0-本人 ,1-父母, 2-子女, 5-配偶
+        int holderRelation = 0;
+        if (holderRelationList.size() == 1) {
+            holderRelation = Integer.parseInt(holderRelationList.get(0).getValue());
+        } else {
+            holderRelation = 0;//默认给本人
+        }
+        boolean isLimitSex = false;
+        //产品是否限制性别购买 sex =2 是女  1是男
+        if (productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getLimitSex() != null && productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getLimitSex() != "") {
+            if (productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getLimitSex().equalsIgnoreCase("2")) {
+                isLimitSex = false;    //限制女性购买
+            } else {
+                isLimitSex = true;//限制男性购买
+            }
+
+        } else {
+            isLimitSex = false;//默认女
+        }
+
+        int minAge = productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMinAge();
+        int maxAge = productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMaxAge();
+
+        Calendar ageInsuerd = getAgeInsured(holderRelation + "", minAge);
+        //投保人信息
+        Applicant applicant = getApplicantInfo(ageInsuerd, isLimitSex);
+        underWriteRequest.setApplicant(applicant);
+
+
+        //默认价格
+        String dde = productDetail.getResponse().getProductBase().getDefaultPrice();
+        BigDecimal df = new BigDecimal(dde);
+        BigDecimal hs = df.multiply(new BigDecimal("100"));
+        Long defaultPrice = hs.longValue();
+
+        //保单信息
+        Insurance insureance = new Insurance();
+        insureance.setAmount(productDetail.getResponse().getProductFee().getInsureAmount().get(0).getValue());
+        insureance.setBeginDate(getNextDay(1));
+        insureance.setInsurancePeriod(productDetail.getResponse().getProductFee().getPeriods().get(0).getValue());
+        insureance.setInsurancePeriodType(productDetail.getResponse().getProductFee().getPeriods().get(0).getValueType());
+        insureance.setItemId(productDetail.getResponse().getProductBase().getProductCode());
 //		insureance.setPaymentFrequency("");
 //		insureance.setPaymentPeriodType(productDetail.getResponse().getProductFee().getPayPeriod().get(0).getValueType());
 //		insureance.setPaymentPeriod(productDetail.getResponse().getProductFee().getPayPeriod().get(0).getValue());
 //		insureance.setPlanCode("");
 //		productDetail.getResponse().getProductSerialsList().get(0).getPlancode();
-		insureance.setTotalPrice(defaultPrice);
-		underWriteRequest.setInsurance(insureance);
-		underWriteRequest.setIp("127.0.0.1");
-		
-		//被保人信息
-		List<Insured> insuredList =getInsuredInfo(holderRelation,ageInsuerd, applicant, isLimitSex,defaultPrice);
-		underWriteRequest.setInsuredList(insuredList);
-		
-		//平台商户
-		Merchant merchant = new Merchant();
+        insureance.setTotalPrice(defaultPrice);
+        underWriteRequest.setInsurance(insureance);
+        underWriteRequest.setIp("127.0.0.1");
+
+        //被保人信息
+        List<Insured> insuredList = getInsuredInfo(holderRelation, ageInsuerd, applicant, isLimitSex, defaultPrice);
+        underWriteRequest.setInsuredList(insuredList);
+
+        //平台商户
+        Merchant merchant = new Merchant();
         merchant.setMerchantNo("1018120001");
         merchant.setMerchantName("京东金融");
         underWriteRequest.setMerchant(merchant);
-	return underWriteRequest;
-	}
-	
-  public Applicant getApplicantInfo(Calendar age,boolean isLimitSex){
-	  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-	  SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-	  String birthAge = sdf.format(age.getTime());
-	  String certificateNo = StringUtils.getIdNo(birthAge,isLimitSex);
-	  Applicant application = new Applicant();
-	  application.setName("晓卉");
-	  application.setCertificateType("1");
-	  application.setBirthday(sdf1.format(age.getTime()));
-	  application.setCertificateNo(certificateNo);
-	  if(isLimitSex){
-		  application.setSex("1");
-	  }else{
-		  application.setSex("2");
-	  }
-	  application.setEmail("59105@qq.com");
-	  application.setMobile("13246477320");
-	  application.setProvinceId("110000");
-	  application.setAreaId("110106");
-	  application.setCityId("110100");
-	  application.setAddress("经济开发区科创十一街京东大厦A座");
-	 return application;
-		  
-	  }
-	
-  public List<Insured> getInsuredInfo(int holderRelation,Calendar dateOfBirth,Applicant applicant,boolean isLimitSex,Long defaultPrice){
-	  
-	  List<Insured> insuredList = new ArrayList<Insured>();
-	  Insured insured = new Insured();
-	  if(holderRelation == 0){
-		  insured.setBirthday(applicant.getBirthday());
-		  insured.setCertificateNo(applicant.getCertificateNo());
-		  insured.setCertificateType(applicant.getCertificateType());
-		  insured.setCount(1);
-		  insured.setEmail(applicant.getEmail());
+        return underWriteRequest;
+    }
+
+    public Applicant getApplicantInfo(Calendar age, boolean isLimitSex) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+        String birthAge = sdf.format(age.getTime());
+        String certificateNo = StringUtils.getIdNo(birthAge, isLimitSex);
+        Applicant application = new Applicant();
+        application.setName("晓卉");
+        application.setCertificateType("1");
+        application.setBirthday(sdf1.format(age.getTime()));
+        application.setCertificateNo(certificateNo);
+        if (isLimitSex) {
+            application.setSex("1");
+        } else {
+            application.setSex("2");
+        }
+        application.setEmail("59105@qq.com");
+        application.setMobile("13246477320");
+        application.setProvinceId("110000");
+        application.setAreaId("110106");
+        application.setCityId("110100");
+        application.setAddress("经济开发区科创十一街京东大厦A座");
+        return application;
+
+    }
+
+    public List<Insured> getInsuredInfo(int holderRelation, Calendar dateOfBirth, Applicant applicant, boolean isLimitSex, Long defaultPrice) {
+
+        List<Insured> insuredList = new ArrayList<Insured>();
+        Insured insured = new Insured();
+        if (holderRelation == 0) {
+            insured.setBirthday(applicant.getBirthday());
+            insured.setCertificateNo(applicant.getCertificateNo());
+            insured.setCertificateType(applicant.getCertificateType());
+            insured.setCount(1);
+            insured.setEmail(applicant.getEmail());
 //		  insured.setHeight(1L);
-		  insured.setMainPrice(defaultPrice);
-		  insured.setMobile(applicant.getMobile());
-		  insured.setName(applicant.getName());
-		  insured.setNumber("1");
+            insured.setMainPrice(defaultPrice);
+            insured.setMobile(applicant.getMobile());
+            insured.setName(applicant.getName());
+            insured.setNumber("1");
 //		  insured.setOccupation("");
-		  insured.setRelation(holderRelation+"");
-		  insured.setSex(applicant.getSex());
+            insured.setRelation(holderRelation + "");
+            insured.setSex(applicant.getSex());
 //		  insured.setSocialSecurity();
 //		  insured.setSpecialPrice(specialPrice);
 //		  insured.setUseSpecial(useSpecial);
 //		  insured.setWeight(weight);
-	  }else{
-		  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		  SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-		  String certificateNo = StringUtils.getIdNo(sdf.format(dateOfBirth.getTime()),isLimitSex);
-		  insured.setBirthday(sdf1.format(dateOfBirth.getTime()));
-		  insured.setCertificateNo(certificateNo);
-		  insured.setCertificateType("1");
-		  insured.setCount(1);
-		  insured.setEmail(applicant.getEmail());
-		  insured.setMainPrice(1L);
-		  insured.setMobile(applicant.getMobile());
-		  insured.setName("晓卉二 ");
-		  insured.setNumber("1");
-		  insured.setRelation(holderRelation+"");
-		  if(isLimitSex){
-			  insured.setSex("1"); 
-		  }else{
-			  insured.setSex("2");
-		  }
-		  
-	  }
-	  insuredList.add(insured) ;
-	  return insuredList;
-  }
-  
-  public Calendar getAgeInsured(String holderRelation,int minAge){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");// 解析用格式
-		Date date = new Date();//获取当前时间    
-		Calendar calendar = Calendar.getInstance();    
-		          calendar.setTime(date);  
+        } else {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+            String certificateNo = StringUtils.getIdNo(sdf.format(dateOfBirth.getTime()), isLimitSex);
+            insured.setBirthday(sdf1.format(dateOfBirth.getTime()));
+            insured.setCertificateNo(certificateNo);
+            insured.setCertificateType("1");
+            insured.setCount(1);
+            insured.setEmail(applicant.getEmail());
+            insured.setMainPrice(1L);
+            insured.setMobile(applicant.getMobile());
+            insured.setName("晓卉二 ");
+            insured.setNumber("1");
+            insured.setRelation(holderRelation + "");
+            if (isLimitSex) {
+                insured.setSex("1");
+            } else {
+                insured.setSex("2");
+            }
 
-	    String ageInsured = null;
-	    if(holderRelation.equals("0")){ //得到本人的出生日期
-	    	   calendar.add(Calendar.YEAR, -23);//当前时间减去23年 
-			   calendar.add(Calendar.MONTH, -2);//当前时间前去2个月
+        }
+        insuredList.add(insured);
+        return insuredList;
+    }
+
+    public Calendar getAgeInsured(String holderRelation, int minAge) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");// 解析用格式
+        Date date = new Date();//获取当前时间
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        String ageInsured = null;
+        if (holderRelation.equals("0")) { //得到本人的出生日期
+            calendar.add(Calendar.YEAR, -23);//当前时间减去23年
+            calendar.add(Calendar.MONTH, -2);//当前时间前去2个月
 //			   ageInsured = sdf.format(calendar.getTime());
-	    }else if(holderRelation.equals("1")){//得到父母的出生日期
-	    	 calendar.add(Calendar.YEAR, -(minAge-1));//当前时间减去23年 
-			   calendar.add(Calendar.MONTH, -2);//当前时间前去2个月
+        } else if (holderRelation.equals("1")) {//得到父母的出生日期
+            calendar.add(Calendar.YEAR, -(minAge - 1));//当前时间减去23年
+            calendar.add(Calendar.MONTH, -2);//当前时间前去2个月
 //			   ageInsured = sdf.format(calendar.getTime());
-	    	
-	    }else if(holderRelation.equals("2")){//得到子女的出生日期
-	    	   calendar.add(Calendar.YEAR, -10); 
-			   calendar.add(Calendar.MONTH, -2); 
+
+        } else if (holderRelation.equals("2")) {//得到子女的出生日期
+            calendar.add(Calendar.YEAR, -10);
+            calendar.add(Calendar.MONTH, -2);
 //			   ageInsured = sdf.format(calendar.getTime());
-	    }else {//得到配偶的出生日期
-	    	   calendar.add(Calendar.YEAR, -25);
-			   calendar.add(Calendar.MONTH, -2);
+        } else {//得到配偶的出生日期
+            calendar.add(Calendar.YEAR, -25);
+            calendar.add(Calendar.MONTH, -2);
 //			   ageInsured = sdf.format(calendar.getTime());
-	    }
-	  return calendar;
-  }
-  
-  public void issuePolicy(BaseResponse<UnderWriteResponse> res){
-	  IssueRequest ireq = new IssueRequest();
-	  ireq.setAccount("cpjcpin");//pin
-	  ireq.setAccountType(AccountTypeEnum.JD_PIN.code());
-	  ireq.setChannel("test");
-	  ireq.setConfirmResultType("full");
-	  ireq.setIp("127.0.0.0");
-	  Merchant merchant = new Merchant();
-      merchant.setMerchantNo("1018120001");
-      merchant.setMerchantName("京东金融");
-      merchant.setSceneCode("0001");
-	  ireq.setMerchant(merchant);
-	  ireq.setMerchantId("500");
-	  ireq.setOrderConfirmTime(new Date());
-	  ireq.setOrderId(res.getResponse().getUnderWriteOrder().getOrderId());
-	  ireq.setPayEnum(758);
-	  ireq.setPayId("75823319022210032102813");
-	  ireq.setPayTime(new Date());
-	  ireq.setRealPayPrice(res.getResponse().getUnderWriteOrder().getOrderPrice());
-	  
-	  BaseResponse rese = jsfIssueResource.issue(ireq);
-	  System.out.println("issue"+rese.toString());
-	  
-  }
-  
-  //保单生效日期
- public String getNextDay(int day){
-	   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = new Date();//获取当前时间    
-		Calendar calendar = Calendar.getInstance();    
-		         calendar.setTime(date); 
-		         calendar.add(Calendar.DATE,+day); 
-		String nextDay = sdf.format(calendar.getTime())+" 00:00:00";
-	return   nextDay;    
- }
- 
- // @Test
-  public void test(){
-	  
-	  BaseResponse<ProductDetail> productdetail =  getProductDetailBySkuId("2019011001");
-	  UnderWriteRequest under = getGeneralUnderWriteOb(productdetail);
-	  BaseResponse<UnderWriteResponse> res =jsfUnderWriteResource.underwrite(under);
-	  issuePolicy(res);
-	  System.out.println("Fdfds"+res.toString());
-	  
-  }
-	    public String getUnderWriteRes(String sku) {
+        }
+        return calendar;
+    }
+
+    public void issuePolicy(BaseResponse<UnderWriteResponse> res) {
+        IssueRequest ireq = new IssueRequest();
+        ireq.setAccount("cpjcpin");//pin
+        ireq.setAccountType(AccountTypeEnum.JD_PIN.code());
+        ireq.setChannel("test");
+        ireq.setConfirmResultType("full");
+        ireq.setIp("127.0.0.0");
+        Merchant merchant = new Merchant();
+        merchant.setMerchantNo("1018120001");
+        merchant.setMerchantName("京东金融");
+        merchant.setSceneCode("0001");
+        ireq.setMerchant(merchant);
+        ireq.setMerchantId("500");
+        ireq.setOrderConfirmTime(new Date());
+        ireq.setOrderId(res.getResponse().getUnderWriteOrder().getOrderId());
+        ireq.setPayEnum(758);
+        ireq.setPayId("75823319022210032102813");
+        ireq.setPayTime(new Date());
+        ireq.setRealPayPrice(res.getResponse().getUnderWriteOrder().getOrderPrice());
+
+        BaseResponse rese = jsfIssueResource.issue(ireq);
+        System.out.println("issue" + rese.toString());
+
+    }
+
+    //保单生效日期
+    public String getNextDay(int day) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();//获取当前时间
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, +day);
+        String nextDay = sdf.format(calendar.getTime()) + " 00:00:00";
+        return nextDay;
+    }
+
+    // @Test
+    public void test() {
+
+        BaseResponse<ProductDetail> productdetail = getProductDetailBySkuId("2019011001");
+        UnderWriteRequest under = getGeneralUnderWriteOb(productdetail);
+        BaseResponse<UnderWriteResponse> res = jsfUnderWriteResource.underwrite(under);
+        issuePolicy(res);
+        System.out.println("Fdfds" + res.toString());
+
+    }
+
+    public String getUnderWriteRes(String sku) {
         UnderWriteResponse underWriteResponse = underwrite(sku);
         UnderWriteOrder underWriteOrder = underWriteResponse.getUnderWriteOrder();
         if (underWriteOrder != null) {
@@ -307,5 +308,5 @@ public class ProductBaseInfo extends BaseConfig{
             return null;
         }
     }
-  
+
 }

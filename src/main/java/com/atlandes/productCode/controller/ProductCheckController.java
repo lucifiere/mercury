@@ -17,8 +17,8 @@ import com.jd.baoxian.service.platform.domain.response.UnderWriteResponse;
 @RequestMapping("productCheck")
 public class ProductCheckController {
 
-@Autowired
-private ProductBaseInfo productBaseInfo;
+    @Autowired
+    private ProductBaseInfo productBaseInfo;
 
     @RequestMapping(value = "productCheck", produces = "text/plain;charset=UTF-8")
     public ModelAndView toProductCheckPage() {
@@ -30,12 +30,23 @@ private ProductBaseInfo productBaseInfo;
     @ResponseBody
     public ProductCheckResult startCheck(String sku) {
 
-       String underWriteRes = productBaseInfo.getUnderWriteRes(sku);
-//        String underWriteRes ="";
+        String underWriteRes = productBaseInfo.getUnderWriteRes(sku);
+        // String underWriteRes ="核保结果";
         ProductCheckResult productCheckResult = new ProductCheckResult();
         productCheckResult.setUnderWriteResult(underWriteRes);
         productCheckResult.setIssueResult("出单结果");
         return productCheckResult;
     }
+
+/*    @RequestMapping("baseCheck")
+    @ResponseBody
+    public ProductCheckResult baseCheck(String productCode) {
+        String baseUnderWriteRes = productBaseInfo.getUnderWriteRes(productCode);
+        // String underWriteRes ="核保结果";
+        ProductCheckResult baseProductCheckResult = new ProductCheckResult();
+        baseProductCheckResult.setUnderWriteResult(baseUnderWriteRes);
+        baseProductCheckResult.setIssueResult("出单结果");
+        return baseProductCheckResult;
+    }*/
 
 }

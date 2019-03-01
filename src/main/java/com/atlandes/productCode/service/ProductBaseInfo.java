@@ -2,14 +2,14 @@ package com.atlandes.productCode.service;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 //import org.junit.Test;
 
+import com.atlandes.productCode.common.Constants;
+import com.jd.baoxian.order.trade.export.dto.base.OperDto;
 import com.jd.baoxian.order.trade.export.req.PolicyInfoQueryReq;
+import com.jd.baoxian.order.trade.export.res.PolicyInfoQueryRes;
 import com.jd.baoxian.order.trade.export.res.PolicyQueryRes;
 import com.jd.baoxian.service.platform.domain.bean.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -298,6 +298,7 @@ public class ProductBaseInfo extends BaseConfig {
             return "找不到订单";
         }
     }
+
     /**
      * 获取核保结果
      *
@@ -308,7 +309,7 @@ public class ProductBaseInfo extends BaseConfig {
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
         UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes);
         BaseResponse<UnderWriteResponse> underwriteRes = jsfUnderWriteResource.underwrite(under);
-        System.out.println("核保返回"+underwriteRes);
+        System.out.println("核保返回" + underwriteRes);
         if (underwriteRes.isSuccess()) {
             return underwriteRes.getResponse();
         } else {
@@ -317,8 +318,8 @@ public class ProductBaseInfo extends BaseConfig {
     }
 
     /*
-    * 获取出单结果
-    * */
+     * 获取出单结果
+     * */
     public String getIssueRes(String sku) {
         IssueRequest issReq;
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
@@ -327,19 +328,17 @@ public class ProductBaseInfo extends BaseConfig {
         if (underwriteResp != null) {
             issReq = issuePolicy(underwriteResp);
             BaseResponse issueRes = jsfIssueResource.issue(issReq);
-            if(issueRes!=null){
+            if (issueRes != null) {
                 return issueRes.toString();
+            } else {
+                return null;
             }
-            else {
-                return  null;
-            }
-        }
-        else{
+        } else {
             return "核保失败";
         }
     }
 
-    public String getOnLinePolicy(String sku){
+    public String getOnLinePolicyRes(String sku) {
         IssueRequest issReq;
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
         UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes);
@@ -347,15 +346,28 @@ public class ProductBaseInfo extends BaseConfig {
         if (underwriteResp != null) {
             issReq = issuePolicy(underwriteResp);
             BaseResponse issueRes = jsfIssueResource.issue(issReq);
-            if(issueRes!=null){
+            if (issueRes != null) {
                 PolicyInfoQueryReq policyInfoQueryReq = new PolicyInfoQueryReq();
-               // BaseResponse<PolicyQueryRes> res = policyQueryService.queryPolicyInfoByPolicyId();
+                OperDto operDto = new OperDto();
+                operDto.setOperAccount(Constants.OPER_ACCOUNT);
+                operDto.setOperAccountType(Constants.OPER_ACCOUNT_TYPE);
+                operDto.setSourceSystem(Constants.SOURCE_TYPE);
+                operDto.setRequestSeq(String.valueOf(System.currentTimeMillis()));
+                policyInfoQueryReq.setBuyerAccount(Constants.ACCOUNT);
+                policyInfoQueryReq.setBuyerType(Constants.ACCOUNT_TYPE);
+                PolicyInfoQueryRes res = policyQueryService.queryPolicyInfoByPolicyId(policyInfoQueryReq, operDto);
+                if (res != null) {
+                    String policyUrl = res.getPolicyInfoDto().getPolicyDto().getPolicyDownloadUrl();
+                    if (policyUrl != null) {
+                        return policyUrl;
+                    } else {
+                        return "获取电子保单失败";
+                    }
+                }
+            } else {
+                return "出单失败";
             }
-            else {
-                return  null;
-            }
-        }
-        else{
+        } else {
             return "核保失败";
         }
         return null;

@@ -234,18 +234,6 @@
         });
     }
 
-    function add() {
-        var trObj = document.createElement("tr");
-        trObj.id = new Date().getTime();
-        trObj.innerHTML = "<td><input name='firstName'/></td><td><input name='lastName'/></td><td><input type='button' value='Add' onclick='add()'> <input type='button' value='Del' onclick='del(this)'></td>";
-        document.getElementById("tb").appendChild(trObj);
-    }
-
-    function del(obj) {
-        var trId = obj.parentNode.parentNode.id;
-        var trObj = document.getElementById(trId);
-        document.getElementById("tb").removeChild(trObj);
-    }
 </script>
 
 </body>

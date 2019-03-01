@@ -235,7 +235,7 @@ public class ProductBaseInfo extends BaseConfig {
         return calendar;
     }
 
-    public void issuePolicy(BaseResponse<UnderWriteResponse> res) {
+    public IssueRequest issuePolicy(BaseResponse<UnderWriteResponse> res) {
         IssueRequest ireq = new IssueRequest();
         ireq.setAccount("cpjcpin");//pin
         ireq.setAccountType(AccountTypeEnum.JD_PIN.code());
@@ -257,7 +257,7 @@ public class ProductBaseInfo extends BaseConfig {
 
         BaseResponse rese = jsfIssueResource.issue(ireq);
         System.out.println("issue" + rese.toString());
-
+        return ireq;
     }
 
     //保单生效日期
@@ -272,7 +272,7 @@ public class ProductBaseInfo extends BaseConfig {
     }
 
     // @Test
-  /*  public void test() {
+    public void test() {
 
         BaseResponse<ProductDetail> productdetail = getProductDetailBySkuId("2019011001");
         UnderWriteRequest under = getGeneralUnderWriteOb(productdetail);
@@ -280,7 +280,7 @@ public class ProductBaseInfo extends BaseConfig {
         issuePolicy(res);
         System.out.println("Fdfds" + res.toString());
 
-    }*/
+    }
 
     public String getUnderWriteRes(String sku) {
         UnderWriteResponse underWriteResponse = underWrite(sku);
@@ -291,7 +291,6 @@ public class ProductBaseInfo extends BaseConfig {
             return "找不到订单";
         }
     }
-
     /**
      * 获取核保结果
      *
@@ -306,6 +305,29 @@ public class ProductBaseInfo extends BaseConfig {
             return underwriteRes.getResponse();
         } else {
             return null;
+        }
+    }
+
+    /*
+    * 获取出单结果
+    * */
+    public String getIssueRes(String sku) {
+        IssueRequest issReq = new IssueRequest();
+        BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
+        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes);
+        BaseResponse<UnderWriteResponse> underwriteResp = jsfUnderWriteResource.underwrite(under);
+        if (underwriteResp != null) {
+            issReq = issuePolicy(underwriteResp);
+            BaseResponse issueRes = jsfIssueResource.issue(issReq);
+            if(issueRes!=null){
+                return issueRes.toString();
+            }
+            else {
+                return  null;
+            }
+        }
+        else{
+            return "出单失败";
         }
     }
 

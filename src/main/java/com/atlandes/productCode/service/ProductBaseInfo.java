@@ -373,4 +373,27 @@ public class ProductBaseInfo extends BaseConfig {
         return null;
     }
 
+    public String getUnderWriteOnceMoreRes(String sku) {
+        IssueRequest issReq;
+        BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
+        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes);
+        BaseResponse<UnderWriteResponse> underwriteResp = jsfUnderWriteResource.underwrite(under);
+        if (underwriteResp != null) {
+            issReq = issuePolicy(underwriteResp);
+            BaseResponse issueRes = jsfIssueResource.issue(issReq);
+            if (issueRes != null) {
+                String orderIdFirst = issReq.getOrderId();
+                BaseResponse<UnderWriteResponse> underwriteOnceMoreResp = jsfUnderWriteResource.underwrite(under);
+                if (underwriteOnceMoreResp != null) {
+                    if(underwriteOnceMoreResp.getCode() == "0000"){
+                        return "重复核保检测失败，订单号："+orderIdFirst;
+                    }
+                    else{
+                        return "重复核保检测通过";
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }

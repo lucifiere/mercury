@@ -31,6 +31,7 @@ import com.jd.baoxian.trade.export.contract.vo.ClientInfo;
 import org.springframework.stereotype.Service;
 
 @Service
+
 public class ProductBaseInfo extends BaseConfig {
     @Autowired
     public ProductResource jsfProductResource;
@@ -301,6 +302,7 @@ public class ProductBaseInfo extends BaseConfig {
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
         UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes);
         BaseResponse<UnderWriteResponse> underwriteRes = jsfUnderWriteResource.underwrite(under);
+        System.out.println("核保返回"+underwriteRes);
         if (underwriteRes.isSuccess()) {
             return underwriteRes.getResponse();
         } else {
@@ -330,5 +332,9 @@ public class ProductBaseInfo extends BaseConfig {
             return "出单失败";
         }
     }
+
+//    public String getOnLinePolicy(String sku){
+//
+//    }
 
 }

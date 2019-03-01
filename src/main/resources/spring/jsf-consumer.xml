@@ -8,7 +8,7 @@
 	<jsf:registry id="jsfRegistry" protocol="jsfRegistry" index="i.jsf.jd.com" />
     <!-- 产品接口 -->
 	<jsf:consumer id="jsfProductResource" interface="com.jd.baoxian.service.platform.export.resource.product.ProductResource" protocol="jsf"
-				   alias="bx_service_p_product_test"   timeout="5000">
+				   alias="bx_service_p_product_test"  timeout="6000">
 	</jsf:consumer>
 	<!-- 试算接口
 	<jsf:consumer id="jsfNewProductService" interface="com.jd.baoxian.trade.newproductlistservice.NewProductService"
@@ -24,7 +24,7 @@
     <!-- 生成订单号接口 -->
     <jsf:consumer id="orderCreateService" 
                interface="com.jd.baoxian.order.trade.export.resource.OrderCreateService"
-               protocol="jsf" alias="orderCreateService_test" timeout="5000" retries="0">
+               protocol="jsf" alias="orderCreateService_test" timeout="10000" retries="0">
     </jsf:consumer>
     
     <!-- 出单接口 -->
@@ -32,5 +32,8 @@
                   protocol="jsf" alias="bx_service_p_issue_test" timeout="6000" >
     </jsf:consumer>
 
-
+	<!--保单查询jsf-->
+	<jsf:consumer id="policyQueryService" interface="com.jd.baoxian.order.trade.export.resource.PolicyQueryService"
+				  protocol="jsf" alias="policyQueryService_test" timeout="10000" check="false">
+	</jsf:consumer>
 </beans>

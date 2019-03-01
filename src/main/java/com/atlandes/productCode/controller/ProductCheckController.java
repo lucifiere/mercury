@@ -70,6 +70,9 @@ public class ProductCheckController {
                     }
                 }
             }
+            else{
+                return null;
+            }
         }
         return productCheckResult;
     }

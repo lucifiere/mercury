@@ -8,6 +8,9 @@ import java.util.Date;
 import java.util.List;
 
 //import org.junit.Test;
+
+import com.jd.baoxian.order.trade.export.req.PolicyInfoQueryReq;
+import com.jd.baoxian.order.trade.export.res.PolicyQueryRes;
 import com.jd.baoxian.service.platform.domain.bean.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,6 +18,7 @@ import com.atlandes.productCode.common.BaseConfig;
 import com.atlandes.productCode.common.StringUtils;
 
 import com.jd.baoxian.order.trade.export.resource.OrderCreateService;
+import com.jd.baoxian.order.trade.export.resource.PolicyQueryService;
 import com.jd.baoxian.product.export.pojo.ProductRenewal;
 import com.jd.baoxian.product.export.vo.base.BaseClass;
 import com.jd.baoxian.product.export.vo.res.ProductDetail;
@@ -41,6 +45,8 @@ public class ProductBaseInfo extends BaseConfig {
     public OrderCreateService orderCreateService;
     @Autowired
     public IssueResource jsfIssueResource;
+    @Autowired
+    public PolicyQueryService policyQueryService;
 
 
     public BaseResponse<ProductDetail> getProductDetailBySkuId(String itemId) {
@@ -314,7 +320,7 @@ public class ProductBaseInfo extends BaseConfig {
     * 获取出单结果
     * */
     public String getIssueRes(String sku) {
-        IssueRequest issReq = new IssueRequest();
+        IssueRequest issReq;
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
         UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes);
         BaseResponse<UnderWriteResponse> underwriteResp = jsfUnderWriteResource.underwrite(under);
@@ -329,12 +335,30 @@ public class ProductBaseInfo extends BaseConfig {
             }
         }
         else{
-            return "出单失败";
+            return "核保失败";
         }
     }
 
-//    public String getOnLinePolicy(String sku){
-//
-//    }
+    public String getOnLinePolicy(String sku){
+        IssueRequest issReq;
+        BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
+        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes);
+        BaseResponse<UnderWriteResponse> underwriteResp = jsfUnderWriteResource.underwrite(under);
+        if (underwriteResp != null) {
+            issReq = issuePolicy(underwriteResp);
+            BaseResponse issueRes = jsfIssueResource.issue(issReq);
+            if(issueRes!=null){
+                PolicyInfoQueryReq policyInfoQueryReq = new PolicyInfoQueryReq();
+               // BaseResponse<PolicyQueryRes> res = policyQueryService.queryPolicyInfoByPolicyId();
+            }
+            else {
+                return  null;
+            }
+        }
+        else{
+            return "核保失败";
+        }
+        return null;
+    }
 
 }

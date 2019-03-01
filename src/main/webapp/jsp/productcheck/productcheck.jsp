@@ -203,11 +203,12 @@
             success: function (result) {
                 var res1 = result.underWriteResult;
                 var res2 = result.issueResult;
+
                 $("#underWriteResult").val(res1);
                 $("#issueResult").val(res2);
             },
             error: function () {
-                alert("faslhdkgfH")
+                alert("您没有任何检测结果")
             }
         });
 

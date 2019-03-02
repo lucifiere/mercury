@@ -158,6 +158,12 @@
                     <textarea id="issueResult" cols="30" rows="4" class="am-input-sm"></textarea>
                 </div>
             </div>
+            <%--<div class="am-form-group am-cf">--%>
+                <%--<div class="zuo">电子保单结果：</div>--%>
+                <%--<div class="you">--%>
+                    <%--<textarea id="issueResult" cols="30" rows="4" class="am-input-sm"></textarea>--%>
+                <%--</div>--%>
+            </div>
 
         </form>
     </div>

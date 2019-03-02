@@ -273,7 +273,7 @@ public class ProductBaseInfo extends BaseConfig {
         Date date = new Date();//获取当前时间
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(Calendar.DATE, +day);
+        calendar.add(Calendar.DATE, +day+3);
         String nextDay = sdf.format(calendar.getTime()) + " 00:00:00";
         return nextDay;
     }

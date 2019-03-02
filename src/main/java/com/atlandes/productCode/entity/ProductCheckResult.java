@@ -6,7 +6,7 @@ public class ProductCheckResult {
     private String onLinePolicyResult;
     private String underWriteOnceMoreResult;
     private String issueOnceMoreResult;
-    private String issueIdempotentResuly;
+    private String issueIdempotentResult;
 
     public String getUnderWriteOnceMoreResult() {
         return underWriteOnceMoreResult;
@@ -24,15 +24,13 @@ public class ProductCheckResult {
         this.issueOnceMoreResult = issueOnceMoreResult;
     }
 
-    public String getIssueIdempotentResuly() {
-        return issueIdempotentResuly;
+    public String getIssueIdempotentResult() {
+        return issueIdempotentResult;
     }
 
-    public void setIssueIdempotentResuly(String issueIdempotentResuly) {
-        this.issueIdempotentResuly = issueIdempotentResuly;
+    public void setIssueIdempotentResult(String issueIdempotentResult) {
+        this.issueIdempotentResult = issueIdempotentResult;
     }
-
-
     public String getOnLinePolicyResult() {
         return onLinePolicyResult;
     }

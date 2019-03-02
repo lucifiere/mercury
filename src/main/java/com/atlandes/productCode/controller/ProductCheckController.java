@@ -34,34 +34,30 @@ public class ProductCheckController {
                 //todo 调用核保检测case
                 String underWriteRes = productBaseInfo.getUnderWriteRes(sku);
                 productCheckResult.setUnderWriteResult(underWriteRes);
-                if (Objects.equals(underWriteRes, "核保失败")) {
-                    return productCheckResult;
-                } else {
-                    if (Objects.equals(btnId, "issue")) {
-                        //todo 调用出单检测case
-                        String issueRes = productBaseInfo.getIssueRes(sku);
-                        productCheckResult.setIssueResult(issueRes);
-                    }
-                    if (Objects.equals(btnId, "onLinePolicy")) {
-                        //todo 调用电子保单检测case
-                        String onLinePolicyRes = productBaseInfo.getOnLinePolicyRes(sku);
-//                        productCheckResult
-                    }
-                    if (Objects.equals(btnId, "underWriteOnceMore")) {
-                        //todo 调用重复核保检测case
+            }
 
-                    }
-                    if (Objects.equals(btnId, "issueOnceMore")) {
-                        //todo 调用重复出单检测case
+            if (Objects.equals(btnId, "issue")) {
+                //todo 调用出单检测case
+                String issueRes = productBaseInfo.getIssueRes(sku);
+                productCheckResult.setIssueResult(issueRes);
+            }
+            if (Objects.equals(btnId, "onLinePolicy")) {
+                //todo 调用电子保单检测case
+                String onLinePolicyRes = productBaseInfo.getOnLinePolicyRes(sku);
+                productCheckResult.setOnLinePolicyResult(onLinePolicyRes);
+            }
+            if (Objects.equals(btnId, "underWriteOnceMore")) {
+                String underWriteOnceMoreRes = productBaseInfo.getOnLinePolicyRes(sku);
+                productCheckResult.setUnderWriteOnceMoreResult(underWriteOnceMoreRes);
+                //todo 调用重复核保检测case
 
-                    }
-                    if (Objects.equals(btnId, "issueIdempotent")) {
-                        //todo 调用出单幂等检测case
+            }
+            if (Objects.equals(btnId, "issueOnceMore")) {
+                //todo 调用重复出单检测case
 
-                    }
-                }
-            } else {
-                return null;
+            }
+            if (Objects.equals(btnId, "issueIdempotent")) {
+                //todo 调用出单幂等检测case
             }
         }
         return productCheckResult;

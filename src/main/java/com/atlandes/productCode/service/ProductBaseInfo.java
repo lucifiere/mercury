@@ -355,7 +355,9 @@ public class ProductBaseInfo extends BaseConfig {
                 operDto.setRequestSeq(String.valueOf(System.currentTimeMillis()));
                 policyInfoQueryReq.setBuyerAccount(Constants.ACCOUNT);
                 policyInfoQueryReq.setBuyerType(Constants.ACCOUNT_TYPE);
+      //          policyInfoQueryReq.setPolicyId();
                 PolicyInfoQueryRes res = policyQueryService.queryPolicyInfoByPolicyId(policyInfoQueryReq, operDto);
+
                 if (res != null) {
                     String policyUrl = res.getPolicyInfoDto().getPolicyDto().getPolicyDownloadUrl();
                     if (policyUrl != null) {

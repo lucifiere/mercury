@@ -141,6 +141,14 @@
                         <option value="4" <c:if test="${insurancePeriod=='5'}"></c:if> 终身
                         </option>
                     </select>
+                    &nbsp;&nbsp;&nbsp;
+                    <lable>社保：</lable>
+                    <select name="socialSecurity">
+                        <option value="1" <c:if test="${socialSecurity=='1'}"></c:if> 有社保
+                        </option>
+                        <option value="2" <c:if test="${socialSecurity=='2'}"></c:if> 无社保
+                        </option>
+                    </select>
                     <br>
 
                 </div>
@@ -158,11 +166,11 @@
                     <textarea id="issueResult" cols="30" rows="4" class="am-input-sm"></textarea>
                 </div>
             </div>
-            <%--<div class="am-form-group am-cf">--%>
-                <%--<div class="zuo">电子保单结果：</div>--%>
-                <%--<div class="you">--%>
-                    <%--<textarea id="issueResult" cols="30" rows="4" class="am-input-sm"></textarea>--%>
-                <%--</div>--%>
+            <div class="am-form-group am-cf">
+                <div class="zuo">电子保单结果：</div>
+                <div class="you">
+                    <textarea id="onLinePolicyResult" cols="30" rows="4" class="am-input-sm"></textarea>
+                </div>
             </div>
 
         </form>
@@ -209,9 +217,11 @@
             success: function (result) {
                 var res1 = result.underWriteResult;
                 var res2 = result.issueResult;
+                var res3 = result.onLinePolicyResult;
 
                 $("#underWriteResult").val(res1);
                 $("#issueResult").val(res2);
+                $("#onLinePolicyResult").val(res3);
             },
             error: function () {
                 alert("您没有任何检测结果")

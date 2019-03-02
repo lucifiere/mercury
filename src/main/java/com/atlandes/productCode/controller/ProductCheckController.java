@@ -1,5 +1,6 @@
 package com.atlandes.productCode.controller;
 
+import com.atlandes.productCode.entity.BaseCheckResult;
 import com.atlandes.productCode.service.ProductBaseInfo;
 
 import com.atlandes.productCode.entity.ProductCheckResult;
@@ -33,22 +34,25 @@ public class ProductCheckController {
             if (Objects.equals(btnId, "underWrite")) {
                 //todo 调用核保检测case
                 String underWriteRes = productBaseInfo.getUnderWriteRes(sku);
-                productCheckResult.setUnderWriteResult(underWriteRes);
+                BaseCheckResult underWriteResult = new BaseCheckResult();
+                underWriteResult.setCheckItem("核保检测");
+//                underWriteResult.setCheckMark();
+                productCheckResult.setUnderWriteResult(underWriteResult);
             }
 
             if (Objects.equals(btnId, "issue")) {
                 //todo 调用出单检测case
                 String issueRes = productBaseInfo.getIssueRes(sku);
-                productCheckResult.setIssueResult(issueRes);
+//                productCheckResult.setIssueResult(issueRes);
             }
             if (Objects.equals(btnId, "onLinePolicy")) {
                 //todo 调用电子保单检测case
                 String onLinePolicyRes = productBaseInfo.getOnLinePolicyRes(sku);
-                productCheckResult.setOnLinePolicyResult(onLinePolicyRes);
+//                productCheckResult.setOnLinePolicyResult(onLinePolicyRes);
             }
             if (Objects.equals(btnId, "underWriteOnceMore")) {
                 String underWriteOnceMoreRes = productBaseInfo.getOnLinePolicyRes(sku);
-                productCheckResult.setUnderWriteOnceMoreResult(underWriteOnceMoreRes);
+//                productCheckResult.setUnderWriteOnceMoreResult(underWriteOnceMoreRes);
                 //todo 调用重复核保检测case
 
             }

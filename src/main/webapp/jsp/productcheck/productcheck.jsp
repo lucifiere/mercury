@@ -192,12 +192,7 @@
         </tr>
         <thead>
         <tbody id="tb">
-        <tr id="1st">
-            <td>张</td>
-            <td>三</td>
-            <td></td>
-            <td></td>
-        </tr>
+
         </tbody>
     </table>
 </div>

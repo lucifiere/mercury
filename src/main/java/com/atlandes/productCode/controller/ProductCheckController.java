@@ -48,8 +48,8 @@ public class ProductCheckController {
                 productCheckResult.setOnLinePolicyResult(onLinePolicyRes);
             }
             if (Objects.equals(btnId, "underWriteOnceMore")) {
-                String underWriteOnceMoreRes = productBaseInfo.getUnderWriteOnceMoreRes(sku);
-//                productCheckResult.setUnderWriteOnceMoreResult(underWriteOnceMoreRes);
+                BaseCheckResult underWriteOnceMoreRes = productBaseInfo.getUnderWriteOnceMoreRes(sku);
+                productCheckResult.setUnderWriteOnceMoreResult(underWriteOnceMoreRes);
                 //todo 调用重复核保检测case
 
             }

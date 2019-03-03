@@ -7,11 +7,18 @@ import java.util.*;
 //import org.junit.Test;
 
 import com.atlandes.productCode.common.Constants;
+import com.atlandes.productCode.entity.BaseCheckResult;
+import com.google.common.base.Joiner;
+import com.jd.baoxian.order.trade.export.dto.PolicyDto;
+import com.jd.baoxian.order.trade.export.dto.PolicyQueryDto;
 import com.jd.baoxian.order.trade.export.dto.base.OperDto;
 import com.jd.baoxian.order.trade.export.req.PolicyInfoQueryReq;
+import com.jd.baoxian.order.trade.export.req.PolicyQueryReq;
 import com.jd.baoxian.order.trade.export.res.PolicyInfoQueryRes;
 import com.jd.baoxian.order.trade.export.res.PolicyQueryRes;
 import com.jd.baoxian.service.platform.domain.bean.*;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.atlandes.productCode.common.BaseConfig;
@@ -273,7 +280,7 @@ public class ProductBaseInfo extends BaseConfig {
         Date date = new Date();//获取当前时间
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(Calendar.DATE, +day+3);
+        calendar.add(Calendar.DATE, +day + 3);
         String nextDay = sdf.format(calendar.getTime()) + " 00:00:00";
         return nextDay;
     }
@@ -289,56 +296,71 @@ public class ProductBaseInfo extends BaseConfig {
 
     }
 
-    public String getUnderWriteRes(String sku) {
-        UnderWriteResponse underWriteResponse = underWrite(sku);
-        UnderWriteOrder underWriteOrder = underWriteResponse.getUnderWriteOrder();
-        if (underWriteOrder != null) {
-            return underWriteOrder.getOrderId();
-        } else {
-            return "找不到订单";
-        }
-    }
-
     /**
      * 获取核保结果
      *
-     * @param sku 商品编码
-     * @return 核保结果
+     * @param sku
+     * @return
      */
-    public UnderWriteResponse underWrite(String sku) {
+    public BaseCheckResult getUnderWriteRes(String sku) {
+        BaseCheckResult underCheckCheckResult = new BaseCheckResult();
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
         UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes);
         BaseResponse<UnderWriteResponse> underwriteRes = jsfUnderWriteResource.underwrite(under);
-        System.out.println("核保返回" + underwriteRes);
         if (underwriteRes.isSuccess()) {
-            return underwriteRes.getResponse();
+            underCheckCheckResult.setCheckItem("核保检测");
+            if (Objects.equals(underwriteRes.getCode(), "0000")) {
+                underCheckCheckResult.setCheckResult("检测通过");
+                underCheckCheckResult.setCheckResultDesc(underwriteRes.getResponse().getUnderWriteOrder().getOrderId());
+                underCheckCheckResult.setCheckMark("");
+            } else {
+                underCheckCheckResult.setCheckResult("检测失败");
+                underCheckCheckResult.setCheckResultDesc(underwriteRes.getResponse().getUnderWriteOrder().getOrderId());
+                underCheckCheckResult.setCheckMark(underwriteRes.getMessage());
+            }
+            return underCheckCheckResult;
         } else {
             return null;
         }
     }
 
+
     /*
      * 获取出单结果
      * */
-    public String getIssueRes(String sku) {
+    public BaseCheckResult getIssueRes(String sku) {
+        BaseCheckResult issueCheckResult = new BaseCheckResult();
         IssueRequest issReq;
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
         UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes);
         BaseResponse<UnderWriteResponse> underwriteResp = jsfUnderWriteResource.underwrite(under);
         if (underwriteResp != null) {
+            issueCheckResult.setCheckItem("出单检测");
             issReq = issuePolicy(underwriteResp);
             BaseResponse issueRes = jsfIssueResource.issue(issReq);
-            if (issueRes != null) {
-                return issueRes.toString();
+            if (Objects.equals(issueRes.getCode(), "0000")) {
+                issueCheckResult.setCheckResult("检测通过");
+                issueCheckResult.setCheckResultDesc(issueRes.getResponse().toString());
+                issueCheckResult.setCheckMark("");
             } else {
-                return null;
+                issueCheckResult.setCheckResult("检测失败");
+                issueCheckResult.setCheckResultDesc(issueRes.getResponse().toString());
+                issueCheckResult.setCheckMark("");
             }
+            return issueCheckResult;
         } else {
-            return "核保失败";
+            return null;
         }
     }
 
-    public String getOnLinePolicyRes(String sku) {
+    /**
+     * 获取电子保单检测结果
+     *
+     * @param sku 入参
+     * @return
+     */
+    public BaseCheckResult getOnLinePolicyRes(String sku) {
+        BaseCheckResult onLinePolicyCheckResult = new BaseCheckResult();
         IssueRequest issReq;
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
         UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes);
@@ -347,32 +369,49 @@ public class ProductBaseInfo extends BaseConfig {
             issReq = issuePolicy(underwriteResp);
             BaseResponse issueRes = jsfIssueResource.issue(issReq);
             if (issueRes != null) {
-                PolicyInfoQueryReq policyInfoQueryReq = new PolicyInfoQueryReq();
+                onLinePolicyCheckResult.setCheckItem("电子保单检测");
+                PolicyQueryReq policyQueryReq = new PolicyQueryReq();
                 OperDto operDto = new OperDto();
                 operDto.setOperAccount(Constants.OPER_ACCOUNT);
                 operDto.setOperAccountType(Constants.OPER_ACCOUNT_TYPE);
                 operDto.setSourceSystem(Constants.SOURCE_TYPE);
                 operDto.setRequestSeq(String.valueOf(System.currentTimeMillis()));
-                policyInfoQueryReq.setBuyerAccount(Constants.ACCOUNT);
-                policyInfoQueryReq.setBuyerType(Constants.ACCOUNT_TYPE);
-      //          policyInfoQueryReq.setPolicyId();
-                PolicyInfoQueryRes res = policyQueryService.queryPolicyInfoByPolicyId(policyInfoQueryReq, operDto);
+                PolicyQueryDto policyQueryDto = new PolicyQueryDto();
+                policyQueryDto.setBuyerAccount(Constants.ACCOUNT);
+                policyQueryDto.setOrderId(underwriteResp.getResponse().getUnderWriteOrder().getOrderId());
+                policyQueryDto.setBuyerType(Constants.ACCOUNT_TYPE);
+                policyQueryReq.setPolicyQueryDto(policyQueryDto);
+                PolicyQueryRes res = policyQueryService.queryPolicy(policyQueryReq, operDto);
+                List<String> policyIdList = new ArrayList<>();
 
-                if (res != null) {
-                    String policyUrl = res.getPolicyInfoDto().getPolicyDto().getPolicyDownloadUrl();
-                    if (policyUrl != null) {
-                        return policyUrl;
-                    } else {
-                        return "获取电子保单失败";
+                if (Objects.equals(res.getResultCode(), "0000")) {
+
+                    List<PolicyDto> policyDtoList = res.getList();
+                    if (CollectionUtils.isNotEmpty(policyDtoList)) {
+                        policyDtoList.forEach(policyDto -> {
+                            policyIdList.add(policyDto.getPolicyDownloadUrl());
+                        });
+                    }
+                    if (policyIdList != null) {
+                        onLinePolicyCheckResult.setCheckResult("检测通过");
+                        String policyDownloadUrl = Joiner.on(",").join(policyIdList);
+                        onLinePolicyCheckResult.setCheckResultDesc(policyDownloadUrl);
+                        onLinePolicyCheckResult.setCheckMark("");
+                    }
+                    else {
+                        onLinePolicyCheckResult.setCheckResult("检测失败");
+                        onLinePolicyCheckResult.setCheckResultDesc(res.getResultMsg());
+                        onLinePolicyCheckResult.setCheckMark("");
                     }
                 }
+
             } else {
-                return "出单失败";
+                return null;
             }
         } else {
-            return "核保失败";
+            return null;
         }
-        return null;
+        return onLinePolicyCheckResult;
     }
 
     public String getUnderWriteOnceMoreRes(String sku) {
@@ -387,10 +426,9 @@ public class ProductBaseInfo extends BaseConfig {
                 String orderIdFirst = issReq.getOrderId();
                 BaseResponse<UnderWriteResponse> underwriteOnceMoreResp = jsfUnderWriteResource.underwrite(under);
                 if (underwriteOnceMoreResp != null) {
-                    if(underwriteOnceMoreResp.getCode() == "0000"){
-                        return "重复核保检测失败，订单号："+orderIdFirst;
-                    }
-                    else{
+                    if (underwriteOnceMoreResp.getCode() == "0000") {
+                        return "重复核保检测失败，订单号：" + orderIdFirst;
+                    } else {
                         return "重复核保检测通过";
                     }
                 }

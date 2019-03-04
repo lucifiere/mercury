@@ -6,7 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%--<%@ include file="/jsp/common/base.jsp"%>--%>
-<script type="text/javascript" src="${pageContext.request.contextPath }/static/js/productCheck/productCheck.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath }/static/js/productCheck/productCheck.js"></script>
 <context:component-scan base-package="com.atlandes.productCode.controller"></context:component-scan>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -106,6 +107,7 @@
                     </tbody>
                 </table>
             </div>
+            <br/><br/>
             <div class="am-form-group am-cf">
                 <div class="zuo">是否进行费率检测
                     <lable class="am-radio-inline">
@@ -115,7 +117,8 @@
                         <input type="radio" name="isFeeCheck" value="false" checked="checked"
                                onclick="displayFeeType()">否
                     </lable>
-
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="am-btn am-btn-success am-radius">产品费率开始</button>&nbsp;
                 </div>
                 <div class="am-form-group am-cf" name="feeCheck" hidden="true">
                     <lable>性别：</lable>
@@ -133,34 +136,17 @@
                     <br>
                     <lable>缴费期间：</lable>
                     <select name="paymentPeriod">
-                        <option value="1" <c:if test="${paymentPeriod=='1'}"></c:if> 10年
-                        </option>
-                        <option value="2" <c:if test="${paymentPeriod=='2'}"></c:if> 20年
-                        </option>
-                        <option value="3" <c:if test="${paymentPeriod=='3'}"></c:if> 30年
-                        </option>
+
                     </select>
                     &nbsp;&nbsp;&nbsp;
                     <lable>保障期间：</lable>
                     <select name="insurancePeriod">
-                        <option value="1" <c:if test="${insurancePeriod=='1'}"></c:if> 10年
-                        </option>
-                        <option value="2" <c:if test="${insurancePeriod=='2'}"></c:if> 20年
-                        </option>
-                        <option value="3" <c:if test="${insurancePeriod=='3'}"></c:if> 30年
-                        </option>
-                        <option value="4" <c:if test="${insurancePeriod=='4'}"></c:if> 50年
-                        </option>
-                        <option value="4" <c:if test="${insurancePeriod=='5'}"></c:if> 终身
-                        </option>
+
                     </select>
                     &nbsp;&nbsp;&nbsp;
                     <lable>社保：</lable>
                     <select name="isSocialSecurity">
-                        <option value="1" <c:if test="${isSocialSecurity=='1'}"></c:if> 有社保
-                        </option>
-                        <option value="2" <c:if test="${isSocialSecurity=='2'}"></c:if> 无社保
-                        </option>
+
                     </select>
                     <br>
 
@@ -192,7 +178,6 @@
 </div>
 
 
-
 <script>
     function startCheck() {
         var productCode = $("#productCode").val();
@@ -208,27 +193,27 @@
             success: function (result) {
 
                 var res1 = result.underWriteResult;
-                if(res1!=null){
+                if (res1 != null) {
                     addCheckResult(res1);
                 }
                 var res2 = result.issueResult;
-                if(res2!=null){
+                if (res2 != null) {
                     addCheckResult(res2);
                 }
                 var res3 = result.onLinePolicyResult;
-                if(res3!=null){
+                if (res3 != null) {
                     addCheckResult(res3);
                 }
                 var res4 = result.underWriteOnceMoreResult;
-                if(res4!=null){
+                if (res4 != null) {
                     addCheckResult(res4);
                 }
                 var res5 = result.issueOnceMoreResult;
-                if(res5!=null){
+                if (res5 != null) {
                     addCheckResult(res5);
                 }
                 var res6 = result.issueIdempotentResult;
-                if(res6!=null){
+                if (res6 != null) {
                     addCheckResult(res6);
                 }
                 // $("#underWriteResult").val(res1);
@@ -258,21 +243,36 @@
             var value = $(this).val();
             if (value == "true") {
                 $.ajax({
-                    url: "/productCheck/displayFeeCheck?sku=" + productCode,
+                    url: "/productCheck/displayFeeType?sku=" + productCode,
                     type: "GET",
                     dataType: "json",
                     success: function (result) {
 
                         var res1 = result.periods;
-                        if(res1!=null){
+                        if (res1 != null) {
+                            var periodsString = "";
+                            for (var i = 0; i < res1.length; i++) {
+                                periodsString += "<option value=\"" + res1[i] + "\" >" + "</option>";
+                                $("select[name='insurancePeriod']").html(periodsString);
+                            }
                             $("select[name='insurancePeriod']").show();
                         }
                         var res2 = result.payPeriod;
-                        if(res2!=null){
+                        if (res2 != null) {
+                            var payPeriodString = "";
+                            for (var i = 0; i < res2.length; i++) {
+                                payPeriodString += "<option value=\"" + res2[i] + "\" >" + "</option>";
+                                $("select[name='paymentPeriod']").html(payPeriodString);
+                            }
                             $("select[name='paymentPeriod']").show();
                         }
                         var res3 = result.socialSecurity;
-                        if(res3!=null){
+                        if (res3 != null) {
+                            var socialSecurityString = "";
+                            for (var i = 0; i < res3.length; i++) {
+                                socialSecurityString += "<option value=\"" + res3[i] + "\" >" + "</option>";
+                                $("select[name='isSocialSecurity']").html(socialSecurityString);
+                            }
                             $("select[name='isSocialSecurity']").show();
                         }
                     },

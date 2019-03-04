@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atlandes.erp.dao.ItemsInfoMapper">
+    <resultMap id="BaseResultMap" type="com.atlandes.erp.vo.ItemsInfoVO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="items_name" property="itemsName" jdbcType="VARCHAR"/>
+        <result column="items_origin" property="itemsOrigin" jdbcType="VARCHAR"/>
+        <result column="items_scale" property="itemsScale" jdbcType="VARCHAR"/>
+        <result column="items_counts" property="itemsCounts" jdbcType="INTEGER"/>
+        <result column="items_order_no" property="itemsOrderNo" jdbcType="VARCHAR"/>
+        <result column="items_add_no" property="itemsAddNo" jdbcType="VARCHAR"/>
+        <result column="items_tran_no" property="itemsTranNo" jdbcType="VARCHAR"/>
+        <result column="items_in_store_no" property="itemsInStoreNo" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_column_list">
+        id,items_name,items_origin,items_scale,items_counts,items_order_no,items_add_no,items_tran_no,
+        items_in_store_no
+    </sql>
+
+    <select id="selectItemsInfoById" resultMap="com.atlandes.erp.vo.ItemsInfoVO" parameterType="INTEGER">
+        SELECT
+        <include refid="Base_column_list"/>
+        FROM erp_items_info
+        WHERE id=#{id,jdbcTypy=INTEGER}
+    </select>
+
+    <select id="selectItemsInfoList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_column_list"/>
+        from erp_items_info
+    </select>
+
+    <insert id="insertItemsInfo" parameterType="com.atlandes.erp.po.ItemsInfo">
+        INSERT INTO erp_items_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="itemsName != null">
+              items_name,
+            </if>
+            <if test="itemsOrigin != null">
+              items_origin,
+            </if>
+            <if test="itemsScale != null">
+              items_scale,
+            </if>
+            <if test="itemsCounts != null">
+              items_counts,
+            </if>
+            <if test="itemsOrderNo != null">
+              items_order_no,
+            </if>
+            <if test="itemsAddNo != null">
+              items_add_no,
+            </if>
+            <if test="itemsTranNo != null">
+              items_tran_no,
+            </if>
+            <if test="itemsInStoreNo != null">
+              items_in_store_no,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="itemsName != null">
+                #{itemsName,jdbcType=VARCHAR},
+            </if>
+            <if test="itemsOrigin != null">
+                #{itemsOrigin,jdbcType=VARCHAR},
+            </if>
+            <if test="itemsScale != null">
+                #{itemsScale,jdbcType=VARCHAR},
+            </if>
+            <if test="itemsCounts != null">
+                #{itemsCounts,jdbcType=INTEGER},
+            </if>
+            <if test="itemsOrderNo != null">
+                #{itemsOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="itemsAddNo != null">
+                #{itemsAddNo,jdbcType=VARCHAR},
+            </if>
+            <if test="itemsTranNo != null">
+                #{itemsTranNo,jdbcType=VARCHAR},
+            </if>
+            <if test="itemsInStoreNo != null">
+                #{itemsInStoreNo,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateItemsInfo" parameterType="com.atlandes.erp.po.ItemsInfo">
+        update erp_items_info
+        <set>
+            <if test="itemsName != null">
+                items_name = #{itemsName,jdbcType=VARCHAR},
+            </if>
+            <if test="itemsOrigin != null">
+                items_origin = #{itemsOrigin,jdbcType=VARCHAR},
+            </if>
+            <if test="itemsScale != null">
+                items_scale = #{itemsScale,jdbcType=VARCHAR},
+            </if>
+            <if test="itemsCounts != null">
+                items_counts = #{itemsCounts,jdbcType=INTEGER},
+            </if>
+            <if test="itemsOrderNo != null">
+                items_order_id = #{itemsOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="itemsAddNo != null">
+                items_add_no = #{itemsAddNo,jdbcType=VARCHAR},
+            </if>
+            <if test="itemsTranNo != null">
+                items_tran_no = #{itemsTranNo,jdbcType=VARCHAR},
+            </if>
+            <if test="itemsInStoreNo != null">
+                items_in_store_no = #{itemsInStoreNo,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE id=#{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteItemsInfoById" parameterType="INTEGER">
+        DELETE FROM erp_items_info
+        WHERE id={id,jdbcType=INTEGER}
+    </delete>
+</mapper>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atlandes.erp.dao.DealMapper">
+
+   <resultMap id="BaseResultMap" type="com.atlandes.erp.vo.DealVO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="begin_deal_date" property="beginDealDate" jdbcType="TIMESTAMP"/>
+        <result column="end_deal_date" property="endDealDate" jdbcType="TIMESTAMP"/>
+        <result column="need_fetch_goods" property="needFetchGoods" jdbcType="INTEGER"/>
+        <result column="need_jg" property="needJG" jdbcType="INTEGER"/>
+        <result column="complete" property="complete" jdbcType="INTEGER"/>
+        <result column="xh_order_id" property="xhOrderId" jdbcType="INTEGER"/>
+        <result column="th_order_id" property="thOrderId" jdbcType="INTEGER"/>
+        <result column="xq_order_id" property="xqOrderId" jdbcType="INTEGER"/>
+        <result column="cg_order_id" property="cgOrderId" jdbcType="INTEGER"/>
+        <result column="qh_order_id" property="qhOrderId" jdbcType="INTEGER"/>
+        <result column="jg_order_id" property="jgOrderId" jdbcType="INTEGER"/>
+        <result column="rk_order_id" property="rkOrderId" jdbcType="INTEGER"/>
+        <result column="os_order_id" property="osOrderId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,begin_deal_date,end_deal_date,need_fetch_goods,need_jg,complete,xh_order_id,th_order_id,
+        xq_order_id,cg_order_id,qh_order_id,jg_order_id,rk_order_id,os_order_id
+    </sql>
+
+    <select id="selectDealById" resultMap="BaseResultMap" parameterType="integer">
+        select
+        <include refid="Base_Column_List"/>
+        from erp_deal
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectDealList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from erp_deal
+    </select>
+
+    <insert id="insertDeal" parameterType="com.atlandes.erp.po.Deal">
+        insert into erp_deal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="beginDealDate != null">
+                begin_deal_date,
+            </if>
+            <if test="endDealDate != null">
+                end_deal_date,
+            </if>
+            <if test="needFetchGoods != null">
+                need_fetch_goods,
+            </if>
+            <if test="needJG != null">
+                need_jg,
+            </if>
+            <if test="complete != null">
+                complete,
+            </if>
+            <if test="xhOrderId != null">
+                xh_order_id,
+            </if>
+            <if test="thOrderId != null">
+                th_order_id,
+            </if>
+            <if test="xqOrderId != null">
+                xq_order_id,
+            </if>
+            <if test="cgOrderId != null">
+                cg_order_id,
+            </if>
+            <if test="qhOrderId != null">
+                qh_order_id,
+            </if>
+            <if test="jgOrderId != null">
+                jg_order_id,
+            </if>
+            <if test="rkOrderId != null">
+                rk_order_id,
+            </if>
+            <if test="osOrderId != null">
+                os_order_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="beginDealDate != null">
+                #{beginDealDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endDealDate != null">
+                #{endDealDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="needFetchGoods != null">
+                #{needFetchGoods,jdbcType=INTEGER},
+            </if>
+            <if test="needJG != null">
+                #{needJG,jdbcType=INTEGER},
+            </if>
+            <if test="complete != null">
+                #{complete,jdbcType=INTEGER},
+            </if>
+            <if test="xhOrderId != null">
+                #{xhOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="thOrderId != null">
+                #{thOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="xqOrderId != null">
+                #{xqOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="cgOrderId != null">
+                #{cgOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="qhOrderId != null">
+                #{qhOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="jgOrderId != null">
+                #{jgOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="rkOrderId != null">
+                #{rkOrderId,jdbcType=INTEGER},
+            </if>
+            <if test="osOrderId != null">
+                #{osOrderId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateDealById" parameterType="com.atlandes.erp.po.Deal">
+        update erp_deal
+        <set>
+            <if test="beginDealDate != null">
+                begin_deal_date = #{beginDealDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endDealDate != null">
+                end_deal_date = #{endDealDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="needFetchGoods != null">
+                need_fetch_goods = #{needFetchGoods,jdbcType=INTEGER}
+            </if>
+            <if test="needJG != null">
+                need_jg = #{needJG,jdbcType=INTEGER}
+            </if>
+            <if test="complete != null">
+                complete = #{complete,jdbcType=INTEGER}
+            </if>
+            <if test="xhOrderId != null">
+                xh_order_id = #{xhOrderId,jdbcType=INTEGER}
+            </if>
+            <if test="thOrderId != null">
+                th_order_id = #{thOrderId,jdbcType=INTEGER}
+            </if>
+            <if test="xqOrderId != null">
+                xq_order_id = #{xqOrderId,jdbcType=INTEGER}
+            </if>
+            <if test="cgOrderId != null">
+                cg_order_id = #{cgOrderId,jdbcType=INTEGER}
+            </if>
+            <if test="qhOrderId != null">
+                qh_order_id = #{qhOrderId,jdbcType=INTEGER}
+            </if>
+            <if test="jgOrderId != null">
+                jg_order_id = #{jgOrderId,jdbcType=INTEGER}
+            </if>
+            <if test="rkOrderId != null">
+                rk_order_id = #{rkOrderId,jdbcType=INTEGER}
+            </if>
+            <if test="osOrderId != null">
+                os_order_id = #{osOrderId,jdbcType=INTEGER}
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteDealById" parameterType="java.lang.Integer">
+        DELETE FROM erp_deal
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+</mapper>

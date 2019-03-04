@@ -20,7 +20,11 @@
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
                 <property name="url" value="jdbc:mysql://localhost:3306/dev?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=GMT"/>
                 <property name="username" value="root"/>
+<<<<<<< Updated upstream
                 <property name="password" value="123"/>
+=======
+                <property name="password" value="123456"/>
+>>>>>>> Stashed changes
             </dataSource>
         </environment>
     </environments>

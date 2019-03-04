@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atlandes.erp.dao.CustomerInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.atlandes.erp.vo.CustomerInfoVO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="driver_id" property="driverId" jdbcType="INTEGER"/>
+        <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
+        <result column="company_address" property="companyAddress" jdbcType="VARCHAR"/>
+        <result column="company_credit" property="companyCredit" jdbcType="INTEGER"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <sql id="base_column_list">
+        id,driver_id,company_name,company_address,company_credit,phone
+    </sql>
+
+    <select id="selectCustomerInfoById" resultMap="BaseResultMap" parameterType="integer">
+        select
+        <include refid="base_column_list"/>
+        from erp_customer_info
+        where id=#{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectCustomerInfoList" resultType="com.atlandes.erp.po.CustomerInfo">
+        select
+        <include refid="base_column_list"/>
+        from erp_customer_info
+    </select>
+
+    <select id="selectCustomerInfoListByPage" parameterType="Integer" resultType="com.atlandes.erp.po.CustomerInfo">
+        select
+        <include refid="base_column_list"/>
+        from erp_customer_info where id > #{pageNum} limit #{pageSize}
+    </select>
+
+    <insert id="insertCustomerInfo" parameterType="com.atlandes.erp.po.CustomerInfo">
+        insert into erp_customer_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="driverId != null">
+                driver_id,
+            </if>
+            <if test="companyName !=null">
+                company_name,
+            </if>
+            <if test="companyAddress != null">
+                company_address,
+            </if>
+            <if test="companyCredit != null">
+                company_credit,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="driverId != null">
+                #{driverId,jdbcType=INTEGER},
+            </if>
+            <if test="companyName !=null">
+                #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="companyAddress != null">
+                #{companyAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="companyCredit != null">
+                #{companyCredit,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateCustomerInfoById" parameterType="com.atlandes.erp.po.CustomerInfo">
+        update erp_customer_info
+        <set>
+            <if test="driverId != null">
+                driver_id = #{driverId,jdbcType=INTEGER},
+            </if>
+            <if test="companyName !=null">
+                company_name = #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="companyAddress != null">
+                company_address = #{companyAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="companyCredit != null">
+                company_credit = #{companyCredit,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <delete id="deleteCustomerInfoById" parameterType="INTEGER">
+        DELETE from erp_customer_info
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+</mapper>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atlandes.erp.dao.PriceMapper">
+    <resultMap id="BaseResultMap" type="com.atlandes.erp.vo.PriceVO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="items_name" property="itemsName" jdbcType="VARCHAR"/>
+        <result column="items_uint" property="itemsUnit" jdbcType="VARCHAR"/>
+        <result column="items_tax" property="itemsTax" jdbcType="INTEGER"/>
+        <result column="items_cost" property="itemsCost" jdbcType="INTEGER"/>
+        <result column="items_add_tran_cost" property="itemsAddTranCost" jdbcType="INTEGER"/>
+        <result column="items_store_counts" property="itemsStoreCounts" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="base_column_list">
+        id,items_name,items_uint,items_tax,items_cost,items_add_tran_cost,items_store_counts
+    </sql>
+
+    <select id="selectPriceById" resultMap="BaseResultMap" parameterType="INTEGER">
+        select
+        <include refid="base_column_list"/>
+        from erp_price
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectPriceList">
+        select
+        <include refid="base_column_list"/>
+        from erp_customer_info
+    </select>
+
+    <insert id="insertPrice" parameterType="com.atlandes.erp.po.Price">
+        insert into
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="itemsName != null">
+                items_name,
+            </if>
+            <if test="itemsUnit != null">
+                items_unit,
+            </if>
+            <if test="itemsTax != null">
+                items_tax,
+            </if>
+            <if test="itemsAddTranCost != null">
+                items_add_tran_cost,
+            </if>
+            <if test="itemsStoreCounts != null">
+                items_store_counts,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER}
+            </if>
+            <if test="itemsName != null">
+                #{itemsName,jdbdType=VARCHAR}
+            </if>
+            <if test="itemsUnit != null">
+                #{itemsUnit,jdbc=VARCHAR}
+            </if>
+            <if test="itemsTax != null">
+                #{itemsTax,jdbcType=INTEGER}
+            </if>
+            <if test="itemsAddTranCost != null">
+                #{itemsAddTranCost,jdbcType=INTEGER}
+            </if>
+            <if test="itemsStoreCounts != null">
+                #{itemsStoreCounts，jdbcType=INTEGER}
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updatePriceById" parameterType="com.atlandes.erp.po.Price">
+        update erp_price
+        <set>
+            <if test="itemsName != null">
+                items_name = #{itemsName,jdbdType=VARCHAR}
+            </if>
+            <if test="itemsUnit != null">
+                items_unit = #{itemsUnit,jdbc=VARCHAR}
+            </if>
+            <if test="itemsTax != null">
+                items_tax = #{itemsTax,jdbcType=INTEGER}
+            </if>
+            <if test="itemsAddTranCost != null">
+                items_add_tran_cost = #{itemsAddTranCost,jdbcType=INTEGER}
+            </if>
+            <if test="itemsStoreCounts != null">
+                items_store_counts = #{itemsStoreCounts，jdbcType=INTEGER}
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deletePriceById" parameterType="INTEGER">
+        DELETE FROM erp_price
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+</mapper>

@@ -3,11 +3,14 @@ package com.atlandes.productCode.service;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 //import org.junit.Test;
 
 import com.atlandes.productCode.common.Constants;
 import com.atlandes.productCode.entity.BaseCheckResult;
+import com.atlandes.productCode.entity.Dict;
+import com.atlandes.productCode.entity.ProductDict;
 import com.google.common.base.Joiner;
 import com.jd.baoxian.order.trade.export.dto.PolicyDto;
 import com.jd.baoxian.order.trade.export.dto.PolicyQueryDto;
@@ -16,6 +19,7 @@ import com.jd.baoxian.order.trade.export.req.PolicyInfoQueryReq;
 import com.jd.baoxian.order.trade.export.req.PolicyQueryReq;
 import com.jd.baoxian.order.trade.export.res.PolicyInfoQueryRes;
 import com.jd.baoxian.order.trade.export.res.PolicyQueryRes;
+import com.jd.baoxian.product.export.pojo.ProductFee;
 import com.jd.baoxian.service.platform.domain.bean.*;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -66,6 +70,42 @@ public class ProductBaseInfo extends BaseConfig {
         preq.setItemId(itemId);
         BaseResponse<ProductDetail> resProductDetail = jsfProductResource.productInfoV1(preq);
         return resProductDetail;
+    }
+
+    public ProductDict getProductDict(String sku) {
+        ProductDict productDict = new ProductDict();
+        BaseResponse<ProductDetail> resProductDetail = getProductDetailBySkuId(sku);
+        ProductFee productFee = resProductDetail.getResponse().getProductFee();
+        if (productFee != null) {
+            if (CollectionUtils.isNotEmpty(productFee.getPeriods())) {
+                List<Dict> periods = productFee.getPeriods().stream().map(baseClass -> {
+                    Dict period = new Dict();
+                    period.setCode(baseClass.getValue());
+                    period.setDesc(baseClass.getDisplay());
+                    return period;
+                }).collect(Collectors.toList());
+                productDict.setPeriods(periods);
+            }
+            if (CollectionUtils.isNotEmpty(productFee.getPayPeriod())) {
+                List<Dict> payPeriod = productFee.getPayPeriod().stream().map(baseClass -> {
+                    Dict payperiod = new Dict();
+                    payperiod.setCode(baseClass.getValue());
+                    payperiod.setDesc(baseClass.getDisplay());
+                    return payperiod;
+                }).collect(Collectors.toList());
+                productDict.setPayPeriod(payPeriod);
+            }
+            if (CollectionUtils.isNotEmpty(productFee.getSocialSecurity())) {
+                List<Dict> socialSecurity = productFee.getSocialSecurity().stream().map(baseClass -> {
+                    Dict socialsecurity = new Dict();
+                    socialsecurity.setCode(baseClass.getValue());
+                    socialsecurity.setDesc(baseClass.getDisplay());
+                    return socialsecurity;
+                }).collect(Collectors.toList());
+                productDict.setSocialSecurity(socialSecurity);
+            }
+        }
+        return productDict;
     }
 
     public UnderWriteRequest getGeneralUnderWriteOb(BaseResponse<ProductDetail> productDetail) {

@@ -120,7 +120,7 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <button type="button" class="am-btn am-btn-success am-radius">产品费率开始</button>&nbsp;
                 </div>
-                <div class="am-form-group am-cf" name="feeCheck" hidden="true">
+                <div class="am-form-group am-cf" name="feeCheck" >
                     <lable>性别：</lable>
                     <select name="sex">
                         <option value="1" <c:if test="${sex=='1'}"></c:if> 男
@@ -134,20 +134,25 @@
 
                     </select>
                     <br>
+
+                    <div id="paymentPeriodId" hidden="true">
                     <lable>缴费期间：</lable>
                     <select name="paymentPeriod">
-
                     </select>
+                    </div>
                     &nbsp;&nbsp;&nbsp;
+                    <div id="insurancePeriodId" hidden="true">
                     <lable>保障期间：</lable>
                     <select name="insurancePeriod">
-
                     </select>
+                    </div>
                     &nbsp;&nbsp;&nbsp;
+
+                    <div id="isSocialSecurityId" hidden="true">
                     <lable>社保：</lable>
                     <select name="isSocialSecurity">
-
                     </select>
+                    </div>
                     <br>
 
                 </div>
@@ -252,28 +257,28 @@
                         if (res1 != null) {
                             var periodsString = "";
                             for (var i = 0; i < res1.length; i++) {
-                                periodsString += "<option value=\"" + res1[i] + "\" >" + "</option>";
+                                periodsString += "<option value=\"" + res1[i].code + "\" >" + res1[i].desc + "</option>";
                                 $("select[name='insurancePeriod']").html(periodsString);
                             }
-                            $("select[name='insurancePeriod']").show();
+                            $("#insurancePeriodId").show();
                         }
                         var res2 = result.payPeriod;
                         if (res2 != null) {
                             var payPeriodString = "";
                             for (var i = 0; i < res2.length; i++) {
-                                payPeriodString += "<option value=\"" + res2[i] + "\" >" + "</option>";
+                                payPeriodString += "<option value=\"" + res2[i].code + "\" >" + res2[i].desc + "</option>";
                                 $("select[name='paymentPeriod']").html(payPeriodString);
                             }
-                            $("select[name='paymentPeriod']").show();
+                            $("#paymentPeriodId").show();
                         }
                         var res3 = result.socialSecurity;
                         if (res3 != null) {
                             var socialSecurityString = "";
                             for (var i = 0; i < res3.length; i++) {
-                                socialSecurityString += "<option value=\"" + res3[i] + "\" >" + "</option>";
+                                socialSecurityString += "<option value=\"" + res3[i].code + "\" >" + res3[i].desc + "</option>";
                                 $("select[name='isSocialSecurity']").html(socialSecurityString);
                             }
-                            $("select[name='isSocialSecurity']").show();
+                            $("#isSocialSecurityId").show();
                         }
                     },
                     error: function () {

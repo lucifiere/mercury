@@ -115,8 +115,7 @@
                         <input type="radio" name="isFeeCheck" value="false" checked="checked"
                                onclick="displayFeeType()">否
                     </lable>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <%--<button type="button" class="am-btn am-btn-success am-radius" onclick="startCheck()">费率检测开始</button>&nbsp;--%>
+
                 </div>
                 <div class="am-form-group am-cf" name="feeCheck" hidden="true">
                     <lable>性别：</lable>
@@ -129,13 +128,7 @@
                     &nbsp;&nbsp;&nbsp;
                     <lable>年龄：</lable>
                     <select name="paymentPeriod">
-                        <%--<%
-                            List<TypeVo> ls = (ArrayList<TypeVo>)request.getAttribute("bookType");
-                            for (TypeVo typeVo : ls) {%>
-                        <option value="<%=typeVo.getId()%>"><%=typeVo.getName() %></option>
-                        <%
-                            }
-                        %>--%>
+
                     </select>
                     <br>
                     <lable>缴费期间：</lable>
@@ -163,10 +156,10 @@
                     </select>
                     &nbsp;&nbsp;&nbsp;
                     <lable>社保：</lable>
-                    <select name="socialSecurity">
-                        <option value="1" <c:if test="${socialSecurity=='1'}"></c:if> 有社保
+                    <select name="isSocialSecurity">
+                        <option value="1" <c:if test="${isSocialSecurity=='1'}"></c:if> 有社保
                         </option>
-                        <option value="2" <c:if test="${socialSecurity=='2'}"></c:if> 无社保
+                        <option value="2" <c:if test="${isSocialSecurity=='2'}"></c:if> 无社保
                         </option>
                     </select>
                     <br>
@@ -260,10 +253,33 @@
     }
 
     function displayFeeType() {
+        var productCode = $("#productCode").val();
         $("input[name='isFeeCheck']").change(function () {
             var value = $(this).val();
             if (value == "true") {
-                $("div[name='feeCheck']").show();
+                $.ajax({
+                    url: "/productCheck/displayFeeCheck?sku=" + productCode,
+                    type: "GET",
+                    dataType: "json",
+                    success: function (result) {
+
+                        var res1 = result.periods;
+                        if(res1!=null){
+                            $("select[name='insurancePeriod']").show();
+                        }
+                        var res2 = result.payPeriod;
+                        if(res2!=null){
+                            $("select[name='paymentPeriod']").show();
+                        }
+                        var res3 = result.socialSecurity;
+                        if(res3!=null){
+                            $("select[name='isSocialSecurity']").show();
+                        }
+                    },
+                    error: function () {
+                        alert("本产品没有配费率表")
+                    }
+                });
             } else {
                 $("div[name='feeCheck']").hide();
             }

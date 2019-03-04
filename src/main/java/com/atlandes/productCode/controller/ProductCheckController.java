@@ -4,6 +4,10 @@ import com.atlandes.productCode.entity.BaseCheckResult;
 import com.atlandes.productCode.service.ProductBaseInfo;
 
 import com.atlandes.productCode.entity.ProductCheckResult;
+import com.atlandes.productCode.service.ProductFeeInfo;
+import com.jd.baoxian.product.export.pojo.ProductFee;
+import com.jd.baoxian.product.export.vo.res.ProductDetail;
+import com.jd.baoxian.service.platform.domain.response.BaseResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +22,8 @@ public class ProductCheckController {
 
     @Autowired
     private ProductBaseInfo productBaseInfo;
+    @Autowired
+    private ProductFeeInfo productFeeInfo;
 
     @RequestMapping(value = "productCheck", produces = "text/plain;charset=UTF-8")
     public ModelAndView toProductCheckPage() {
@@ -57,5 +63,17 @@ public class ProductCheckController {
             }
         }
         return productCheckResult;
+    }
+
+    @RequestMapping("displayFeeType")
+    @ResponseBody
+    public ProductFee displayFeeType(String sku){
+
+        ProductFee productFee = new ProductFee();
+        BaseResponse<ProductDetail> productDetailRes = productBaseInfo.getProductDetailBySkuId(sku);
+        productFee.setPayPeriod(productDetailRes.getResponse().getProductFee().getPayPeriod());
+        productFee.setPeriods(productDetailRes.getResponse().getProductFee().getPeriods());
+        productFee.setSocialSecurity(productDetailRes.getResponse().getProductFee().getSocialSecurity());
+        return productFee;
     }
 }

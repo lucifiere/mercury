@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%--<%@ include file="/jsp/common/base.jsp"%>--%>
+<script type="text/javascript" src="${pageContext.request.contextPath }/static/js/productCheck/productCheck.js"></script>
 <context:component-scan base-package="com.atlandes.productCode.controller"></context:component-scan>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 

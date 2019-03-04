@@ -32,26 +32,21 @@ public class ProductCheckController {
         String[] baseCheckItem = baseCheckIds.split(",");
         for (String btnId : baseCheckItem) {
             if (Objects.equals(btnId, "underWrite")) {
-                //todo 调用核保检测case
                 BaseCheckResult underWriteRes = productBaseInfo.getUnderWriteRes(sku);
                 productCheckResult.setUnderWriteResult(underWriteRes);
             }
 
             if (Objects.equals(btnId, "issue")) {
-                //todo 调用出单检测case
                 BaseCheckResult issueRes = productBaseInfo.getIssueRes(sku);
                 productCheckResult.setIssueResult(issueRes);
             }
             if (Objects.equals(btnId, "onLinePolicy")) {
-                //todo 调用电子保单检测case
                 BaseCheckResult onLinePolicyRes = productBaseInfo.getOnLinePolicyRes(sku);
                 productCheckResult.setOnLinePolicyResult(onLinePolicyRes);
             }
             if (Objects.equals(btnId, "underWriteOnceMore")) {
                 BaseCheckResult underWriteOnceMoreRes = productBaseInfo.getUnderWriteOnceMoreRes(sku);
                 productCheckResult.setUnderWriteOnceMoreResult(underWriteOnceMoreRes);
-                //todo 调用重复核保检测case
-
             }
             if (Objects.equals(btnId, "issueOnceMore")) {
                 //todo 调用重复出单检测case

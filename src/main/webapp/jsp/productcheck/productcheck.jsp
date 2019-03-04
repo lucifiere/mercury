@@ -88,7 +88,24 @@
                     出单幂等校验
                 </div>
             </div>
+            <div name="baseResult">
+                <div class="am-form-group am-cf">
+                    <b>检测结果</b>
+                </div>
+                <table border="1">
+                    <thead>
+                    <tr>
+                        <td>检测项</td>
+                        <td>检测结果</td>
+                        <td>结果描述</td>
+                        <td>备注</td>
+                    </tr>
+                    <thead>
+                    <tbody id="tb">
 
+                    </tbody>
+                </table>
+            </div>
             <div class="am-form-group am-cf">
                 <div class="zuo">是否进行费率检测
                     <lable class="am-radio-inline">
@@ -98,6 +115,8 @@
                         <input type="radio" name="isFeeCheck" value="false" checked="checked"
                                onclick="displayFeeType()">否
                     </lable>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <%--<button type="button" class="am-btn am-btn-success am-radius" onclick="startCheck()">费率检测开始</button>&nbsp;--%>
                 </div>
                 <div class="am-form-group am-cf" name="feeCheck" hidden="true">
                     <lable>性别：</lable>
@@ -179,24 +198,7 @@
 
 </div>
 
-<div name="baseResult">
-    <div class="am-form-group am-cf">
-        <b>检测结果</b>
-    </div>
-    <table border="1">
-        <thead>
-        <tr>
-            <td>检测项</td>
-            <td>检测结果</td>
-            <td>结果描述</td>
-            <td>备注</td>
-        </tr>
-        <thead>
-        <tbody id="tb">
 
-        </tbody>
-    </table>
-</div>
 
 <script>
     function startCheck() {

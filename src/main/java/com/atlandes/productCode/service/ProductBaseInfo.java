@@ -280,7 +280,7 @@ public class ProductBaseInfo extends BaseConfig {
         Date date = new Date();//获取当前时间
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(Calendar.DATE, +day + 3);
+        calendar.add(Calendar.DATE, +day);
         String nextDay = sdf.format(calendar.getTime()) + " 00:00:00";
         return nextDay;
     }
@@ -307,21 +307,17 @@ public class ProductBaseInfo extends BaseConfig {
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
         UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes);
         BaseResponse<UnderWriteResponse> underwriteRes = jsfUnderWriteResource.underwrite(under);
-        if (underwriteRes.isSuccess()) {
-            underCheckCheckResult.setCheckItem("核保检测");
-            if (Objects.equals(underwriteRes.getCode(), "0000")) {
-                underCheckCheckResult.setCheckResult("检测通过");
-                underCheckCheckResult.setCheckResultDesc(underwriteRes.getResponse().getUnderWriteOrder().getOrderId());
-                underCheckCheckResult.setCheckMark("");
-            } else {
-                underCheckCheckResult.setCheckResult("检测失败");
-                underCheckCheckResult.setCheckResultDesc(underwriteRes.getResponse().getUnderWriteOrder().getOrderId());
-                underCheckCheckResult.setCheckMark(underwriteRes.getMessage());
-            }
-            return underCheckCheckResult;
+        underCheckCheckResult.setCheckItem("核保检测");
+        if (underwriteRes.isSuccess() && Objects.equals(underwriteRes.getCode(), "0000")) {
+            underCheckCheckResult.setCheckResult("检测通过");
+            underCheckCheckResult.setCheckResultDesc(underwriteRes.getResponse().getUnderWriteOrder().getOrderId());
+            underCheckCheckResult.setCheckMark("");
         } else {
-            return null;
+            underCheckCheckResult.setCheckResult("检测失败");
+            underCheckCheckResult.setCheckResultDesc(underwriteRes.getCode());
+            underCheckCheckResult.setCheckMark(underwriteRes.getMessage());
         }
+        return underCheckCheckResult;
     }
 
 

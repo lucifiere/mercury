@@ -3,59 +3,55 @@ package com.atlandes.erp.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.atlandes.erp.po.CustomerInfo;
+import com.atlandes.erp.request.CustomerInfoRequest;
 import com.atlandes.erp.service.CustomerServiceImpl;
+import com.atlandes.erp.vo.CustomerInfoVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 
 import javax.annotation.Resource;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("customer")
 public class CustomerInfoController {
 
     @Resource
     private CustomerServiceImpl customerServiceImpl;
 
-
     @RequestMapping("getCustomer")
-    @ResponseBody
-    public CustomerInfo getCustomerInfoDetail(Integer id){
-        CustomerInfo customerInfo = customerServiceImpl.selectCustomerInfoById(id);
+    public CustomerInfoVO getCustomerInfoDetail(Integer id) {
+        CustomerInfoVO customerInfo = customerServiceImpl.selectCustomerInfoById(id);
         return customerInfo;
     }
 
     @RequestMapping("getCustomerList")
-    @ResponseBody
-    public String getCustomerInfoList(){
-        List<CustomerInfo> customerInfoList = customerServiceImpl.selectCustomerInfoList();
+    public String getCustomerInfoList() {
+        List<CustomerInfoVO> customerInfoList = customerServiceImpl.selectCustomerInfoList();
         return JSON.toJSONString(customerInfoList);
     }
 
     @RequestMapping("getCustomerListByPage")
-    @ResponseBody
-    public String getCustomerInfoListByPage(Integer pageNum, Integer pageSize){
+    public String getCustomerInfoListByPage(Integer pageNum, Integer pageSize) {
         List<CustomerInfo> customerInfoList = customerServiceImpl.selectCustomerInfoListByPage(pageNum, pageSize);
         return JSON.toJSONString(customerInfoList);
     }
 
     @RequestMapping("insert")
-    @ResponseBody
-    public int insertCustomerInfo(CustomerInfo customerInfo){
+    public int insertCustomerInfo(CustomerInfoRequest customerInfo) {
         return customerServiceImpl.insertCustomerInfo(customerInfo);
     }
 
     @RequestMapping("update")
-    @ResponseBody
-    public int updateCustomerInfo(CustomerInfo customerInfo){
+    public int updateCustomerInfo(CustomerInfoRequest customerInfo) {
         return customerServiceImpl.updateCustomerInfoById(customerInfo);
     }
 
     @RequestMapping("delete")
-    @ResponseBody
-    public void deleteCustomerInfo(Integer id){
+    public void deleteCustomerInfo(Integer id) {
         customerServiceImpl.deleteCustomerInfoById(id);
     }
 }

@@ -1,21 +1,23 @@
 package com.atlandes.erp.service;
 
 import com.atlandes.erp.po.CustomerInfo;
+import com.atlandes.erp.request.CustomerInfoRequest;
+import com.atlandes.erp.vo.CustomerInfoVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
 public interface CustomerService {
-    int insertCustomerInfo(CustomerInfo customerInfo);
+    int insertCustomerInfo(CustomerInfoRequest customerInfo);
 
-    CustomerInfo selectCustomerInfoById(int id);
+    CustomerInfoVO selectCustomerInfoById(int id);
 
-    List<CustomerInfo> selectCustomerInfoList();
+    List<CustomerInfoVO> selectCustomerInfoList();
 
     List<CustomerInfo> selectCustomerInfoListByPage(Integer pageNum, Integer pageSize);
 
-    int updateCustomerInfoById(CustomerInfo customerInfo);
+    int updateCustomerInfoById(CustomerInfoRequest customerInfo);
 
     void deleteCustomerInfoById(int id);
 

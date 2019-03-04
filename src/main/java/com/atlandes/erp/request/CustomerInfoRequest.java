@@ -1,19 +1,24 @@
-package com.atlandes.erp.po;
+package com.atlandes.erp.request;
 
-public class CustomerInfo {
+/**
+ * Created by Tyler.Wang on 2019/3/4 0004.
+ * 客户信息
+ */
+public class CustomerInfoRequest {
+
     /**
      * 客户ID
      */
     private Integer id;
-    //客户司机编号
-    private Integer driverId;
-    //公司名称
+
+    private String driverName;
+
     private String companyName;
-    //公司地址
+    
     private String companyAddress;
-    //信用度
+    
     private Integer companyCredit;
-    //联系方式
+    
     private String phone;
 
     public Integer getId() {
@@ -22,14 +27,6 @@ public class CustomerInfo {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getDriverId() {
-        return driverId;
-    }
-
-    public void setDriverId(Integer driverId) {
-        this.driverId = driverId;
     }
 
     public String getCompanyName() {
@@ -62,5 +59,13 @@ public class CustomerInfo {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
     }
 }

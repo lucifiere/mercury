@@ -77,6 +77,15 @@ public class ProductBaseInfo extends BaseConfig {
         BaseResponse<ProductDetail> resProductDetail = getProductDetailBySkuId(sku);
         ProductFee productFee = resProductDetail.getResponse().getProductFee();
         if (productFee != null) {
+            if(CollectionUtils.isNotEmpty(productFee.getSex())){
+                List<Dict> Sex = productFee.getSex().stream().map(baseClass -> {
+                    Dict sex = new Dict();
+                    sex.setCode(baseClass.getValue());
+                    sex.setDesc(baseClass.getDisplay());
+                    return sex;
+                }).collect(Collectors.toList());
+                productDict.setSex(Sex);
+            }
             if (CollectionUtils.isNotEmpty(productFee.getPeriods())) {
                 List<Dict> periods = productFee.getPeriods().stream().map(baseClass -> {
                     Dict period = new Dict();

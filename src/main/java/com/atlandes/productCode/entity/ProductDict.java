@@ -3,6 +3,15 @@ package com.atlandes.productCode.entity;
 import java.util.List;
 
 public class ProductDict {
+    public List<Dict> getSex() {
+        return sex;
+    }
+
+    public void setSex(List<Dict> sex) {
+        this.sex = sex;
+    }
+
+    private List<Dict> sex;
     private List<Dict> periods;
     private List<Dict> payPeriod;
     private List<Dict> socialSecurity;

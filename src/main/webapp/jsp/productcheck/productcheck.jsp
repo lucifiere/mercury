@@ -120,41 +120,32 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <button type="button" class="am-btn am-btn-success am-radius">产品费率开始</button>&nbsp;
                 </div>
-                <div class="am-form-group am-cf" name="feeCheck" >
-                    <lable>性别：</lable>
-                    <select name="sex">
-                        <option value="1" <c:if test="${sex=='1'}"></c:if> 男
-                        </option>
-                        <option value="2" <c:if test="${sex=='2'}"></c:if> 女
-                        </option>
-                    </select>
-                    &nbsp;&nbsp;&nbsp;
-                    <lable>年龄：</lable>
-                    <select name="paymentPeriod">
-
-                    </select>
-                    <br>
-
+                <div class="am-form-group am-cf" name="feeCheck">
+                    <div id="sexId" hidden="true">
+                        <lable>性别：</lable>
+                        <select name="sex">
+                        </select>
+                    </div>
                     <div id="paymentPeriodId" hidden="true">
-                    <lable>缴费期间：</lable>
-                    <select name="paymentPeriod">
-                    </select>
+                        <lable>缴费期间：</lable>
+                        <select name="paymentPeriod">
+                        </select>
                     </div>
-                    &nbsp;&nbsp;&nbsp;
                     <div id="insurancePeriodId" hidden="true">
-                    <lable>保障期间：</lable>
-                    <select name="insurancePeriod">
-                    </select>
+                        <lable>保障期间：</lable>
+                        <select name="insurancePeriod">
+                        </select>
                     </div>
-                    &nbsp;&nbsp;&nbsp;
-
                     <div id="isSocialSecurityId" hidden="true">
-                    <lable>社保：</lable>
-                    <select name="isSocialSecurity">
-                    </select>
+                        <lable>社保：</lable>
+                        <select name="isSocialSecurity">
+                        </select>
                     </div>
                     <br>
-
+                    <lable>年龄：</lable>
+                    <select name="age">
+                    </select>
+                    <br>
                 </div>
             </div>
 
@@ -279,6 +270,15 @@
                                 $("select[name='isSocialSecurity']").html(socialSecurityString);
                             }
                             $("#isSocialSecurityId").show();
+                        }
+                        var res4 = result.sex;
+                        if (res4 != null) {
+                            var sexString = "";
+                            for (var i = 0; i < res4.length; i++) {
+                                sexString += "<option value=\"" + res4[i].code + "\" >" + res4[i].desc + "</option>";
+                                $("select[name='sex']").html(sexString);
+                            }
+                            $("#sexId").show();
                         }
                     },
                     error: function () {

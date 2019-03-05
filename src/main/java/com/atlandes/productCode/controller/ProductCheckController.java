@@ -65,7 +65,7 @@ public class ProductCheckController {
 
     @RequestMapping("displayFeeType")
     @ResponseBody
-    public ProductDict displayFeeType(String sku){
+    public ProductDict displayFeeType(String sku) {
 
         ProductDict productDict;
         productDict = productBaseInfo.getProductDict(sku);

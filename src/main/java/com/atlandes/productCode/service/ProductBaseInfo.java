@@ -75,6 +75,20 @@ public class ProductBaseInfo extends BaseConfig {
     public ProductDict getProductDict(String sku) {
         ProductDict productDict = new ProductDict();
         BaseResponse<ProductDetail> resProductDetail = getProductDetailBySkuId(sku);
+        String minAge = resProductDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMinAge().toString();
+        String maxAge = resProductDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMaxAge().toString();
+        Dict age = new Dict();
+        if (minAge != null) {
+            age.setMinAge(minAge);
+        } else {
+            age.setMinAge("0");
+        }
+        if (maxAge != null) {
+            age.setMaxAge(maxAge);
+        } else {
+            age.setMaxAge("100");
+        }
+        productDict.setAge(age);
         ProductFee productFee = resProductDetail.getResponse().getProductFee();
         if (productFee != null) {
             if (CollectionUtils.isNotEmpty(productFee.getSex())) {
@@ -114,17 +128,8 @@ public class ProductBaseInfo extends BaseConfig {
                 productDict.setSocialSecurity(socialSecurity);
             }
         }
-        return productDict;
-    }
 
-    public String[] getMinMaxAge(String sku) {
-        BaseResponse<ProductDetail> resProductDetail = getProductDetailBySkuId(sku);
-        String[] minMaxAge = {"",""};
-        String minAge = resProductDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMinAge().toString();
-        String maxAge = resProductDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMaxAge().toString();
-        minMaxAge[0]=minAge;
-        minMaxAge[1]=maxAge;
-        return minMaxAge;
+        return productDict;
     }
 
     public UnderWriteRequest getGeneralUnderWriteOb(BaseResponse<ProductDetail> productDetail) {

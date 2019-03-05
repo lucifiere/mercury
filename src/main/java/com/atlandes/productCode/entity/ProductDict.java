@@ -3,6 +3,25 @@ package com.atlandes.productCode.entity;
 import java.util.List;
 
 public class ProductDict {
+
+    private List<Dict> sex;
+    private List<Dict> periods;
+    private List<Dict> payPeriod;
+    private List<Dict> socialSecurity;
+    private Dict age;
+
+    public Dict getAge() {
+        return age;
+    }
+
+    public void setAge(Dict age) {
+        this.age = age;
+    }
+
+
+
+
+
     public List<Dict> getSex() {
         return sex;
     }
@@ -11,10 +30,6 @@ public class ProductDict {
         this.sex = sex;
     }
 
-    private List<Dict> sex;
-    private List<Dict> periods;
-    private List<Dict> payPeriod;
-    private List<Dict> socialSecurity;
 
     public List<Dict> getPeriods() {
         return periods;

@@ -118,7 +118,8 @@
                                onclick="displayFeeType()">否
                     </lable>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="button" id="feeCheckBtn" class="am-btn am-btn-success am-radius" hidden="true">
+                    <button type="button" id="feeCheckBtn" name="feeCheck" class="am-btn am-btn-success am-radius"
+                            hidden="true">
                         费率检测开始
                     </button>&nbsp;
                 </div>
@@ -144,14 +145,9 @@
                         </select>
                     </div>
                     <br>
-                    <lable>年龄：</lable>
-                    <input type="number" name="age" id="minAge" min="0" max="100"></input>
-                    <label>(岁)</label>
-                    &nbsp;
-                    <label>—</label>
-                    &nbsp;
-                    <input type="number" name="age" id="maxAge" min="0" max="100"></input>
-                    <label>(岁)</label>
+                    <div id="ageId">
+
+                    </div>
                     <br>
                 </div>
             </div>
@@ -274,6 +270,21 @@
                                     $("select[name='sex']").html(sexString);
                                 }
                                 $("#sexId").show();
+                                $("#feeCheckBtn").show();
+                            }
+                            var res5 = result.age;
+                            if (res5 != null) {
+                                var ageString="";
+                                ageString+="<lable>年龄：</lable>"+
+                                    "<input type='number' id='minAge' min='"+res5.minAge+
+                                "' max='"+res5.maxAge+"'/>"+
+                                "<label>(岁)</label>"+
+                                "<label>—</label>"+
+                                    "<input type='number' id='maxAge' min='"+res5.minAge+
+                                    "' max='"+res5.maxAge+"'/>"+
+                                "<label>(岁)</label>";
+                                $("#ageId").html(ageString);
+                                $("#ageId").show();
                                 $("#feeCheckBtn").show();
                             }
                         },

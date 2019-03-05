@@ -118,7 +118,7 @@
                                onclick="displayFeeType()">否
                     </lable>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="button" id="feeCheckBtn" name="feeCheck" class="am-btn am-btn-success am-radius"
+                    <button type="button" id="feeCheckBtn" name="feeCheck" class="am-btn am-btn-success am-radius" onclick="startFeeCheck()"
                             hidden="true">
                         费率检测开始
                     </button>&nbsp;
@@ -146,10 +146,27 @@
                     </div>
                     <br>
                     <div id="ageId">
-
                     </div>
                     <br>
                 </div>
+            </div>
+
+            <div name="feeCheckResult">
+                <div class="am-form-group am-cf">
+                    <b>费率检测结果</b>
+                </div>
+                <table border="1">
+                    <thead>
+                    <tr>
+                        <td>年龄(岁)</td>
+                        <td>保费(元)</td>
+                        <td>结果</td>
+                        <td>备注</td>
+                    </tr>
+                    <thead>
+                    <tbody id="ftb">
+                    </tbody>
+                </table>
             </div>
         </form>
     </div>
@@ -274,15 +291,15 @@
                             }
                             var res5 = result.age;
                             if (res5 != null) {
-                                var ageString="";
-                                ageString+="<lable>年龄：</lable>"+
-                                    "<input type='number' id='minAge' min='"+res5.minAge+
-                                "' max='"+res5.maxAge+"'/>"+
-                                "<label>(岁)</label>"+
-                                "<label>—</label>"+
-                                    "<input type='number' id='maxAge' min='"+res5.minAge+
-                                    "' max='"+res5.maxAge+"'/>"+
-                                "<label>(岁)</label>";
+                                var ageString = "";
+                                ageString += "<lable>年龄：</lable>" +
+                                    "<input type='number' id='minAge' min='" + res5.minAge +
+                                    "' max='" + res5.maxAge + "'/>" +
+                                    "<label>(岁)</label>" +
+                                    "<label>—</label>" +
+                                    "<input type='number' id='maxAge' min='" + res5.minAge +
+                                    "' max='" + res5.maxAge + "'/>" +
+                                    "<label>(岁)</label>";
                                 $("#ageId").html(ageString);
                                 $("#ageId").show();
                                 $("#feeCheckBtn").show();

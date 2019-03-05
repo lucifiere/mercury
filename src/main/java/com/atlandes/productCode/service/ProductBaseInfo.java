@@ -77,7 +77,7 @@ public class ProductBaseInfo extends BaseConfig {
         BaseResponse<ProductDetail> resProductDetail = getProductDetailBySkuId(sku);
         ProductFee productFee = resProductDetail.getResponse().getProductFee();
         if (productFee != null) {
-            if(CollectionUtils.isNotEmpty(productFee.getSex())){
+            if (CollectionUtils.isNotEmpty(productFee.getSex())) {
                 List<Dict> Sex = productFee.getSex().stream().map(baseClass -> {
                     Dict sex = new Dict();
                     sex.setCode(baseClass.getValue());
@@ -115,6 +115,16 @@ public class ProductBaseInfo extends BaseConfig {
             }
         }
         return productDict;
+    }
+
+    public String[] getMinMaxAge(String sku) {
+        BaseResponse<ProductDetail> resProductDetail = getProductDetailBySkuId(sku);
+        String[] minMaxAge = {"",""};
+        String minAge = resProductDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMinAge().toString();
+        String maxAge = resProductDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMaxAge().toString();
+        minMaxAge[0]=minAge;
+        minMaxAge[1]=maxAge;
+        return minMaxAge;
     }
 
     public UnderWriteRequest getGeneralUnderWriteOb(BaseResponse<ProductDetail> productDetail) {

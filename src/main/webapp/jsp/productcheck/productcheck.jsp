@@ -111,14 +111,16 @@
             <div class="am-form-group am-cf">
                 <div class="zuo">是否进行费率检测
                     <lable class="am-radio-inline">
-                        <input type="radio" name="isFeeCheck" value="true" onclick="displayFeeType()">是
+                        <input type="radio" name="isFeeCheck" value="true" id="feeCheckTrue" onclick="displayFeeType()">是
                     </lable>
                     <lable class="am-radio-inline">
-                        <input type="radio" name="isFeeCheck" value="false" checked="checked"
+                        <input type="radio" name="isFeeCheck" value="false" id="feeCheckFalse" checked="checked"
                                onclick="displayFeeType()">否
                     </lable>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="button" class="am-btn am-btn-success am-radius">产品费率开始</button>&nbsp;
+                    <button type="button" id="feeCheckBtn" class="am-btn am-btn-success am-radius" hidden="true">
+                        费率检测开始
+                    </button>&nbsp;
                 </div>
                 <div class="am-form-group am-cf" name="feeCheck">
                     <div id="sexId" hidden="true">
@@ -143,31 +145,16 @@
                     </div>
                     <br>
                     <lable>年龄：</lable>
-                    <select name="age">
-                    </select>
+                    <input type="number" name="age" id="minAge" min="0" max="100"></input>
+                    <label>(岁)</label>
+                    &nbsp;
+                    <label>—</label>
+                    &nbsp;
+                    <input type="number" name="age" id="maxAge" min="0" max="100"></input>
+                    <label>(岁)</label>
                     <br>
                 </div>
             </div>
-
-            <div class="am-form-group am-cf">
-                <div class="zuo">核保结果：</div>
-                <div class="you">
-                    <textarea id="underWriteResult" cols="20" rows="4" class="am-input-sm"></textarea>
-                </div>
-            </div>
-            <div class="am-form-group am-cf">
-                <div class="zuo">出单结果：</div>
-                <div class="you">
-                    <textarea id="issueResult" cols="30" rows="4" class="am-input-sm"></textarea>
-                </div>
-            </div>
-            <div class="am-form-group am-cf">
-                <div class="zuo">电子保单结果：</div>
-                <div class="you">
-                    <textarea id="onLinePolicyResult" cols="30" rows="4" class="am-input-sm"></textarea>
-                </div>
-            </div>
-
         </form>
     </div>
 
@@ -186,6 +173,7 @@
             url: "/productCheck/startCheck?sku=" + productCode + "&baseCheckIds=" + baseCheckIdStr,
             type: "GET",
             dataType: "json",
+
             success: function (result) {
 
                 var res1 = result.underWriteResult;
@@ -212,12 +200,14 @@
                 if (res6 != null) {
                     addCheckResult(res6);
                 }
-                // $("#underWriteResult").val(res1);
-                // $("#issueResult").val(res2);
-                // $("#onLinePolicyResult").val(res3);
             },
             error: function () {
-                alert("您没有任何检测结果")
+                if (productCode.length > 0) {
+                    alert("您没有任何检测结果")
+                }
+                else {
+                    alert("请输入sku")
+                }
             }
         });
 
@@ -235,60 +225,73 @@
 
     function displayFeeType() {
         var productCode = $("#productCode").val();
-        $("input[name='isFeeCheck']").change(function () {
-            var value = $(this).val();
-            if (value == "true") {
-                $.ajax({
-                    url: "/productCheck/displayFeeType?sku=" + productCode,
-                    type: "GET",
-                    dataType: "json",
-                    success: function (result) {
+        if (productCode.length > 0) {
+            $("input[name='isFeeCheck']").change(function () {
+                var value = $(this).val();
+                if (value == "true") {
+                    $.ajax({
+                        url: "/productCheck/displayFeeType?sku=" + productCode,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (result) {
+                            var res1 = result.periods;
+                            if (res1 != null) {
+                                var periodsString = "";
+                                for (var i = 0; i < res1.length; i++) {
+                                    periodsString += "<option value=\"" + res1[i].code + "\" >" + res1[i].desc + "</option>";
+                                    $("select[name='insurancePeriod']").html(periodsString);
+                                }
+                                $("#insurancePeriodId").show();
+                                $("#feeCheckBtn").show();
+                            }
+                            var res2 = result.payPeriod;
+                            if (res2 != null) {
+                                var payPeriodString = "";
+                                for (var i = 0; i < res2.length; i++) {
+                                    payPeriodString += "<option value=\"" + res2[i].code + "\" >" + res2[i].desc + "</option>";
+                                    $("select[name='paymentPeriod']").html(payPeriodString);
+                                }
+                                $("#paymentPeriodId").show();
+                                $("#feeCheckBtn").show();
 
-                        var res1 = result.periods;
-                        if (res1 != null) {
-                            var periodsString = "";
-                            for (var i = 0; i < res1.length; i++) {
-                                periodsString += "<option value=\"" + res1[i].code + "\" >" + res1[i].desc + "</option>";
-                                $("select[name='insurancePeriod']").html(periodsString);
                             }
-                            $("#insurancePeriodId").show();
-                        }
-                        var res2 = result.payPeriod;
-                        if (res2 != null) {
-                            var payPeriodString = "";
-                            for (var i = 0; i < res2.length; i++) {
-                                payPeriodString += "<option value=\"" + res2[i].code + "\" >" + res2[i].desc + "</option>";
-                                $("select[name='paymentPeriod']").html(payPeriodString);
+                            var res3 = result.socialSecurity;
+                            if (res3 != null) {
+                                var socialSecurityString = "";
+                                for (var i = 0; i < res3.length; i++) {
+                                    socialSecurityString += "<option value=\"" + res3[i].code + "\" >" + res3[i].desc + "</option>";
+                                    $("select[name='isSocialSecurity']").html(socialSecurityString);
+                                }
+                                $("#isSocialSecurityId").show();
+                                $("#feeCheckBtn").show();
+
                             }
-                            $("#paymentPeriodId").show();
-                        }
-                        var res3 = result.socialSecurity;
-                        if (res3 != null) {
-                            var socialSecurityString = "";
-                            for (var i = 0; i < res3.length; i++) {
-                                socialSecurityString += "<option value=\"" + res3[i].code + "\" >" + res3[i].desc + "</option>";
-                                $("select[name='isSocialSecurity']").html(socialSecurityString);
+                            var res4 = result.sex;
+                            if (res4 != null) {
+                                var sexString = "";
+                                for (var i = 0; i < res4.length; i++) {
+                                    sexString += "<option value=\"" + res4[i].code + "\" >" + res4[i].desc + "</option>";
+                                    $("select[name='sex']").html(sexString);
+                                }
+                                $("#sexId").show();
+                                $("#feeCheckBtn").show();
                             }
-                            $("#isSocialSecurityId").show();
+                        },
+                        error: function () {
+                            alert("本产品没有配费率表")
                         }
-                        var res4 = result.sex;
-                        if (res4 != null) {
-                            var sexString = "";
-                            for (var i = 0; i < res4.length; i++) {
-                                sexString += "<option value=\"" + res4[i].code + "\" >" + res4[i].desc + "</option>";
-                                $("select[name='sex']").html(sexString);
-                            }
-                            $("#sexId").show();
-                        }
-                    },
-                    error: function () {
-                        alert("本产品没有配费率表")
-                    }
-                });
-            } else {
-                $("div[name='feeCheck']").hide();
-            }
-        });
+                    });
+                } else {
+                    $("div[name='feeCheck']").hide();
+                }
+            });
+        }
+        else {
+            alert("在输入框输入sku")
+            $("#feeCheckFalse").each(function () {
+                $(this).prop("checked", true);
+            });
+        }
     }
 
 </script>

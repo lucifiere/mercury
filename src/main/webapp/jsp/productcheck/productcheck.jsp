@@ -124,6 +124,12 @@
                     </button>&nbsp;
                 </div>
                 <div class="am-form-group am-cf" name="feeCheck">
+
+                    <div id="amountId" hidden="true">
+                        <lable>保额方案：</lable>
+                        <select name="amount">
+                        </select>
+                    </div>
                     <div id="sexId" hidden="true">
                         <lable>性别：</lable>
                         <select name="sex">
@@ -289,16 +295,28 @@
                                 $("#sexId").show();
                                 $("#feeCheckBtn").show();
                             }
-                            var res5 = result.age;
+
+                            var res5 = result.amount;
                             if (res5 != null) {
+                                var amountString = "";
+                                for (var i = 0; i < res5.length; i++) {
+                                    amountString += "<option value=\"" + res5[i].code + "\" >" + res5[i].desc + "</option>";
+                                    $("select[name='amount']").html(amountString);
+                                }
+                                $("#amountId").show();
+                                $("#feeCheckBtn").show();
+                            }
+                            var minAge = result.minAge;
+                            var maxAge = result.maxAge;
+                            if (minAge != null && maxAge!=null) {
                                 var ageString = "";
                                 ageString += "<lable>年龄：</lable>" +
-                                    "<input type='number' id='minAge' min='" + res5.minAge +
-                                    "' max='" + res5.maxAge + "'/>" +
+                                    "<input type='number' id='minAgeId' min='" + minAge +
+                                    "' max='" + maxAge + "'/>" +
                                     "<label>(岁)</label>" +
                                     "<label>—</label>" +
-                                    "<input type='number' id='maxAge' min='" + res5.minAge +
-                                    "' max='" + res5.maxAge + "'/>" +
+                                    "<input type='number' id='maxAgeId' min='" + minAge +
+                                    "' max='" + maxAge + "'/>" +
                                     "<label>(岁)</label>";
                                 $("#ageId").html(ageString);
                                 $("#ageId").show();

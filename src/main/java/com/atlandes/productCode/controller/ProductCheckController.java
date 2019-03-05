@@ -1,15 +1,14 @@
 package com.atlandes.productCode.controller;
 
-import com.atlandes.productCode.entity.BaseCheckResult;
-import com.atlandes.productCode.entity.ProductDict;
+import com.atlandes.productCode.entity.*;
 import com.atlandes.productCode.service.ProductBaseInfo;
 
-import com.atlandes.productCode.entity.ProductCheckResult;
 import com.jd.baoxian.product.export.pojo.ProductFee;
 import com.jd.baoxian.product.export.vo.res.ProductDetail;
 import com.jd.baoxian.service.platform.domain.response.BaseResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -70,5 +69,18 @@ public class ProductCheckController {
         ProductDict productDict;
         productDict = productBaseInfo.getProductDict(sku);
         return productDict;
+    }
+
+    @RequestMapping("startFeeCheck")
+    @ResponseBody
+    public FeeCheckResult startFeeCheck(@RequestBody ProductFeeRequest request) {
+        FeeCheckResult feeCheckResult = new FeeCheckResult();
+        try {
+            // todo
+            feeCheckResult.setSuccess(true);
+        } catch (Exception e) {
+            feeCheckResult.setSuccess(false);
+        }
+        return feeCheckResult;
     }
 }

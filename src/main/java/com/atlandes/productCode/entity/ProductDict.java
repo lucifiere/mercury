@@ -8,18 +8,34 @@ public class ProductDict {
     private List<Dict> periods;
     private List<Dict> payPeriod;
     private List<Dict> socialSecurity;
-    private Dict age;
-
-    public Dict getAge() {
-        return age;
+    private List<Dict> amount;
+    public List<Dict> getAmount() {
+        return amount;
     }
 
-    public void setAge(Dict age) {
-        this.age = age;
+    public void setAmount(List<Dict> amount) {
+        this.amount = amount;
     }
 
 
+    private String minAge;
+    private String maxAge;
 
+    public String getMinAge() {
+        return minAge;
+    }
+
+    public void setMinAge(String minAge) {
+        this.minAge = minAge;
+    }
+
+    public String getMaxAge() {
+        return maxAge;
+    }
+
+    public void setMaxAge(String maxAge) {
+        this.maxAge = maxAge;
+    }
 
 
     public List<Dict> getSex() {

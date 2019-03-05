@@ -7,10 +7,12 @@ import java.util.stream.Collectors;
 
 //import org.junit.Test;
 
-import com.atlandes.productCode.common.Constants;
+import com.alibaba.fastjson.JSON;
+import com.atlandes.productCode.common.*;
 import com.atlandes.productCode.entity.BaseCheckResult;
 import com.atlandes.productCode.entity.Dict;
 import com.atlandes.productCode.entity.ProductDict;
+import com.atlandes.productCode.vo.ProductPriceReqTr;
 import com.google.common.base.Joiner;
 import com.jd.baoxian.order.trade.export.dto.PolicyDto;
 import com.jd.baoxian.order.trade.export.dto.PolicyQueryDto;
@@ -20,13 +22,12 @@ import com.jd.baoxian.order.trade.export.req.PolicyQueryReq;
 import com.jd.baoxian.order.trade.export.res.PolicyInfoQueryRes;
 import com.jd.baoxian.order.trade.export.res.PolicyQueryRes;
 import com.jd.baoxian.product.export.pojo.ProductFee;
+import com.jd.baoxian.product.export.vo.res.ProductAlternative;
 import com.jd.baoxian.service.platform.domain.bean.*;
 
+import io.netty.util.internal.StringUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.atlandes.productCode.common.BaseConfig;
-import com.atlandes.productCode.common.StringUtils;
 
 import com.jd.baoxian.order.trade.export.resource.OrderCreateService;
 import com.jd.baoxian.order.trade.export.resource.PolicyQueryService;
@@ -77,18 +78,17 @@ public class ProductBaseInfo extends BaseConfig {
         BaseResponse<ProductDetail> resProductDetail = getProductDetailBySkuId(sku);
         String minAge = resProductDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMinAge().toString();
         String maxAge = resProductDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMaxAge().toString();
-        Dict age = new Dict();
+
         if (minAge != null) {
-            age.setMinAge(minAge);
+           productDict.setMinAge(minAge);
         } else {
-            age.setMinAge("0");
+            productDict.setMinAge("0");
         }
         if (maxAge != null) {
-            age.setMaxAge(maxAge);
+            productDict.setMaxAge(maxAge);
         } else {
-            age.setMaxAge("100");
+            productDict.setMaxAge("100");
         }
-        productDict.setAge(age);
         ProductFee productFee = resProductDetail.getResponse().getProductFee();
         if (productFee != null) {
             if (CollectionUtils.isNotEmpty(productFee.getSex())) {
@@ -127,18 +127,31 @@ public class ProductBaseInfo extends BaseConfig {
                 }).collect(Collectors.toList());
                 productDict.setSocialSecurity(socialSecurity);
             }
+            if(CollectionUtils.isNotEmpty(resProductDetail.getResponse().getProductSerialsList().get(0).getPlancode())){
+                List<Dict> amounts = resProductDetail.getResponse().getProductSerialsList().get(0).getPlancode().stream().map(planCode ->{
+                    Dict planCodes = new Dict();
+                    planCodes.setCode(planCode.getValue());
+                    planCodes.setDesc(planCode.getDisplay());
+                    return planCodes;
+                }).collect(Collectors.toList());
+                productDict.setAmount(amounts);
+            }
         }
 
         return productDict;
     }
 
-    public UnderWriteRequest getGeneralUnderWriteOb(BaseResponse<ProductDetail> productDetail) {
+    /**
+     * 组装普通产品核保参数
+     *
+     * @param productDetail
+     * @return
+     */
+    public UnderWriteRequest getGeneralUnderWriteOb(BaseResponse<ProductDetail> productDetail, String age, String relation, String payperiod, String period, String InsuredAmount, String planCode) {
         UnderWriteRequest underWriteRequest = new UnderWriteRequest();
         underWriteRequest.setAccount("cpjcpin");
         underWriteRequest.setAccountType("JD_PIN");
         //判断是否是续期产品
-        ProductRenewal productRenewal = productDetail.getResponse().getProductRenewal();
-
         if (productDetail.getResponse().getProductRenewal() != null) {
             CardSign cardsign = new CardSign();
             if (productDetail.getResponse().getProductRenewal().getCollection() != null) {
@@ -151,13 +164,19 @@ public class ProductBaseInfo extends BaseConfig {
         //投被保人关系列表，即给 本人、子女、父母、配偶
         List<BaseClass> holderRelationList = productDetail.getResponse().getProductBase().getHolderInsuredRelations();
         //0-本人 ,1-父母, 2-子女, 5-配偶
-        int holderRelation = 0;
+        String holderRelation = "0";
         if (holderRelationList.size() == 1) {
-            holderRelation = Integer.parseInt(holderRelationList.get(0).getValue());
+            holderRelation = holderRelationList.get(0).getValue();
         } else {
-            holderRelation = 0;//默认给本人
+            if (!StringUtil.isNullOrEmpty(relation)) {
+                holderRelation = relation;
+            } else {
+                holderRelation = "0";//默认给本人
+            }
+
         }
         boolean isLimitSex = false;
+        String sex = "2";
         //产品是否限制性别购买 sex =2 是女  1是男
         if (productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getLimitSex() != null && productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getLimitSex() != "") {
             if (productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getLimitSex().equalsIgnoreCase("2")) {
@@ -172,23 +191,55 @@ public class ProductBaseInfo extends BaseConfig {
 
         int minAge = productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMinAge();
         int maxAge = productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMaxAge();
+        Calendar ageHolderInsuerd = null;
+        Calendar ageInsuer = null;
 
-        Calendar ageInsuerd = getAgeInsured(holderRelation + "", minAge);
+        Map<String, String> map = new HashMap<String, String>();
+        if (!StringUtil.isNullOrEmpty(age) && !StringUtil.isNullOrEmpty(relation)) {
+            map.put("age", age);
+            if (relation.equals("0")) {
+                ageHolderInsuerd = GetAgeUtil.getBirthDayByAge(age);
+            } else {
+                ageHolderInsuerd = GetAgeUtil.getBirthDayByAge("24");
+                ageInsuer = GetAgeUtil.getBirthDayByAge(age);
+            }
+        } else {
+            ageHolderInsuerd = GetAgeUtil.getAgeInsured(holderRelation, minAge);
+        }
         //投保人信息
-        Applicant applicant = getApplicantInfo(ageInsuerd, isLimitSex);
+        Applicant applicant = getApplicantInfo(ageHolderInsuerd, isLimitSex);
         underWriteRequest.setApplicant(applicant);
+        map.put("sex", sex);
+        if (!StringUtil.isNullOrEmpty(payperiod)) {
+            map.put("payperiod", payperiod);
+        }
+        if (!StringUtil.isNullOrEmpty(period)) {
+            map.put("period", period);
+        }
+        if (!StringUtil.isNullOrEmpty(InsuredAmount)) {
+            map.put("InsuredAmount", InsuredAmount);
+        }
+        // 获取产品试算参数对象 int age,ProductDetail productDetail,int sex
+        String trialParam = getPriceParamBySkuId( productDetail, map, holderRelation);
+        String defaultPriceYuan = null;
+        if(trialParam != null){
+            defaultPriceYuan = getPriceBySkuId(HttpClientUtils.PREMIUM_TRIAL_URL,trialParam);
+            if(StringUtil.isNullOrEmpty(defaultPriceYuan)){
+                defaultPriceYuan =productDetail.getResponse().getProductBase().getDefaultPrice();
+            }
+        }else{
+            //默认价格
+            defaultPriceYuan =productDetail.getResponse().getProductBase().getDefaultPrice();
+        }
 
 
-        //默认价格
-        String dde = productDetail.getResponse().getProductBase().getDefaultPrice();
-        BigDecimal df = new BigDecimal(dde);
-        BigDecimal hs = df.multiply(new BigDecimal("100"));
-        Long defaultPrice = hs.longValue();
+        BigDecimal bigDecimal = new BigDecimal(defaultPriceYuan).multiply(new BigDecimal("100"));
+        Long defaultPrice = bigDecimal.longValue();
 
         //保单信息
         Insurance insureance = new Insurance();
         insureance.setAmount(productDetail.getResponse().getProductFee().getInsureAmount().get(0).getValue());
-        insureance.setBeginDate(getNextDay(1));
+        insureance.setBeginDate(getNextDay(4));
         insureance.setInsurancePeriod(productDetail.getResponse().getProductFee().getPeriods().get(0).getValue());
         insureance.setInsurancePeriodType(productDetail.getResponse().getProductFee().getPeriods().get(0).getValueType());
         insureance.setItemId(productDetail.getResponse().getProductBase().getProductCode());
@@ -202,7 +253,7 @@ public class ProductBaseInfo extends BaseConfig {
         underWriteRequest.setIp("127.0.0.1");
 
         //被保人信息
-        List<Insured> insuredList = getInsuredInfo(holderRelation, ageInsuerd, applicant, isLimitSex, defaultPrice);
+        List<Insured> insuredList = getInsuredInfo(holderRelation, ageInsuer, applicant, isLimitSex, defaultPrice);
         underWriteRequest.setInsuredList(insuredList);
 
         //平台商户
@@ -213,15 +264,14 @@ public class ProductBaseInfo extends BaseConfig {
         return underWriteRequest;
     }
 
-    public Applicant getApplicantInfo(Calendar age, boolean isLimitSex) {
+    public Applicant getApplicantInfo(Calendar birthAge, boolean isLimitSex) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-        String birthAge = sdf.format(age.getTime());
-        String certificateNo = StringUtils.getIdNo(birthAge, isLimitSex);
+        String certificateNo = GetAgeUtil.getIdNo(sdf.format(birthAge.getTime()), isLimitSex);
         Applicant application = new Applicant();
         application.setName("晓卉");
         application.setCertificateType("1");
-        application.setBirthday(sdf1.format(age.getTime()));
+        application.setBirthday(sdf1.format(birthAge.getTime()));
         application.setCertificateNo(certificateNo);
         if (isLimitSex) {
             application.setSex("1");
@@ -238,11 +288,20 @@ public class ProductBaseInfo extends BaseConfig {
 
     }
 
-    public List<Insured> getInsuredInfo(int holderRelation, Calendar dateOfBirth, Applicant applicant, boolean isLimitSex, Long defaultPrice) {
-
+    /**
+     * 组装被保人信息
+     *
+     * @param holderRelation
+     * @param dateOfBirth
+     * @param applicant
+     * @param isLimitSex
+     * @param defaultPrice
+     * @return
+     */
+    public List<Insured> getInsuredInfo(String holderRelation, Calendar dateOfBirth, Applicant applicant, boolean isLimitSex, Long defaultPrice) {
         List<Insured> insuredList = new ArrayList<Insured>();
         Insured insured = new Insured();
-        if (holderRelation == 0) {
+        if ("0".equals(holderRelation)) {
             insured.setBirthday(applicant.getBirthday());
             insured.setCertificateNo(applicant.getCertificateNo());
             insured.setCertificateType(applicant.getCertificateType());
@@ -263,13 +322,13 @@ public class ProductBaseInfo extends BaseConfig {
         } else {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
             SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-            String certificateNo = StringUtils.getIdNo(sdf.format(dateOfBirth.getTime()), isLimitSex);
+            String certificateNo = GetAgeUtil.getIdNo(sdf.format(dateOfBirth.getTime()), isLimitSex);
             insured.setBirthday(sdf1.format(dateOfBirth.getTime()));
             insured.setCertificateNo(certificateNo);
             insured.setCertificateType("1");
             insured.setCount(1);
             insured.setEmail(applicant.getEmail());
-            insured.setMainPrice(1L);
+            insured.setMainPrice(defaultPrice);
             insured.setMobile(applicant.getMobile());
             insured.setName("晓卉二 ");
             insured.setNumber("1");
@@ -279,41 +338,31 @@ public class ProductBaseInfo extends BaseConfig {
             } else {
                 insured.setSex("2");
             }
-
         }
         insuredList.add(insured);
         return insuredList;
     }
 
-    public Calendar getAgeInsured(String holderRelation, int minAge) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");// 解析用格式
-        Date date = new Date();//获取当前时间
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-
-        String ageInsured = null;
-        if (holderRelation.equals("0")) { //得到本人的出生日期
-            calendar.add(Calendar.YEAR, -23);//当前时间减去23年
-            calendar.add(Calendar.MONTH, -2);//当前时间前去2个月
-//			   ageInsured = sdf.format(calendar.getTime());
-        } else if (holderRelation.equals("1")) {//得到父母的出生日期
-            calendar.add(Calendar.YEAR, -(minAge - 1));//当前时间减去23年
-            calendar.add(Calendar.MONTH, -2);//当前时间前去2个月
-//			   ageInsured = sdf.format(calendar.getTime());
-
-        } else if (holderRelation.equals("2")) {//得到子女的出生日期
-            calendar.add(Calendar.YEAR, -10);
-            calendar.add(Calendar.MONTH, -2);
-//			   ageInsured = sdf.format(calendar.getTime());
-        } else {//得到配偶的出生日期
-            calendar.add(Calendar.YEAR, -25);
-            calendar.add(Calendar.MONTH, -2);
-//			   ageInsured = sdf.format(calendar.getTime());
-        }
-        return calendar;
+    /**
+     * 核保
+     *
+     * @param sku
+     * @return
+     */
+    public BaseResponse<UnderWriteResponse> underWrite(String sku) {
+        BaseResponse<ProductDetail> productDetail = getProductDetailBySkuId(sku);
+        UnderWriteRequest underWriteReq = new UnderWriteRequest();
+        underWriteReq = getGeneralUnderWriteOb(productDetail,null,null,null,null,null,null);
+        BaseResponse<UnderWriteResponse> underWriteRes = jsfUnderWriteResource.underwrite(underWriteReq);
+        return underWriteRes;
     }
 
-    public IssueRequest issuePolicy(BaseResponse<UnderWriteResponse> res) {
+    /**
+     * 出单
+     *
+     * @param res
+     */
+    public BaseResponse issuePolicy(BaseResponse<UnderWriteResponse> res) {
         IssueRequest ireq = new IssueRequest();
         ireq.setAccount("cpjcpin");//pin
         ireq.setAccountType(AccountTypeEnum.JD_PIN.code());
@@ -335,7 +384,7 @@ public class ProductBaseInfo extends BaseConfig {
 
         BaseResponse rese = jsfIssueResource.issue(ireq);
         System.out.println("issue" + rese.toString());
-        return ireq;
+        return rese;
     }
 
     //保单生效日期
@@ -349,15 +398,74 @@ public class ProductBaseInfo extends BaseConfig {
         return nextDay;
     }
 
-    // @Test
-    public void test() {
+    public String getPriceParamBySkuId(BaseResponse<ProductDetail> productDetail, Map mapParam, String holderRelation) {
+        ProductPriceReqTr pprt = new ProductPriceReqTr();
+        if (mapParam.get("age") != null) {
+            String insuredAge = mapParam.get("age").toString();
+            pprt.setAge(Integer.parseInt(insuredAge));
+        } else {
+            if (holderRelation.equals("0")) {
+                pprt.setAge(24);
+            } else if (holderRelation.equals("1")) {
+                pprt.setAge(productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMinAge() + 1);
+            } else if (holderRelation.equals("2")) {
+                pprt.setAge(11);
+            } else {
+                pprt.setAge(26);
+            }
+        }
+        if (mapParam.get("InsuredAmount") != null) {
+            pprt.setAmount(mapParam.get("InsuredAmount").toString());
+        } else {
+            pprt.setAmount(productDetail.getResponse().getProductFee().getInsureAmount().get(0).getValue());
+        }
+        if (mapParam.get("sex") != null) {
+            pprt.setGender(Integer.parseInt(mapParam.get("sex").toString()));//性别
+        }
+        if (mapParam.get("payperiod") != null) {
+            pprt.setPayPeriod(mapParam.get("payperiod").toString());
+        } else {
+            if (productDetail.getResponse().getProductFee().getPayPeriod() != null) {
+                pprt.setPayPeriod(productDetail.getResponse().getProductFee().getPayPeriod().get(0).getValue());
+                pprt.setPayPeriodType(productDetail.getResponse().getProductFee().getPayPeriod().get(0).getValueType());
+            }
+        }
 
-        BaseResponse<ProductDetail> productdetail = getProductDetailBySkuId("2019011001");
-        UnderWriteRequest under = getGeneralUnderWriteOb(productdetail);
-        BaseResponse<UnderWriteResponse> res = jsfUnderWriteResource.underwrite(under);
-        issuePolicy(res);
-        System.out.println("Fdfds" + res.toString());
+        pprt.setPin("testpin");
+        if (productDetail.getResponse().getProductSerialsList() != null) {
+            if (productDetail.getResponse().getProductSerialsList().get(0).getPlancode() != null) {
+                pprt.setPlanCode(productDetail.getResponse().getProductSerialsList().get(0).getPlancode().get(0).getValue());
+            } else {
+                pprt.setPlanCode("0");
+            }
+        } else {
+            pprt.setPlanCode("0");
+        }
+        pprt.setProductCode(productDetail.getResponse().getProductBase().getProductCode());
+        if (mapParam.get("period") != null) {
+            pprt.setProductPeriod(mapParam.get("period").toString());
+        } else {
+            if (productDetail.getResponse().getProductFee().getPeriods() != null) {
+                pprt.setProductPeriod(productDetail.getResponse().getProductFee().getPeriods().get(0).getValue());//保障期间
+            }
+        }
+        pprt.setSocialSecurity("true");
+        String json = JSON.toJSONString(pprt);
+        return json;
+    }
 
+    public String getPriceBySkuId(String url, String json) {
+        ProductAlternative pa = null;
+        String price = null;
+        try {
+            pa = HttpClientUtils.HttpClientGet(url, json);
+            if (pa != null) {
+                price = pa.getDefaultPrice();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return price;
     }
 
     /**
@@ -369,7 +477,7 @@ public class ProductBaseInfo extends BaseConfig {
     public BaseCheckResult getUnderWriteRes(String sku) {
         BaseCheckResult underCheckCheckResult = new BaseCheckResult();
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
-        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes);
+        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes,null,null,null,null,null,null);
         BaseResponse<UnderWriteResponse> underwriteRes = jsfUnderWriteResource.underwrite(under);
         underCheckCheckResult.setCheckItem("核保检测");
         if (underwriteRes.isSuccess() && Objects.equals(underwriteRes.getCode(), "0000")) {
@@ -390,15 +498,15 @@ public class ProductBaseInfo extends BaseConfig {
      * */
     public BaseCheckResult getIssueRes(String sku) {
         BaseCheckResult issueCheckResult = new BaseCheckResult();
-        IssueRequest issReq;
+        BaseResponse issueRes;
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
-        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes);
+        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes,null,null,null,null,null,null);
         BaseResponse<UnderWriteResponse> underwriteResp = jsfUnderWriteResource.underwrite(under);
         if (underwriteResp != null) {
             if (Objects.equals(underwriteResp.getCode(), "0000")) {
                 issueCheckResult.setCheckItem("出单检测");
-                issReq = issuePolicy(underwriteResp);
-                BaseResponse issueRes = jsfIssueResource.issue(issReq);
+                issueRes = issuePolicy(underwriteResp);
+
                 if (Objects.equals(issueRes.getCode(), "0000")) {
                     issueCheckResult.setCheckResult("检测通过");
                     issueCheckResult.setCheckResultDesc(issueRes.getResponse().toString());
@@ -427,13 +535,12 @@ public class ProductBaseInfo extends BaseConfig {
      */
     public BaseCheckResult getOnLinePolicyRes(String sku) {
         BaseCheckResult onLinePolicyCheckResult = new BaseCheckResult();
-        IssueRequest issReq;
+        BaseResponse issueRes;
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
-        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes);
+        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes,null,null,null,null,null,null);
         BaseResponse<UnderWriteResponse> underwriteResp = jsfUnderWriteResource.underwrite(under);
         if (Objects.equals(underwriteResp, "0000")) {
-            issReq = issuePolicy(underwriteResp);
-            BaseResponse issueRes = jsfIssueResource.issue(issReq);
+            issueRes = issuePolicy(underwriteResp);
             if (issueRes != null) {
                 if (Objects.equals(issueRes, "0000")) {
                     onLinePolicyCheckResult.setCheckItem("电子保单检测");
@@ -504,15 +611,14 @@ public class ProductBaseInfo extends BaseConfig {
      */
     public BaseCheckResult getUnderWriteOnceMoreRes(String sku) {
         BaseCheckResult underWriteOnceMoreCheckResult = new BaseCheckResult();
-        IssueRequest issReq;
+        BaseResponse issueRes;
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
-        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes);
+        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes,null,null,null,null,null,null);
         BaseResponse<UnderWriteResponse> underwriteResp = jsfUnderWriteResource.underwrite(under);
         underWriteOnceMoreCheckResult.setCheckItem("重复核保检测");
         if (underwriteResp != null) {
             if (Objects.equals(underwriteResp, "0000")) {
-                issReq = issuePolicy(underwriteResp);
-                BaseResponse issueRes = jsfIssueResource.issue(issReq);
+                issueRes = issuePolicy(underwriteResp);
                 if (issueRes != null) {
                     if (Objects.equals(issueRes, "0000")) {
                         BaseResponse<UnderWriteResponse> underwriteOnceMoreResp = jsfUnderWriteResource.underwrite(under);

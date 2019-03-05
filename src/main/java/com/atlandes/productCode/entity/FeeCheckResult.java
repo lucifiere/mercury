@@ -5,6 +5,7 @@ public class FeeCheckResult {
     private String checkPremium;
     private String checkResult;
     private String checkMark;
+    private boolean success;
 
     public String getCheckAge() {
         return checkAge;
@@ -38,5 +39,11 @@ public class FeeCheckResult {
         this.checkMark = checkMark;
     }
 
+    public boolean isSuccess() {
+        return success;
+    }
 
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
 }

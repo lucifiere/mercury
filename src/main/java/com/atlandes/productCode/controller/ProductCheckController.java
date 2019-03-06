@@ -75,6 +75,7 @@ public class ProductCheckController {
     public FeeCheckResult startFeeCheck(@RequestBody ProductFeeRequest request) {
         FeeCheckResult feeCheckResult = new FeeCheckResult();
         try {
+
             // todo
             feeCheckResult.setSuccess(true);
         } catch (Exception e) {

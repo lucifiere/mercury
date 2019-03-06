@@ -12,6 +12,7 @@ import com.atlandes.productCode.common.*;
 import com.atlandes.productCode.entity.BaseCheckResult;
 import com.atlandes.productCode.entity.Dict;
 import com.atlandes.productCode.entity.ProductDict;
+import com.atlandes.productCode.entity.ProductFeeRequest;
 import com.atlandes.productCode.vo.ProductPriceReqTr;
 import com.google.common.base.Joiner;
 import com.jd.baoxian.order.trade.export.dto.PolicyDto;
@@ -25,8 +26,9 @@ import com.jd.baoxian.product.export.pojo.ProductFee;
 import com.jd.baoxian.product.export.vo.res.ProductAlternative;
 import com.jd.baoxian.service.platform.domain.bean.*;
 
-import io.netty.util.internal.StringUtil;
+import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jd.baoxian.order.trade.export.resource.OrderCreateService;
@@ -144,7 +146,9 @@ public class ProductBaseInfo extends BaseConfig {
             }
             //获取保额方案
             if (CollectionUtils.isNotEmpty(resProductDetail.getResponse().getProductSerialsList().get(0).getPlancode())) {
-                List<Dict> amounts = resProductDetail.getResponse().getProductSerialsList().get(0).getPlancode().stream().map(planCode -> {
+                List<Dict> amounts = resProductDetail.getResponse().getProductSerialsList().get(0).getPlancode().stream().filter(planCode->{
+                   return StringUtils.isNotEmpty(planCode.getValue()) && StringUtils.isNotEmpty(planCode.getDisplay());
+                }).map(planCode -> {
                     Dict planCodes = new Dict();
                     planCodes.setCode(planCode.getValue());
                     planCodes.setDesc(planCode.getDisplay());
@@ -158,12 +162,53 @@ public class ProductBaseInfo extends BaseConfig {
     }
 
     /**
+     * 组装核保参数转换
+     * @param request
+     * @return
+     */
+    public List<BaseCheckResult> underParam(ProductFeeRequest request) {
+        String sku = request.getProductCode();
+        String value = request.getAmount();
+        String key = "";
+        BaseResponse<ProductDetail> resProductDetail = getProductDetailBySkuId(sku);
+        Map<String, Object> extend = resProductDetail.getResponse().getProductSerialsList().get(0).getExtend();
+        key = getPlanCodeKey(extend, value);
+        List<String> ageList = convertAgeRange2AgeList(request.getMinAge(), request.getMaxAge());
+        List<UnderWriteRequest> requests = ageList.stream().map(age -> {
+            return getGeneralUnderWriteOb(resProductDetail, age,
+                    request.getHolderInsuredRelations(), request.getPayPeriod(),
+                    request.getPeriods(), request.getAmount());
+        }).collect(Collectors.toList());
+       // List<BaseCheckResult> feeCheckResultList = underWrite()
+        return null;
+    }
+
+    /**
+     * 年龄区间
+     * @param minAgeStr
+     * @param maxAgeStr
+     * @return
+     */
+    private List<String> convertAgeRange2AgeList(String minAgeStr, String maxAgeStr) {
+        Integer minAge = Integer.valueOf(minAgeStr);
+        Integer maxAge = Integer.valueOf(maxAgeStr);
+        List<Integer> ageList = new ArrayList<>();
+        for (int i = minAge; i <= maxAge; i++) {
+            ageList.add(i);
+        }
+        return ageList.stream().map(String::valueOf).collect(Collectors.toList());
+    }
+
+    /**
      * 组装普通产品核保参数
      *
      * @param productDetail
      * @return
      */
-    public UnderWriteRequest getGeneralUnderWriteOb(BaseResponse<ProductDetail> productDetail, String age, String relation, String payperiod, String period, String InsuredAmount, String planCode) {
+    public UnderWriteRequest getGeneralUnderWriteOb(BaseResponse<ProductDetail> productDetail,
+                                                    String age, String relation,
+                                                    String payperiod, String period,
+                                                    String InsuredAmount) {
         UnderWriteRequest underWriteRequest = new UnderWriteRequest();
         underWriteRequest.setAccount("cpjcpin");
         underWriteRequest.setAccountType("JD_PIN");
@@ -184,7 +229,7 @@ public class ProductBaseInfo extends BaseConfig {
         if (holderRelationList.size() == 1) {
             holderRelation = holderRelationList.get(0).getValue();
         } else {
-            if (!StringUtil.isNullOrEmpty(relation)) {
+            if (StringUtils.isNotEmpty(relation)) {
                 holderRelation = relation;
             } else {
                 holderRelation = "0";//默认给本人
@@ -211,7 +256,7 @@ public class ProductBaseInfo extends BaseConfig {
         Calendar ageInsuer = null;
 
         Map<String, String> map = new HashMap<String, String>();
-        if (!StringUtil.isNullOrEmpty(age) && !StringUtil.isNullOrEmpty(relation)) {
+        if (StringUtils.isNotEmpty(age) && StringUtils.isNotEmpty(relation)) {
             map.put("age", age);
             if (relation.equals("0")) {
                 ageHolderInsuerd = GetAgeUtil.getBirthDayByAge(age);
@@ -226,13 +271,13 @@ public class ProductBaseInfo extends BaseConfig {
         Applicant applicant = getApplicantInfo(ageHolderInsuerd, isLimitSex);
         underWriteRequest.setApplicant(applicant);
         map.put("sex", sex);
-        if (!StringUtil.isNullOrEmpty(payperiod)) {
+        if (StringUtils.isNotEmpty(payperiod)) {
             map.put("payperiod", payperiod);
         }
-        if (!StringUtil.isNullOrEmpty(period)) {
+        if (StringUtils.isNotEmpty(period)) {
             map.put("period", period);
         }
-        if (!StringUtil.isNullOrEmpty(InsuredAmount)) {
+        if (StringUtils.isNotEmpty(InsuredAmount)) {
             map.put("InsuredAmount", InsuredAmount);
         }
         // 获取产品试算参数对象 int age,ProductDetail productDetail,int sex
@@ -240,7 +285,7 @@ public class ProductBaseInfo extends BaseConfig {
         String defaultPriceYuan = null;
         if (trialParam != null) {
             defaultPriceYuan = getPriceBySkuId(HttpClientUtils.PREMIUM_TRIAL_URL, trialParam);
-            if (StringUtil.isNullOrEmpty(defaultPriceYuan)) {
+            if (StringUtils.isNotEmpty(defaultPriceYuan)) {
                 defaultPriceYuan = productDetail.getResponse().getProductBase().getDefaultPrice();
             }
         } else {
@@ -368,7 +413,7 @@ public class ProductBaseInfo extends BaseConfig {
     public BaseResponse<UnderWriteResponse> underWrite(String sku) {
         BaseResponse<ProductDetail> productDetail = getProductDetailBySkuId(sku);
         UnderWriteRequest underWriteReq = new UnderWriteRequest();
-        underWriteReq = getGeneralUnderWriteOb(productDetail, null, null, null, null, null, null);
+        underWriteReq = getGeneralUnderWriteOb(productDetail, null, null, null, null, null);
         BaseResponse<UnderWriteResponse> underWriteRes = jsfUnderWriteResource.underwrite(underWriteReq);
         return underWriteRes;
     }
@@ -485,6 +530,21 @@ public class ProductBaseInfo extends BaseConfig {
     }
 
     /**
+     * 根据planCode extend里的value值获取key值
+     *
+     * @param value
+     * @return
+     */
+    public String getPlanCodeKey(Map<String, Object> extendMap, String value) {
+        for (Map.Entry<String, Object> extend : extendMap.entrySet()) {
+            if (Objects.equals(extend.getValue().toString(), value)) {
+                return extend.getKey();
+            }
+        }
+        return null;
+    }
+
+    /**
      * 获取核保结果
      *
      * @param sku
@@ -493,7 +553,7 @@ public class ProductBaseInfo extends BaseConfig {
     public BaseCheckResult getUnderWriteRes(String sku) {
         BaseCheckResult underCheckCheckResult = new BaseCheckResult();
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
-        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes, null, null, null, null, null, null);
+        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes, null, null, null, null, null);
         BaseResponse<UnderWriteResponse> underwriteRes = jsfUnderWriteResource.underwrite(under);
         underCheckCheckResult.setCheckItem("核保检测");
         if (underwriteRes.isSuccess() && Objects.equals(underwriteRes.getCode(), "0000")) {
@@ -516,7 +576,7 @@ public class ProductBaseInfo extends BaseConfig {
         BaseCheckResult issueCheckResult = new BaseCheckResult();
         BaseResponse issueRes;
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
-        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes, null, null, null, null, null, null);
+        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes, null, null, null, null, null);
         BaseResponse<UnderWriteResponse> underwriteResp = jsfUnderWriteResource.underwrite(under);
         if (underwriteResp != null) {
             if (Objects.equals(underwriteResp.getCode(), "0000")) {
@@ -553,7 +613,7 @@ public class ProductBaseInfo extends BaseConfig {
         BaseCheckResult onLinePolicyCheckResult = new BaseCheckResult();
         BaseResponse issueRes;
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
-        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes, null, null, null, null, null, null);
+        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes, null, null, null, null, null);
         BaseResponse<UnderWriteResponse> underwriteResp = jsfUnderWriteResource.underwrite(under);
         if (Objects.equals(underwriteResp, "0000")) {
             issueRes = issuePolicy(underwriteResp);
@@ -629,7 +689,7 @@ public class ProductBaseInfo extends BaseConfig {
         BaseCheckResult underWriteOnceMoreCheckResult = new BaseCheckResult();
         BaseResponse issueRes;
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
-        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes, null, null, null, null, null, null);
+        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes, null, null, null, null, null);
         BaseResponse<UnderWriteResponse> underwriteResp = jsfUnderWriteResource.underwrite(under);
         underWriteOnceMoreCheckResult.setCheckItem("重复核保检测");
         if (underwriteResp != null) {

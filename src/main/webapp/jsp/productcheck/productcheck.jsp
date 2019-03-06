@@ -130,6 +130,11 @@
                         <select name="amount">
                         </select>
                     </div>
+                    <div id="holderInsuredRelationsId" hidden="true">
+                        <lable>投被保人关系：</lable>
+                        <select name="holderInsuredRelations">
+                        </select>
+                    </div>
                     <div id="sexId" hidden="true">
                         <lable>性别：</lable>
                         <select name="sex">
@@ -297,7 +302,7 @@
                             }
 
                             var res5 = result.amount;
-                            if (res5 != null) {
+                            if (res5.length>0) {
                                 var amountString = "";
                                 for (var i = 0; i < res5.length; i++) {
                                     amountString += "<option value=\"" + res5[i].code + "\" >" + res5[i].desc + "</option>";
@@ -306,6 +311,18 @@
                                 $("#amountId").show();
                                 $("#feeCheckBtn").show();
                             }
+
+                            var res6 = result.holderInsuredRelations;
+                            if (res6 != null) {
+                                var holderInsuredRelationstring = "";
+                                for (var i = 0; i < res6.length; i++) {
+                                    holderInsuredRelationstring += "<option value=\"" + res6[i].code + "\" >" + res6[i].desc + "</option>";
+                                    $("select[name='holderInsuredRelations']").html(holderInsuredRelationstring);
+                                }
+                                $("#holderInsuredRelationsId").show();
+                                $("#feeCheckBtn").show();
+                            }
+
                             var minAge = result.minAge;
                             var maxAge = result.maxAge;
                             if (minAge != null && maxAge!=null) {

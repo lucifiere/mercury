@@ -76,11 +76,24 @@ public class ProductBaseInfo extends BaseConfig {
     public ProductDict getProductDict(String sku) {
         ProductDict productDict = new ProductDict();
         BaseResponse<ProductDetail> resProductDetail = getProductDetailBySkuId(sku);
+
+        //投被保人关系
+        if (CollectionUtils.isNotEmpty(resProductDetail.getResponse().getProductBase().getHolderInsuredRelations())) {
+            List<Dict> holderInsuredRelations = resProductDetail.getResponse().getProductBase().getHolderInsuredRelations().stream().map(relation -> {
+                Dict holderInsuredRelation = new Dict();
+                holderInsuredRelation.setCode(relation.getValue());
+                holderInsuredRelation.setDesc(relation.getDisplay());
+                return holderInsuredRelation;
+            }).collect(Collectors.toList());
+            productDict.setHolderInsuredRelations(holderInsuredRelations);
+        }
+
+        //获取投保的最大最小年龄
         String minAge = resProductDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMinAge().toString();
         String maxAge = resProductDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMaxAge().toString();
 
         if (minAge != null) {
-           productDict.setMinAge(minAge);
+            productDict.setMinAge(minAge);
         } else {
             productDict.setMinAge("0");
         }
@@ -89,6 +102,8 @@ public class ProductBaseInfo extends BaseConfig {
         } else {
             productDict.setMaxAge("100");
         }
+
+        //获取费率试算因子
         ProductFee productFee = resProductDetail.getResponse().getProductFee();
         if (productFee != null) {
             if (CollectionUtils.isNotEmpty(productFee.getSex())) {
@@ -127,8 +142,9 @@ public class ProductBaseInfo extends BaseConfig {
                 }).collect(Collectors.toList());
                 productDict.setSocialSecurity(socialSecurity);
             }
-            if(CollectionUtils.isNotEmpty(resProductDetail.getResponse().getProductSerialsList().get(0).getPlancode())){
-                List<Dict> amounts = resProductDetail.getResponse().getProductSerialsList().get(0).getPlancode().stream().map(planCode ->{
+            //获取保额方案
+            if (CollectionUtils.isNotEmpty(resProductDetail.getResponse().getProductSerialsList().get(0).getPlancode())) {
+                List<Dict> amounts = resProductDetail.getResponse().getProductSerialsList().get(0).getPlancode().stream().map(planCode -> {
                     Dict planCodes = new Dict();
                     planCodes.setCode(planCode.getValue());
                     planCodes.setDesc(planCode.getDisplay());
@@ -220,16 +236,16 @@ public class ProductBaseInfo extends BaseConfig {
             map.put("InsuredAmount", InsuredAmount);
         }
         // 获取产品试算参数对象 int age,ProductDetail productDetail,int sex
-        String trialParam = getPriceParamBySkuId( productDetail, map, holderRelation);
+        String trialParam = getPriceParamBySkuId(productDetail, map, holderRelation);
         String defaultPriceYuan = null;
-        if(trialParam != null){
-            defaultPriceYuan = getPriceBySkuId(HttpClientUtils.PREMIUM_TRIAL_URL,trialParam);
-            if(StringUtil.isNullOrEmpty(defaultPriceYuan)){
-                defaultPriceYuan =productDetail.getResponse().getProductBase().getDefaultPrice();
+        if (trialParam != null) {
+            defaultPriceYuan = getPriceBySkuId(HttpClientUtils.PREMIUM_TRIAL_URL, trialParam);
+            if (StringUtil.isNullOrEmpty(defaultPriceYuan)) {
+                defaultPriceYuan = productDetail.getResponse().getProductBase().getDefaultPrice();
             }
-        }else{
+        } else {
             //默认价格
-            defaultPriceYuan =productDetail.getResponse().getProductBase().getDefaultPrice();
+            defaultPriceYuan = productDetail.getResponse().getProductBase().getDefaultPrice();
         }
 
 
@@ -352,7 +368,7 @@ public class ProductBaseInfo extends BaseConfig {
     public BaseResponse<UnderWriteResponse> underWrite(String sku) {
         BaseResponse<ProductDetail> productDetail = getProductDetailBySkuId(sku);
         UnderWriteRequest underWriteReq = new UnderWriteRequest();
-        underWriteReq = getGeneralUnderWriteOb(productDetail,null,null,null,null,null,null);
+        underWriteReq = getGeneralUnderWriteOb(productDetail, null, null, null, null, null, null);
         BaseResponse<UnderWriteResponse> underWriteRes = jsfUnderWriteResource.underwrite(underWriteReq);
         return underWriteRes;
     }
@@ -477,7 +493,7 @@ public class ProductBaseInfo extends BaseConfig {
     public BaseCheckResult getUnderWriteRes(String sku) {
         BaseCheckResult underCheckCheckResult = new BaseCheckResult();
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
-        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes,null,null,null,null,null,null);
+        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes, null, null, null, null, null, null);
         BaseResponse<UnderWriteResponse> underwriteRes = jsfUnderWriteResource.underwrite(under);
         underCheckCheckResult.setCheckItem("核保检测");
         if (underwriteRes.isSuccess() && Objects.equals(underwriteRes.getCode(), "0000")) {
@@ -500,7 +516,7 @@ public class ProductBaseInfo extends BaseConfig {
         BaseCheckResult issueCheckResult = new BaseCheckResult();
         BaseResponse issueRes;
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
-        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes,null,null,null,null,null,null);
+        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes, null, null, null, null, null, null);
         BaseResponse<UnderWriteResponse> underwriteResp = jsfUnderWriteResource.underwrite(under);
         if (underwriteResp != null) {
             if (Objects.equals(underwriteResp.getCode(), "0000")) {
@@ -537,7 +553,7 @@ public class ProductBaseInfo extends BaseConfig {
         BaseCheckResult onLinePolicyCheckResult = new BaseCheckResult();
         BaseResponse issueRes;
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
-        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes,null,null,null,null,null,null);
+        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes, null, null, null, null, null, null);
         BaseResponse<UnderWriteResponse> underwriteResp = jsfUnderWriteResource.underwrite(under);
         if (Objects.equals(underwriteResp, "0000")) {
             issueRes = issuePolicy(underwriteResp);
@@ -613,7 +629,7 @@ public class ProductBaseInfo extends BaseConfig {
         BaseCheckResult underWriteOnceMoreCheckResult = new BaseCheckResult();
         BaseResponse issueRes;
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
-        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes,null,null,null,null,null,null);
+        UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes, null, null, null, null, null, null);
         BaseResponse<UnderWriteResponse> underwriteResp = jsfUnderWriteResource.underwrite(under);
         underWriteOnceMoreCheckResult.setCheckItem("重复核保检测");
         if (underwriteResp != null) {

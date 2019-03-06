@@ -9,6 +9,17 @@ public class ProductDict {
     private List<Dict> payPeriod;
     private List<Dict> socialSecurity;
     private List<Dict> amount;
+    private List<Dict> holderInsuredRelations;
+
+    public List<Dict> getHolderInsuredRelations() {
+        return holderInsuredRelations;
+    }
+
+    public void setHolderInsuredRelations(List<Dict> holderInsuredRelations) {
+        this.holderInsuredRelations = holderInsuredRelations;
+    }
+
+
     public List<Dict> getAmount() {
         return amount;
     }

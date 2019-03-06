@@ -10,6 +10,16 @@ public class ProductFeeRequest {
     private String amount;
     private String minAge;
     private String maxAge;
+    private String holderInsuredRelations;
+
+    public String getHolderInsuredRelations() {
+        return holderInsuredRelations;
+    }
+
+    public void setHolderInsuredRelations(String holderInsuredRelations) {
+        this.holderInsuredRelations = holderInsuredRelations;
+    }
+
 
     public String getProductCode() {
         return productCode;

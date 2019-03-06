@@ -6,8 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%--<%@ include file="/jsp/common/base.jsp"%>--%>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath }/static/js/productCheck/productCheck.js"></script>
+
 <context:component-scan base-package="com.atlandes.productCode.controller"></context:component-scan>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -26,6 +25,8 @@
     <script src="${pageContext.request.contextPath}/static/js/admin/menu.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/common.js"></script>
     <script src="${pageContext.request.contextPath}/static/lib/jquery.min.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath }/static/js/productCheck/productCheck.js"></script>
 
 </head>
 
@@ -118,8 +119,7 @@
                                onclick="displayFeeType()">否
                     </lable>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="button" id="feeCheckBtn" name="feeCheck" class="am-btn am-btn-success am-radius" onclick="startFeeCheck()"
-                            hidden="true">
+                    <button type="button" id="feeCheckBtn" name="feeCheck" class="am-btn am-btn-success am-radius" onclick="startFeeCheck()" hidden="true">
                         费率检测开始
                     </button>&nbsp;
                 </div>
@@ -340,6 +340,44 @@
         }
     }
 
+    function startFeeCheck () {
+        var productFee = {};
+        productFee.productCode = $("#productCode").val();
+        productFee.periods = $("#insurancePeriodId option:selected").val();
+        productFee.payPeriod = $("#paymentPeriodId option:selected").val();
+        productFee.socialSecurity = $("#isSocialSecurityId option:selected").val();
+        productFee.sex = $("#sexId option:selected").val();
+        productFee.amount = $("#amountId option:selected").val();
+        productFee.minAge = $("#minAgeId").val();
+        productFee.maxAge = $("#maxAgeId").val();
+        if(productFee.minAge==="" || productFee.maxAge===""){
+            alert("请选择投保年龄区间！");
+            return false;
+        }
+        $.ajax({
+            type: "post",
+            url: "/productCheck/startFeeCheck",
+            dataType: 'json',
+            contentType: "application/json",
+            async: false,
+            data: JSON.stringify(productFee),
+            success: function (data) {
+                if (data.success === "true") {
+                    for (var i = 0;i<data.length;i++){
+                        addFeeCheckResult(data[i]);
+                    }
+                    return true;
+                } else {
+                    alert("执行失败");
+                    return false;
+                }
+            },
+            error: function (data) {
+                alert("error" + Json.stringify(data));
+                return false;
+            }
+        });
+    }
 </script>
 
 </body>

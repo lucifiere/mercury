@@ -5,6 +5,25 @@ public class BaseCheckResult {
     private String checkResult;
     private String checkResultDesc;
     private String checkMark;
+    private String checkAge;
+    private String checkPremium;
+
+
+    public String getCheckAge() {
+        return checkAge;
+    }
+
+    public void setCheckAge(String checkAge) {
+        this.checkAge = checkAge;
+    }
+
+    public String getCheckPremium() {
+        return checkPremium;
+    }
+
+    public void setCheckPremium(String checkPremium) {
+        this.checkPremium = checkPremium;
+    }
 
     public String getCheckItem() {
         return checkItem;

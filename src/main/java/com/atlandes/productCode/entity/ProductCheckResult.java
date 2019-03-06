@@ -8,6 +8,7 @@ public class ProductCheckResult {
     private BaseCheckResult issueOnceMoreResult;
     private BaseCheckResult issueIdempotentResult;
 
+
     public BaseCheckResult getUnderWriteResult() {
         return underWriteResult;
     }

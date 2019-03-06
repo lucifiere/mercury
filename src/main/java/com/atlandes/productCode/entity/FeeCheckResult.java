@@ -1,43 +1,19 @@
 package com.atlandes.productCode.entity;
 
+import java.util.List;
+
 public class FeeCheckResult {
-    private String checkAge;
-    private String checkPremium;
-    private String checkResult;
-    private String checkMark;
+
+    private List<BaseCheckResult> feeCheckResult;
     private boolean success;
-
-    public String getCheckAge() {
-        return checkAge;
+    public List<BaseCheckResult> getFeeCheckResult() {
+        return feeCheckResult;
     }
 
-    public void setCheckAge(String checkAge) {
-        this.checkAge = checkAge;
+    public void setFeeCheckResult(List<BaseCheckResult> feeCheckResult) {
+        this.feeCheckResult = feeCheckResult;
     }
 
-    public String getCheckPremium() {
-        return checkPremium;
-    }
-
-    public void setCheckPremium(String checkPremium) {
-        this.checkPremium = checkPremium;
-    }
-
-    public String getCheckResult() {
-        return checkResult;
-    }
-
-    public void setCheckResult(String checkResult) {
-        this.checkResult = checkResult;
-    }
-
-    public String getCheckMark() {
-        return checkMark;
-    }
-
-    public void setCheckMark(String checkMark) {
-        this.checkMark = checkMark;
-    }
 
     public boolean isSuccess() {
         return success;
@@ -46,4 +22,6 @@ public class FeeCheckResult {
     public void setSuccess(boolean success) {
         this.success = success;
     }
+
+
 }

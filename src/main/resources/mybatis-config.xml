@@ -4,23 +4,15 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
-    <typeAliases>
-        <!-- demo -->
-        <typeAlias type="com.atlandes.demo.po.Demo" alias="com.atlandes.demo"/>
-        <!-- auth -->
-        <package name="com.atlandes.auth"/>
-        <package name="com.atlandes.admin"/>
-    </typeAliases>
-
     <!-- 对事务的管理和连接池的配置 -->
     <environments default="dev">
         <environment id="dev">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://localhost:3306/dev?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=GMT"/>
-                <property name="username" value="root"/>
-                <property name="password" value="123"/>
+                <property name="url" value="jdbc:mysql://172.25.28.10/nyse_trade?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=true&amp;serverTimezone=GMT"/>
+                <property name="username" value="policy"/>
+                <property name="password" value="1qaz@WSX"/>
             </dataSource>
         </environment>
     </environments>

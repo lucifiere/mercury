@@ -1,0 +1,1128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atlandes.productCode.mapper.OrdersMapper" >
+  <resultMap id="BaseResultMap" type="com.atlandes.productCode.dao.Orders" >
+    <id column="Id" property="id" jdbcType="BIGINT" />
+    <result column="OrderId" property="orderid" jdbcType="VARCHAR" />
+    <result column="Pin" property="pin" jdbcType="VARCHAR" />
+    <result column="CustomerName" property="customername" jdbcType="VARCHAR" />
+    <result column="PayType" property="paytype" jdbcType="SMALLINT" />
+    <result column="Province" property="province" jdbcType="VARCHAR" />
+    <result column="City" property="city" jdbcType="VARCHAR" />
+    <result column="County" property="county" jdbcType="VARCHAR" />
+    <result column="Adress" property="adress" jdbcType="VARCHAR" />
+    <result column="Zip" property="zip" jdbcType="VARCHAR" />
+    <result column="Phone" property="phone" jdbcType="VARCHAR" />
+    <result column="Email" property="email" jdbcType="VARCHAR" />
+    <result column="SourceType" property="sourcetype" jdbcType="VARCHAR" />
+    <result column="DeliveryType" property="deliverytype" jdbcType="SMALLINT" />
+    <result column="OrderType" property="ordertype" jdbcType="BIGINT" />
+    <result column="operatorip" property="operatorip" jdbcType="VARCHAR" />
+    <result column="TotalPrice" property="totalprice" jdbcType="DECIMAL" />
+    <result column="Dicount" property="dicount" jdbcType="DECIMAL" />
+    <result column="Postage" property="postage" jdbcType="DECIMAL" />
+    <result column="PartnerEnum" property="partnerenum" jdbcType="VARCHAR" />
+    <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="PayTime" property="paytime" jdbcType="TIMESTAMP" />
+    <result column="Status" property="status" jdbcType="SMALLINT" />
+    <result column="PayId" property="payid" jdbcType="VARCHAR" />
+    <result column="PayEnum" property="payenum" jdbcType="BIGINT" />
+    <result column="CompleteDate" property="completedate" jdbcType="TIMESTAMP" />
+    <result column="InsBeginDate" property="insbegindate" jdbcType="TIMESTAMP" />
+    <result column="InsEndDate" property="insenddate" jdbcType="TIMESTAMP" />
+    <result column="InsurancePeriod" property="insuranceperiod" jdbcType="VARCHAR" />
+    <result column="InsurancePeriodType" property="insuranceperiodtype" jdbcType="VARCHAR" />
+    <result column="LastUpdateDate" property="lastupdatedate" jdbcType="TIMESTAMP" />
+    <result column="Yn" property="yn" jdbcType="SMALLINT" />
+    <result column="Version" property="version" jdbcType="SMALLINT" />
+    <result column="SkuId" property="skuid" jdbcType="VARCHAR" />
+    <result column="SkuName" property="skuname" jdbcType="VARCHAR" />
+    <result column="Remark" property="remark" jdbcType="VARCHAR" />
+    <result column="Ext1" property="ext1" jdbcType="VARCHAR" />
+    <result column="InsuredDigest" property="insureddigest" jdbcType="VARCHAR" />
+    <result column="payCardNo" property="paycardno" jdbcType="VARCHAR" />
+    <result column="payBankNo" property="paybankno" jdbcType="VARCHAR" />
+    <result column="payCardId" property="paycardid" jdbcType="VARCHAR" />
+    <result column="buyPlan" property="buyplan" jdbcType="VARCHAR" />
+    <result column="forceBeginDate" property="forcebegindate" jdbcType="TIMESTAMP" />
+    <result column="forceEndDate" property="forceenddate" jdbcType="TIMESTAMP" />
+    <result column="businessCode" property="businesscode" jdbcType="VARCHAR" />
+    <result column="comOrderId" property="comorderid" jdbcType="VARCHAR" />
+    <result column="errorInfo" property="errorinfo" jdbcType="VARCHAR" />
+    <result column="ActivityType" property="activitytype" jdbcType="VARCHAR" />
+    <result column="keyValue" property="keyvalue" jdbcType="VARCHAR" />
+    <result column="withDrawMoney" property="withdrawmoney" jdbcType="DECIMAL" />
+    <result column="channelCode" property="channelcode" jdbcType="VARCHAR" />
+    <result column="thirdOrderId" property="thirdorderid" jdbcType="VARCHAR" />
+    <result column="AGENTFLAG" property="agentflag" jdbcType="INTEGER" />
+    <result column="resourcePlace" property="resourceplace" jdbcType="VARCHAR" />
+    <result column="re_purchase_order_id" property="rePurchaseOrderId" jdbcType="VARCHAR" />
+    <result column="re_purchase_order_to" property="rePurchaseOrderTo" jdbcType="VARCHAR" />
+    <result column="source_notify" property="sourceNotify" jdbcType="VARCHAR" />
+    <result column="delete_flag" property="deleteFlag" jdbcType="SMALLINT" />
+    <result column="partnerPayId" property="partnerpayid" jdbcType="VARCHAR" />
+    <result column="attributeType" property="attributetype" jdbcType="VARCHAR" />
+    <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+    <result column="groupFlag" property="groupflag" jdbcType="SMALLINT" />
+    <result column="erpId" property="erpid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    Id, OrderId, Pin, CustomerName, PayType, Province, City, County, Adress, Zip, Phone, 
+    Email, SourceType, DeliveryType, OrderType, operatorip, TotalPrice, Dicount, Postage, 
+    PartnerEnum, CreateDate, PayTime, Status, PayId, PayEnum, CompleteDate, InsBeginDate, 
+    InsEndDate, InsurancePeriod, InsurancePeriodType, LastUpdateDate, Yn, Version, SkuId, 
+    SkuName, Remark, Ext1, InsuredDigest, payCardNo, payBankNo, payCardId, buyPlan, forceBeginDate, 
+    forceEndDate, businessCode, comOrderId, errorInfo, ActivityType, keyValue, withDrawMoney, 
+    channelCode, thirdOrderId, AGENTFLAG, resourcePlace, re_purchase_order_id, re_purchase_order_to, 
+    source_notify, delete_flag, partnerPayId, attributeType, uuid, groupFlag, erpId
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.atlandes.productCode.dao.OrdersExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from orders
+    where Id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from orders
+    where Id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.atlandes.productCode.dao.OrdersExample" >
+    delete from orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.atlandes.productCode.dao.Orders" >
+    insert into orders (Id, OrderId, Pin, 
+      CustomerName, PayType, Province, 
+      City, County, Adress, 
+      Zip, Phone, Email, 
+      SourceType, DeliveryType, OrderType, 
+      operatorip, TotalPrice, Dicount, 
+      Postage, PartnerEnum, CreateDate, 
+      PayTime, Status, PayId, 
+      PayEnum, CompleteDate, InsBeginDate, 
+      InsEndDate, InsurancePeriod, InsurancePeriodType, 
+      LastUpdateDate, Yn, Version, 
+      SkuId, SkuName, Remark, 
+      Ext1, InsuredDigest, payCardNo, 
+      payBankNo, payCardId, buyPlan, 
+      forceBeginDate, forceEndDate, businessCode, 
+      comOrderId, errorInfo, ActivityType, 
+      keyValue, withDrawMoney, channelCode, 
+      thirdOrderId, AGENTFLAG, resourcePlace, 
+      re_purchase_order_id, re_purchase_order_to, source_notify, 
+      delete_flag, partnerPayId, attributeType, 
+      uuid, groupFlag, erpId
+      )
+    values (#{id,jdbcType=BIGINT}, #{orderid,jdbcType=VARCHAR}, #{pin,jdbcType=VARCHAR}, 
+      #{customername,jdbcType=VARCHAR}, #{paytype,jdbcType=SMALLINT}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{county,jdbcType=VARCHAR}, #{adress,jdbcType=VARCHAR}, 
+      #{zip,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{sourcetype,jdbcType=VARCHAR}, #{deliverytype,jdbcType=SMALLINT}, #{ordertype,jdbcType=BIGINT}, 
+      #{operatorip,jdbcType=VARCHAR}, #{totalprice,jdbcType=DECIMAL}, #{dicount,jdbcType=DECIMAL}, 
+      #{postage,jdbcType=DECIMAL}, #{partnerenum,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, 
+      #{paytime,jdbcType=TIMESTAMP}, #{status,jdbcType=SMALLINT}, #{payid,jdbcType=VARCHAR}, 
+      #{payenum,jdbcType=BIGINT}, #{completedate,jdbcType=TIMESTAMP}, #{insbegindate,jdbcType=TIMESTAMP}, 
+      #{insenddate,jdbcType=TIMESTAMP}, #{insuranceperiod,jdbcType=VARCHAR}, #{insuranceperiodtype,jdbcType=VARCHAR}, 
+      #{lastupdatedate,jdbcType=TIMESTAMP}, #{yn,jdbcType=SMALLINT}, #{version,jdbcType=SMALLINT}, 
+      #{skuid,jdbcType=VARCHAR}, #{skuname,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{ext1,jdbcType=VARCHAR}, #{insureddigest,jdbcType=VARCHAR}, #{paycardno,jdbcType=VARCHAR}, 
+      #{paybankno,jdbcType=VARCHAR}, #{paycardid,jdbcType=VARCHAR}, #{buyplan,jdbcType=VARCHAR}, 
+      #{forcebegindate,jdbcType=TIMESTAMP}, #{forceenddate,jdbcType=TIMESTAMP}, #{businesscode,jdbcType=VARCHAR}, 
+      #{comorderid,jdbcType=VARCHAR}, #{errorinfo,jdbcType=VARCHAR}, #{activitytype,jdbcType=VARCHAR}, 
+      #{keyvalue,jdbcType=VARCHAR}, #{withdrawmoney,jdbcType=DECIMAL}, #{channelcode,jdbcType=VARCHAR}, 
+      #{thirdorderid,jdbcType=VARCHAR}, #{agentflag,jdbcType=INTEGER}, #{resourceplace,jdbcType=VARCHAR}, 
+      #{rePurchaseOrderId,jdbcType=VARCHAR}, #{rePurchaseOrderTo,jdbcType=VARCHAR}, #{sourceNotify,jdbcType=VARCHAR}, 
+      #{deleteFlag,jdbcType=SMALLINT}, #{partnerpayid,jdbcType=VARCHAR}, #{attributetype,jdbcType=VARCHAR}, 
+      #{uuid,jdbcType=VARCHAR}, #{groupflag,jdbcType=SMALLINT}, #{erpid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.atlandes.productCode.dao.Orders" >
+    insert into orders
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="orderid != null" >
+        OrderId,
+      </if>
+      <if test="pin != null" >
+        Pin,
+      </if>
+      <if test="customername != null" >
+        CustomerName,
+      </if>
+      <if test="paytype != null" >
+        PayType,
+      </if>
+      <if test="province != null" >
+        Province,
+      </if>
+      <if test="city != null" >
+        City,
+      </if>
+      <if test="county != null" >
+        County,
+      </if>
+      <if test="adress != null" >
+        Adress,
+      </if>
+      <if test="zip != null" >
+        Zip,
+      </if>
+      <if test="phone != null" >
+        Phone,
+      </if>
+      <if test="email != null" >
+        Email,
+      </if>
+      <if test="sourcetype != null" >
+        SourceType,
+      </if>
+      <if test="deliverytype != null" >
+        DeliveryType,
+      </if>
+      <if test="ordertype != null" >
+        OrderType,
+      </if>
+      <if test="operatorip != null" >
+        operatorip,
+      </if>
+      <if test="totalprice != null" >
+        TotalPrice,
+      </if>
+      <if test="dicount != null" >
+        Dicount,
+      </if>
+      <if test="postage != null" >
+        Postage,
+      </if>
+      <if test="partnerenum != null" >
+        PartnerEnum,
+      </if>
+      <if test="createdate != null" >
+        CreateDate,
+      </if>
+      <if test="paytime != null" >
+        PayTime,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+      <if test="payid != null" >
+        PayId,
+      </if>
+      <if test="payenum != null" >
+        PayEnum,
+      </if>
+      <if test="completedate != null" >
+        CompleteDate,
+      </if>
+      <if test="insbegindate != null" >
+        InsBeginDate,
+      </if>
+      <if test="insenddate != null" >
+        InsEndDate,
+      </if>
+      <if test="insuranceperiod != null" >
+        InsurancePeriod,
+      </if>
+      <if test="insuranceperiodtype != null" >
+        InsurancePeriodType,
+      </if>
+      <if test="lastupdatedate != null" >
+        LastUpdateDate,
+      </if>
+      <if test="yn != null" >
+        Yn,
+      </if>
+      <if test="version != null" >
+        Version,
+      </if>
+      <if test="skuid != null" >
+        SkuId,
+      </if>
+      <if test="skuname != null" >
+        SkuName,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+      <if test="ext1 != null" >
+        Ext1,
+      </if>
+      <if test="insureddigest != null" >
+        InsuredDigest,
+      </if>
+      <if test="paycardno != null" >
+        payCardNo,
+      </if>
+      <if test="paybankno != null" >
+        payBankNo,
+      </if>
+      <if test="paycardid != null" >
+        payCardId,
+      </if>
+      <if test="buyplan != null" >
+        buyPlan,
+      </if>
+      <if test="forcebegindate != null" >
+        forceBeginDate,
+      </if>
+      <if test="forceenddate != null" >
+        forceEndDate,
+      </if>
+      <if test="businesscode != null" >
+        businessCode,
+      </if>
+      <if test="comorderid != null" >
+        comOrderId,
+      </if>
+      <if test="errorinfo != null" >
+        errorInfo,
+      </if>
+      <if test="activitytype != null" >
+        ActivityType,
+      </if>
+      <if test="keyvalue != null" >
+        keyValue,
+      </if>
+      <if test="withdrawmoney != null" >
+        withDrawMoney,
+      </if>
+      <if test="channelcode != null" >
+        channelCode,
+      </if>
+      <if test="thirdorderid != null" >
+        thirdOrderId,
+      </if>
+      <if test="agentflag != null" >
+        AGENTFLAG,
+      </if>
+      <if test="resourceplace != null" >
+        resourcePlace,
+      </if>
+      <if test="rePurchaseOrderId != null" >
+        re_purchase_order_id,
+      </if>
+      <if test="rePurchaseOrderTo != null" >
+        re_purchase_order_to,
+      </if>
+      <if test="sourceNotify != null" >
+        source_notify,
+      </if>
+      <if test="deleteFlag != null" >
+        delete_flag,
+      </if>
+      <if test="partnerpayid != null" >
+        partnerPayId,
+      </if>
+      <if test="attributetype != null" >
+        attributeType,
+      </if>
+      <if test="uuid != null" >
+        uuid,
+      </if>
+      <if test="groupflag != null" >
+        groupFlag,
+      </if>
+      <if test="erpid != null" >
+        erpId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="pin != null" >
+        #{pin,jdbcType=VARCHAR},
+      </if>
+      <if test="customername != null" >
+        #{customername,jdbcType=VARCHAR},
+      </if>
+      <if test="paytype != null" >
+        #{paytype,jdbcType=SMALLINT},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null" >
+        #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="adress != null" >
+        #{adress,jdbcType=VARCHAR},
+      </if>
+      <if test="zip != null" >
+        #{zip,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="sourcetype != null" >
+        #{sourcetype,jdbcType=VARCHAR},
+      </if>
+      <if test="deliverytype != null" >
+        #{deliverytype,jdbcType=SMALLINT},
+      </if>
+      <if test="ordertype != null" >
+        #{ordertype,jdbcType=BIGINT},
+      </if>
+      <if test="operatorip != null" >
+        #{operatorip,jdbcType=VARCHAR},
+      </if>
+      <if test="totalprice != null" >
+        #{totalprice,jdbcType=DECIMAL},
+      </if>
+      <if test="dicount != null" >
+        #{dicount,jdbcType=DECIMAL},
+      </if>
+      <if test="postage != null" >
+        #{postage,jdbcType=DECIMAL},
+      </if>
+      <if test="partnerenum != null" >
+        #{partnerenum,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paytime != null" >
+        #{paytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="payid != null" >
+        #{payid,jdbcType=VARCHAR},
+      </if>
+      <if test="payenum != null" >
+        #{payenum,jdbcType=BIGINT},
+      </if>
+      <if test="completedate != null" >
+        #{completedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insbegindate != null" >
+        #{insbegindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insenddate != null" >
+        #{insenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insuranceperiod != null" >
+        #{insuranceperiod,jdbcType=VARCHAR},
+      </if>
+      <if test="insuranceperiodtype != null" >
+        #{insuranceperiodtype,jdbcType=VARCHAR},
+      </if>
+      <if test="lastupdatedate != null" >
+        #{lastupdatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yn != null" >
+        #{yn,jdbcType=SMALLINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=SMALLINT},
+      </if>
+      <if test="skuid != null" >
+        #{skuid,jdbcType=VARCHAR},
+      </if>
+      <if test="skuname != null" >
+        #{skuname,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="ext1 != null" >
+        #{ext1,jdbcType=VARCHAR},
+      </if>
+      <if test="insureddigest != null" >
+        #{insureddigest,jdbcType=VARCHAR},
+      </if>
+      <if test="paycardno != null" >
+        #{paycardno,jdbcType=VARCHAR},
+      </if>
+      <if test="paybankno != null" >
+        #{paybankno,jdbcType=VARCHAR},
+      </if>
+      <if test="paycardid != null" >
+        #{paycardid,jdbcType=VARCHAR},
+      </if>
+      <if test="buyplan != null" >
+        #{buyplan,jdbcType=VARCHAR},
+      </if>
+      <if test="forcebegindate != null" >
+        #{forcebegindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="forceenddate != null" >
+        #{forceenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="businesscode != null" >
+        #{businesscode,jdbcType=VARCHAR},
+      </if>
+      <if test="comorderid != null" >
+        #{comorderid,jdbcType=VARCHAR},
+      </if>
+      <if test="errorinfo != null" >
+        #{errorinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="activitytype != null" >
+        #{activitytype,jdbcType=VARCHAR},
+      </if>
+      <if test="keyvalue != null" >
+        #{keyvalue,jdbcType=VARCHAR},
+      </if>
+      <if test="withdrawmoney != null" >
+        #{withdrawmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="channelcode != null" >
+        #{channelcode,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdorderid != null" >
+        #{thirdorderid,jdbcType=VARCHAR},
+      </if>
+      <if test="agentflag != null" >
+        #{agentflag,jdbcType=INTEGER},
+      </if>
+      <if test="resourceplace != null" >
+        #{resourceplace,jdbcType=VARCHAR},
+      </if>
+      <if test="rePurchaseOrderId != null" >
+        #{rePurchaseOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="rePurchaseOrderTo != null" >
+        #{rePurchaseOrderTo,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceNotify != null" >
+        #{sourceNotify,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteFlag != null" >
+        #{deleteFlag,jdbcType=SMALLINT},
+      </if>
+      <if test="partnerpayid != null" >
+        #{partnerpayid,jdbcType=VARCHAR},
+      </if>
+      <if test="attributetype != null" >
+        #{attributetype,jdbcType=VARCHAR},
+      </if>
+      <if test="uuid != null" >
+        #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="groupflag != null" >
+        #{groupflag,jdbcType=SMALLINT},
+      </if>
+      <if test="erpid != null" >
+        #{erpid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.atlandes.productCode.dao.OrdersExample" resultType="java.lang.Integer" >
+    select count(*) from orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update orders
+    <set >
+      <if test="record.id != null" >
+        Id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderid != null" >
+        OrderId = #{record.orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pin != null" >
+        Pin = #{record.pin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customername != null" >
+        CustomerName = #{record.customername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paytype != null" >
+        PayType = #{record.paytype,jdbcType=SMALLINT},
+      </if>
+      <if test="record.province != null" >
+        Province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null" >
+        City = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.county != null" >
+        County = #{record.county,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adress != null" >
+        Adress = #{record.adress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zip != null" >
+        Zip = #{record.zip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        Phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        Email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sourcetype != null" >
+        SourceType = #{record.sourcetype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deliverytype != null" >
+        DeliveryType = #{record.deliverytype,jdbcType=SMALLINT},
+      </if>
+      <if test="record.ordertype != null" >
+        OrderType = #{record.ordertype,jdbcType=BIGINT},
+      </if>
+      <if test="record.operatorip != null" >
+        operatorip = #{record.operatorip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalprice != null" >
+        TotalPrice = #{record.totalprice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.dicount != null" >
+        Dicount = #{record.dicount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.postage != null" >
+        Postage = #{record.postage,jdbcType=DECIMAL},
+      </if>
+      <if test="record.partnerenum != null" >
+        PartnerEnum = #{record.partnerenum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdate != null" >
+        CreateDate = #{record.createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.paytime != null" >
+        PayTime = #{record.paytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null" >
+        Status = #{record.status,jdbcType=SMALLINT},
+      </if>
+      <if test="record.payid != null" >
+        PayId = #{record.payid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payenum != null" >
+        PayEnum = #{record.payenum,jdbcType=BIGINT},
+      </if>
+      <if test="record.completedate != null" >
+        CompleteDate = #{record.completedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.insbegindate != null" >
+        InsBeginDate = #{record.insbegindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.insenddate != null" >
+        InsEndDate = #{record.insenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.insuranceperiod != null" >
+        InsurancePeriod = #{record.insuranceperiod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insuranceperiodtype != null" >
+        InsurancePeriodType = #{record.insuranceperiodtype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastupdatedate != null" >
+        LastUpdateDate = #{record.lastupdatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.yn != null" >
+        Yn = #{record.yn,jdbcType=SMALLINT},
+      </if>
+      <if test="record.version != null" >
+        Version = #{record.version,jdbcType=SMALLINT},
+      </if>
+      <if test="record.skuid != null" >
+        SkuId = #{record.skuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.skuname != null" >
+        SkuName = #{record.skuname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        Remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ext1 != null" >
+        Ext1 = #{record.ext1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insureddigest != null" >
+        InsuredDigest = #{record.insureddigest,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paycardno != null" >
+        payCardNo = #{record.paycardno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paybankno != null" >
+        payBankNo = #{record.paybankno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paycardid != null" >
+        payCardId = #{record.paycardid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buyplan != null" >
+        buyPlan = #{record.buyplan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.forcebegindate != null" >
+        forceBeginDate = #{record.forcebegindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.forceenddate != null" >
+        forceEndDate = #{record.forceenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.businesscode != null" >
+        businessCode = #{record.businesscode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.comorderid != null" >
+        comOrderId = #{record.comorderid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.errorinfo != null" >
+        errorInfo = #{record.errorinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.activitytype != null" >
+        ActivityType = #{record.activitytype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.keyvalue != null" >
+        keyValue = #{record.keyvalue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.withdrawmoney != null" >
+        withDrawMoney = #{record.withdrawmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.channelcode != null" >
+        channelCode = #{record.channelcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.thirdorderid != null" >
+        thirdOrderId = #{record.thirdorderid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agentflag != null" >
+        AGENTFLAG = #{record.agentflag,jdbcType=INTEGER},
+      </if>
+      <if test="record.resourceplace != null" >
+        resourcePlace = #{record.resourceplace,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rePurchaseOrderId != null" >
+        re_purchase_order_id = #{record.rePurchaseOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rePurchaseOrderTo != null" >
+        re_purchase_order_to = #{record.rePurchaseOrderTo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sourceNotify != null" >
+        source_notify = #{record.sourceNotify,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleteFlag != null" >
+        delete_flag = #{record.deleteFlag,jdbcType=SMALLINT},
+      </if>
+      <if test="record.partnerpayid != null" >
+        partnerPayId = #{record.partnerpayid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attributetype != null" >
+        attributeType = #{record.attributetype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uuid != null" >
+        uuid = #{record.uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.groupflag != null" >
+        groupFlag = #{record.groupflag,jdbcType=SMALLINT},
+      </if>
+      <if test="record.erpid != null" >
+        erpId = #{record.erpid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update orders
+    set Id = #{record.id,jdbcType=BIGINT},
+      OrderId = #{record.orderid,jdbcType=VARCHAR},
+      Pin = #{record.pin,jdbcType=VARCHAR},
+      CustomerName = #{record.customername,jdbcType=VARCHAR},
+      PayType = #{record.paytype,jdbcType=SMALLINT},
+      Province = #{record.province,jdbcType=VARCHAR},
+      City = #{record.city,jdbcType=VARCHAR},
+      County = #{record.county,jdbcType=VARCHAR},
+      Adress = #{record.adress,jdbcType=VARCHAR},
+      Zip = #{record.zip,jdbcType=VARCHAR},
+      Phone = #{record.phone,jdbcType=VARCHAR},
+      Email = #{record.email,jdbcType=VARCHAR},
+      SourceType = #{record.sourcetype,jdbcType=VARCHAR},
+      DeliveryType = #{record.deliverytype,jdbcType=SMALLINT},
+      OrderType = #{record.ordertype,jdbcType=BIGINT},
+      operatorip = #{record.operatorip,jdbcType=VARCHAR},
+      TotalPrice = #{record.totalprice,jdbcType=DECIMAL},
+      Dicount = #{record.dicount,jdbcType=DECIMAL},
+      Postage = #{record.postage,jdbcType=DECIMAL},
+      PartnerEnum = #{record.partnerenum,jdbcType=VARCHAR},
+      CreateDate = #{record.createdate,jdbcType=TIMESTAMP},
+      PayTime = #{record.paytime,jdbcType=TIMESTAMP},
+      Status = #{record.status,jdbcType=SMALLINT},
+      PayId = #{record.payid,jdbcType=VARCHAR},
+      PayEnum = #{record.payenum,jdbcType=BIGINT},
+      CompleteDate = #{record.completedate,jdbcType=TIMESTAMP},
+      InsBeginDate = #{record.insbegindate,jdbcType=TIMESTAMP},
+      InsEndDate = #{record.insenddate,jdbcType=TIMESTAMP},
+      InsurancePeriod = #{record.insuranceperiod,jdbcType=VARCHAR},
+      InsurancePeriodType = #{record.insuranceperiodtype,jdbcType=VARCHAR},
+      LastUpdateDate = #{record.lastupdatedate,jdbcType=TIMESTAMP},
+      Yn = #{record.yn,jdbcType=SMALLINT},
+      Version = #{record.version,jdbcType=SMALLINT},
+      SkuId = #{record.skuid,jdbcType=VARCHAR},
+      SkuName = #{record.skuname,jdbcType=VARCHAR},
+      Remark = #{record.remark,jdbcType=VARCHAR},
+      Ext1 = #{record.ext1,jdbcType=VARCHAR},
+      InsuredDigest = #{record.insureddigest,jdbcType=VARCHAR},
+      payCardNo = #{record.paycardno,jdbcType=VARCHAR},
+      payBankNo = #{record.paybankno,jdbcType=VARCHAR},
+      payCardId = #{record.paycardid,jdbcType=VARCHAR},
+      buyPlan = #{record.buyplan,jdbcType=VARCHAR},
+      forceBeginDate = #{record.forcebegindate,jdbcType=TIMESTAMP},
+      forceEndDate = #{record.forceenddate,jdbcType=TIMESTAMP},
+      businessCode = #{record.businesscode,jdbcType=VARCHAR},
+      comOrderId = #{record.comorderid,jdbcType=VARCHAR},
+      errorInfo = #{record.errorinfo,jdbcType=VARCHAR},
+      ActivityType = #{record.activitytype,jdbcType=VARCHAR},
+      keyValue = #{record.keyvalue,jdbcType=VARCHAR},
+      withDrawMoney = #{record.withdrawmoney,jdbcType=DECIMAL},
+      channelCode = #{record.channelcode,jdbcType=VARCHAR},
+      thirdOrderId = #{record.thirdorderid,jdbcType=VARCHAR},
+      AGENTFLAG = #{record.agentflag,jdbcType=INTEGER},
+      resourcePlace = #{record.resourceplace,jdbcType=VARCHAR},
+      re_purchase_order_id = #{record.rePurchaseOrderId,jdbcType=VARCHAR},
+      re_purchase_order_to = #{record.rePurchaseOrderTo,jdbcType=VARCHAR},
+      source_notify = #{record.sourceNotify,jdbcType=VARCHAR},
+      delete_flag = #{record.deleteFlag,jdbcType=SMALLINT},
+      partnerPayId = #{record.partnerpayid,jdbcType=VARCHAR},
+      attributeType = #{record.attributetype,jdbcType=VARCHAR},
+      uuid = #{record.uuid,jdbcType=VARCHAR},
+      groupFlag = #{record.groupflag,jdbcType=SMALLINT},
+      erpId = #{record.erpid,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atlandes.productCode.dao.Orders" >
+    update orders
+    <set >
+      <if test="orderid != null" >
+        OrderId = #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="pin != null" >
+        Pin = #{pin,jdbcType=VARCHAR},
+      </if>
+      <if test="customername != null" >
+        CustomerName = #{customername,jdbcType=VARCHAR},
+      </if>
+      <if test="paytype != null" >
+        PayType = #{paytype,jdbcType=SMALLINT},
+      </if>
+      <if test="province != null" >
+        Province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        City = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null" >
+        County = #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="adress != null" >
+        Adress = #{adress,jdbcType=VARCHAR},
+      </if>
+      <if test="zip != null" >
+        Zip = #{zip,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        Phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        Email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="sourcetype != null" >
+        SourceType = #{sourcetype,jdbcType=VARCHAR},
+      </if>
+      <if test="deliverytype != null" >
+        DeliveryType = #{deliverytype,jdbcType=SMALLINT},
+      </if>
+      <if test="ordertype != null" >
+        OrderType = #{ordertype,jdbcType=BIGINT},
+      </if>
+      <if test="operatorip != null" >
+        operatorip = #{operatorip,jdbcType=VARCHAR},
+      </if>
+      <if test="totalprice != null" >
+        TotalPrice = #{totalprice,jdbcType=DECIMAL},
+      </if>
+      <if test="dicount != null" >
+        Dicount = #{dicount,jdbcType=DECIMAL},
+      </if>
+      <if test="postage != null" >
+        Postage = #{postage,jdbcType=DECIMAL},
+      </if>
+      <if test="partnerenum != null" >
+        PartnerEnum = #{partnerenum,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paytime != null" >
+        PayTime = #{paytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="payid != null" >
+        PayId = #{payid,jdbcType=VARCHAR},
+      </if>
+      <if test="payenum != null" >
+        PayEnum = #{payenum,jdbcType=BIGINT},
+      </if>
+      <if test="completedate != null" >
+        CompleteDate = #{completedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insbegindate != null" >
+        InsBeginDate = #{insbegindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insenddate != null" >
+        InsEndDate = #{insenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insuranceperiod != null" >
+        InsurancePeriod = #{insuranceperiod,jdbcType=VARCHAR},
+      </if>
+      <if test="insuranceperiodtype != null" >
+        InsurancePeriodType = #{insuranceperiodtype,jdbcType=VARCHAR},
+      </if>
+      <if test="lastupdatedate != null" >
+        LastUpdateDate = #{lastupdatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yn != null" >
+        Yn = #{yn,jdbcType=SMALLINT},
+      </if>
+      <if test="version != null" >
+        Version = #{version,jdbcType=SMALLINT},
+      </if>
+      <if test="skuid != null" >
+        SkuId = #{skuid,jdbcType=VARCHAR},
+      </if>
+      <if test="skuname != null" >
+        SkuName = #{skuname,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="ext1 != null" >
+        Ext1 = #{ext1,jdbcType=VARCHAR},
+      </if>
+      <if test="insureddigest != null" >
+        InsuredDigest = #{insureddigest,jdbcType=VARCHAR},
+      </if>
+      <if test="paycardno != null" >
+        payCardNo = #{paycardno,jdbcType=VARCHAR},
+      </if>
+      <if test="paybankno != null" >
+        payBankNo = #{paybankno,jdbcType=VARCHAR},
+      </if>
+      <if test="paycardid != null" >
+        payCardId = #{paycardid,jdbcType=VARCHAR},
+      </if>
+      <if test="buyplan != null" >
+        buyPlan = #{buyplan,jdbcType=VARCHAR},
+      </if>
+      <if test="forcebegindate != null" >
+        forceBeginDate = #{forcebegindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="forceenddate != null" >
+        forceEndDate = #{forceenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="businesscode != null" >
+        businessCode = #{businesscode,jdbcType=VARCHAR},
+      </if>
+      <if test="comorderid != null" >
+        comOrderId = #{comorderid,jdbcType=VARCHAR},
+      </if>
+      <if test="errorinfo != null" >
+        errorInfo = #{errorinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="activitytype != null" >
+        ActivityType = #{activitytype,jdbcType=VARCHAR},
+      </if>
+      <if test="keyvalue != null" >
+        keyValue = #{keyvalue,jdbcType=VARCHAR},
+      </if>
+      <if test="withdrawmoney != null" >
+        withDrawMoney = #{withdrawmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="channelcode != null" >
+        channelCode = #{channelcode,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdorderid != null" >
+        thirdOrderId = #{thirdorderid,jdbcType=VARCHAR},
+      </if>
+      <if test="agentflag != null" >
+        AGENTFLAG = #{agentflag,jdbcType=INTEGER},
+      </if>
+      <if test="resourceplace != null" >
+        resourcePlace = #{resourceplace,jdbcType=VARCHAR},
+      </if>
+      <if test="rePurchaseOrderId != null" >
+        re_purchase_order_id = #{rePurchaseOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="rePurchaseOrderTo != null" >
+        re_purchase_order_to = #{rePurchaseOrderTo,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceNotify != null" >
+        source_notify = #{sourceNotify,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteFlag != null" >
+        delete_flag = #{deleteFlag,jdbcType=SMALLINT},
+      </if>
+      <if test="partnerpayid != null" >
+        partnerPayId = #{partnerpayid,jdbcType=VARCHAR},
+      </if>
+      <if test="attributetype != null" >
+        attributeType = #{attributetype,jdbcType=VARCHAR},
+      </if>
+      <if test="uuid != null" >
+        uuid = #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="groupflag != null" >
+        groupFlag = #{groupflag,jdbcType=SMALLINT},
+      </if>
+      <if test="erpid != null" >
+        erpId = #{erpid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atlandes.productCode.dao.Orders" >
+    update orders
+    set OrderId = #{orderid,jdbcType=VARCHAR},
+      Pin = #{pin,jdbcType=VARCHAR},
+      CustomerName = #{customername,jdbcType=VARCHAR},
+      PayType = #{paytype,jdbcType=SMALLINT},
+      Province = #{province,jdbcType=VARCHAR},
+      City = #{city,jdbcType=VARCHAR},
+      County = #{county,jdbcType=VARCHAR},
+      Adress = #{adress,jdbcType=VARCHAR},
+      Zip = #{zip,jdbcType=VARCHAR},
+      Phone = #{phone,jdbcType=VARCHAR},
+      Email = #{email,jdbcType=VARCHAR},
+      SourceType = #{sourcetype,jdbcType=VARCHAR},
+      DeliveryType = #{deliverytype,jdbcType=SMALLINT},
+      OrderType = #{ordertype,jdbcType=BIGINT},
+      operatorip = #{operatorip,jdbcType=VARCHAR},
+      TotalPrice = #{totalprice,jdbcType=DECIMAL},
+      Dicount = #{dicount,jdbcType=DECIMAL},
+      Postage = #{postage,jdbcType=DECIMAL},
+      PartnerEnum = #{partnerenum,jdbcType=VARCHAR},
+      CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      PayTime = #{paytime,jdbcType=TIMESTAMP},
+      Status = #{status,jdbcType=SMALLINT},
+      PayId = #{payid,jdbcType=VARCHAR},
+      PayEnum = #{payenum,jdbcType=BIGINT},
+      CompleteDate = #{completedate,jdbcType=TIMESTAMP},
+      InsBeginDate = #{insbegindate,jdbcType=TIMESTAMP},
+      InsEndDate = #{insenddate,jdbcType=TIMESTAMP},
+      InsurancePeriod = #{insuranceperiod,jdbcType=VARCHAR},
+      InsurancePeriodType = #{insuranceperiodtype,jdbcType=VARCHAR},
+      LastUpdateDate = #{lastupdatedate,jdbcType=TIMESTAMP},
+      Yn = #{yn,jdbcType=SMALLINT},
+      Version = #{version,jdbcType=SMALLINT},
+      SkuId = #{skuid,jdbcType=VARCHAR},
+      SkuName = #{skuname,jdbcType=VARCHAR},
+      Remark = #{remark,jdbcType=VARCHAR},
+      Ext1 = #{ext1,jdbcType=VARCHAR},
+      InsuredDigest = #{insureddigest,jdbcType=VARCHAR},
+      payCardNo = #{paycardno,jdbcType=VARCHAR},
+      payBankNo = #{paybankno,jdbcType=VARCHAR},
+      payCardId = #{paycardid,jdbcType=VARCHAR},
+      buyPlan = #{buyplan,jdbcType=VARCHAR},
+      forceBeginDate = #{forcebegindate,jdbcType=TIMESTAMP},
+      forceEndDate = #{forceenddate,jdbcType=TIMESTAMP},
+      businessCode = #{businesscode,jdbcType=VARCHAR},
+      comOrderId = #{comorderid,jdbcType=VARCHAR},
+      errorInfo = #{errorinfo,jdbcType=VARCHAR},
+      ActivityType = #{activitytype,jdbcType=VARCHAR},
+      keyValue = #{keyvalue,jdbcType=VARCHAR},
+      withDrawMoney = #{withdrawmoney,jdbcType=DECIMAL},
+      channelCode = #{channelcode,jdbcType=VARCHAR},
+      thirdOrderId = #{thirdorderid,jdbcType=VARCHAR},
+      AGENTFLAG = #{agentflag,jdbcType=INTEGER},
+      resourcePlace = #{resourceplace,jdbcType=VARCHAR},
+      re_purchase_order_id = #{rePurchaseOrderId,jdbcType=VARCHAR},
+      re_purchase_order_to = #{rePurchaseOrderTo,jdbcType=VARCHAR},
+      source_notify = #{sourceNotify,jdbcType=VARCHAR},
+      delete_flag = #{deleteFlag,jdbcType=SMALLINT},
+      partnerPayId = #{partnerpayid,jdbcType=VARCHAR},
+      attributeType = #{attributetype,jdbcType=VARCHAR},
+      uuid = #{uuid,jdbcType=VARCHAR},
+      groupFlag = #{groupflag,jdbcType=SMALLINT},
+      erpId = #{erpid,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

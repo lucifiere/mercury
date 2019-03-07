@@ -1,4 +1,3 @@
-
 function addCheckResult(baseResult) {
     var baseCheckResult = '<tr name="baseCheckResult">\n' +
         '<td>' + baseResult.checkItem + '</td>\n' +
@@ -18,6 +17,8 @@ function addFeeCheckResult(feeResult) {
         '</tr>';
     $("#ftb").append(feeCheckResult)
 }
+
+
 
 // function startFeeCheck () {
 //     alert("dgdsfds");

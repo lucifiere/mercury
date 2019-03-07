@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atlandes.productCode.mapper.PolicyorderMapper" >
+  <resultMap id="BaseResultMap" type="com.atlandes.productCode.dao.Policyorder" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="OrderId" property="orderid" jdbcType="VARCHAR" />
+    <result column="PolicyNo" property="policyno" jdbcType="VARCHAR" />
+    <result column="ProposalNo" property="proposalno" jdbcType="VARCHAR" />
+    <result column="UUID" property="uuid" jdbcType="VARCHAR" />
+    <result column="SkuId" property="skuid" jdbcType="VARCHAR" />
+    <result column="PartnerEnum" property="partnerenum" jdbcType="VARCHAR" />
+    <result column="partnerProductCode" property="partnerproductcode" jdbcType="VARCHAR" />
+    <result column="CustomerMapping" property="customermapping" jdbcType="VARCHAR" />
+    <result column="PolicyPrice" property="policyprice" jdbcType="DECIMAL" />
+    <result column="downloadurl" property="downloadurl" jdbcType="VARCHAR" />
+    <result column="InsBeginDate" property="insbegindate" jdbcType="TIMESTAMP" />
+    <result column="InsEndDate" property="insenddate" jdbcType="TIMESTAMP" />
+    <result column="InsQuantity" property="insquantity" jdbcType="SMALLINT" />
+    <result column="Status" property="status" jdbcType="SMALLINT" />
+    <result column="ProposalDate" property="proposaldate" jdbcType="TIMESTAMP" />
+    <result column="PolicyDate" property="policydate" jdbcType="TIMESTAMP" />
+    <result column="CreteDate" property="cretedate" jdbcType="TIMESTAMP" />
+    <result column="LastUpdateDate" property="lastupdatedate" jdbcType="TIMESTAMP" />
+    <result column="Version" property="version" jdbcType="SMALLINT" />
+    <result column="SkuName" property="skuname" jdbcType="VARCHAR" />
+    <result column="PolicyLimitPrice" property="policylimitprice" jdbcType="DECIMAL" />
+    <result column="PolicyType" property="policytype" jdbcType="SMALLINT" />
+    <result column="PolicyNum" property="policynum" jdbcType="SMALLINT" />
+    <result column="YN" property="yn" jdbcType="SMALLINT" />
+    <result column="groupFlag" property="groupflag" jdbcType="SMALLINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, OrderId, PolicyNo, ProposalNo, UUID, SkuId, PartnerEnum, partnerProductCode, 
+    CustomerMapping, PolicyPrice, downloadurl, InsBeginDate, InsEndDate, InsQuantity, 
+    Status, ProposalDate, PolicyDate, CreteDate, LastUpdateDate, Version, SkuName, PolicyLimitPrice, 
+    PolicyType, PolicyNum, YN, groupFlag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.atlandes.productCode.dao.PolicyorderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from policyorder
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from policyorder
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from policyorder
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.atlandes.productCode.dao.PolicyorderExample" >
+    delete from policyorder
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.atlandes.productCode.dao.Policyorder" >
+    insert into policyorder (id, OrderId, PolicyNo, 
+      ProposalNo, UUID, SkuId, 
+      PartnerEnum, partnerProductCode, CustomerMapping, 
+      PolicyPrice, downloadurl, InsBeginDate, 
+      InsEndDate, InsQuantity, Status, 
+      ProposalDate, PolicyDate, CreteDate, 
+      LastUpdateDate, Version, SkuName, 
+      PolicyLimitPrice, PolicyType, PolicyNum, 
+      YN, groupFlag)
+    values (#{id,jdbcType=BIGINT}, #{orderid,jdbcType=VARCHAR}, #{policyno,jdbcType=VARCHAR}, 
+      #{proposalno,jdbcType=VARCHAR}, #{uuid,jdbcType=VARCHAR}, #{skuid,jdbcType=VARCHAR}, 
+      #{partnerenum,jdbcType=VARCHAR}, #{partnerproductcode,jdbcType=VARCHAR}, #{customermapping,jdbcType=VARCHAR}, 
+      #{policyprice,jdbcType=DECIMAL}, #{downloadurl,jdbcType=VARCHAR}, #{insbegindate,jdbcType=TIMESTAMP}, 
+      #{insenddate,jdbcType=TIMESTAMP}, #{insquantity,jdbcType=SMALLINT}, #{status,jdbcType=SMALLINT}, 
+      #{proposaldate,jdbcType=TIMESTAMP}, #{policydate,jdbcType=TIMESTAMP}, #{cretedate,jdbcType=TIMESTAMP}, 
+      #{lastupdatedate,jdbcType=TIMESTAMP}, #{version,jdbcType=SMALLINT}, #{skuname,jdbcType=VARCHAR}, 
+      #{policylimitprice,jdbcType=DECIMAL}, #{policytype,jdbcType=SMALLINT}, #{policynum,jdbcType=SMALLINT}, 
+      #{yn,jdbcType=SMALLINT}, #{groupflag,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.atlandes.productCode.dao.Policyorder" >
+    insert into policyorder
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderid != null" >
+        OrderId,
+      </if>
+      <if test="policyno != null" >
+        PolicyNo,
+      </if>
+      <if test="proposalno != null" >
+        ProposalNo,
+      </if>
+      <if test="uuid != null" >
+        UUID,
+      </if>
+      <if test="skuid != null" >
+        SkuId,
+      </if>
+      <if test="partnerenum != null" >
+        PartnerEnum,
+      </if>
+      <if test="partnerproductcode != null" >
+        partnerProductCode,
+      </if>
+      <if test="customermapping != null" >
+        CustomerMapping,
+      </if>
+      <if test="policyprice != null" >
+        PolicyPrice,
+      </if>
+      <if test="downloadurl != null" >
+        downloadurl,
+      </if>
+      <if test="insbegindate != null" >
+        InsBeginDate,
+      </if>
+      <if test="insenddate != null" >
+        InsEndDate,
+      </if>
+      <if test="insquantity != null" >
+        InsQuantity,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+      <if test="proposaldate != null" >
+        ProposalDate,
+      </if>
+      <if test="policydate != null" >
+        PolicyDate,
+      </if>
+      <if test="cretedate != null" >
+        CreteDate,
+      </if>
+      <if test="lastupdatedate != null" >
+        LastUpdateDate,
+      </if>
+      <if test="version != null" >
+        Version,
+      </if>
+      <if test="skuname != null" >
+        SkuName,
+      </if>
+      <if test="policylimitprice != null" >
+        PolicyLimitPrice,
+      </if>
+      <if test="policytype != null" >
+        PolicyType,
+      </if>
+      <if test="policynum != null" >
+        PolicyNum,
+      </if>
+      <if test="yn != null" >
+        YN,
+      </if>
+      <if test="groupflag != null" >
+        groupFlag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="policyno != null" >
+        #{policyno,jdbcType=VARCHAR},
+      </if>
+      <if test="proposalno != null" >
+        #{proposalno,jdbcType=VARCHAR},
+      </if>
+      <if test="uuid != null" >
+        #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="skuid != null" >
+        #{skuid,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerenum != null" >
+        #{partnerenum,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerproductcode != null" >
+        #{partnerproductcode,jdbcType=VARCHAR},
+      </if>
+      <if test="customermapping != null" >
+        #{customermapping,jdbcType=VARCHAR},
+      </if>
+      <if test="policyprice != null" >
+        #{policyprice,jdbcType=DECIMAL},
+      </if>
+      <if test="downloadurl != null" >
+        #{downloadurl,jdbcType=VARCHAR},
+      </if>
+      <if test="insbegindate != null" >
+        #{insbegindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insenddate != null" >
+        #{insenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insquantity != null" >
+        #{insquantity,jdbcType=SMALLINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="proposaldate != null" >
+        #{proposaldate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="policydate != null" >
+        #{policydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cretedate != null" >
+        #{cretedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastupdatedate != null" >
+        #{lastupdatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=SMALLINT},
+      </if>
+      <if test="skuname != null" >
+        #{skuname,jdbcType=VARCHAR},
+      </if>
+      <if test="policylimitprice != null" >
+        #{policylimitprice,jdbcType=DECIMAL},
+      </if>
+      <if test="policytype != null" >
+        #{policytype,jdbcType=SMALLINT},
+      </if>
+      <if test="policynum != null" >
+        #{policynum,jdbcType=SMALLINT},
+      </if>
+      <if test="yn != null" >
+        #{yn,jdbcType=SMALLINT},
+      </if>
+      <if test="groupflag != null" >
+        #{groupflag,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.atlandes.productCode.dao.PolicyorderExample" resultType="java.lang.Integer" >
+    select count(*) from policyorder
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update policyorder
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderid != null" >
+        OrderId = #{record.orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.policyno != null" >
+        PolicyNo = #{record.policyno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proposalno != null" >
+        ProposalNo = #{record.proposalno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uuid != null" >
+        UUID = #{record.uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.skuid != null" >
+        SkuId = #{record.skuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.partnerenum != null" >
+        PartnerEnum = #{record.partnerenum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.partnerproductcode != null" >
+        partnerProductCode = #{record.partnerproductcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customermapping != null" >
+        CustomerMapping = #{record.customermapping,jdbcType=VARCHAR},
+      </if>
+      <if test="record.policyprice != null" >
+        PolicyPrice = #{record.policyprice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.downloadurl != null" >
+        downloadurl = #{record.downloadurl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insbegindate != null" >
+        InsBeginDate = #{record.insbegindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.insenddate != null" >
+        InsEndDate = #{record.insenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.insquantity != null" >
+        InsQuantity = #{record.insquantity,jdbcType=SMALLINT},
+      </if>
+      <if test="record.status != null" >
+        Status = #{record.status,jdbcType=SMALLINT},
+      </if>
+      <if test="record.proposaldate != null" >
+        ProposalDate = #{record.proposaldate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.policydate != null" >
+        PolicyDate = #{record.policydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cretedate != null" >
+        CreteDate = #{record.cretedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastupdatedate != null" >
+        LastUpdateDate = #{record.lastupdatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.version != null" >
+        Version = #{record.version,jdbcType=SMALLINT},
+      </if>
+      <if test="record.skuname != null" >
+        SkuName = #{record.skuname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.policylimitprice != null" >
+        PolicyLimitPrice = #{record.policylimitprice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.policytype != null" >
+        PolicyType = #{record.policytype,jdbcType=SMALLINT},
+      </if>
+      <if test="record.policynum != null" >
+        PolicyNum = #{record.policynum,jdbcType=SMALLINT},
+      </if>
+      <if test="record.yn != null" >
+        YN = #{record.yn,jdbcType=SMALLINT},
+      </if>
+      <if test="record.groupflag != null" >
+        groupFlag = #{record.groupflag,jdbcType=SMALLINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update policyorder
+    set id = #{record.id,jdbcType=BIGINT},
+      OrderId = #{record.orderid,jdbcType=VARCHAR},
+      PolicyNo = #{record.policyno,jdbcType=VARCHAR},
+      ProposalNo = #{record.proposalno,jdbcType=VARCHAR},
+      UUID = #{record.uuid,jdbcType=VARCHAR},
+      SkuId = #{record.skuid,jdbcType=VARCHAR},
+      PartnerEnum = #{record.partnerenum,jdbcType=VARCHAR},
+      partnerProductCode = #{record.partnerproductcode,jdbcType=VARCHAR},
+      CustomerMapping = #{record.customermapping,jdbcType=VARCHAR},
+      PolicyPrice = #{record.policyprice,jdbcType=DECIMAL},
+      downloadurl = #{record.downloadurl,jdbcType=VARCHAR},
+      InsBeginDate = #{record.insbegindate,jdbcType=TIMESTAMP},
+      InsEndDate = #{record.insenddate,jdbcType=TIMESTAMP},
+      InsQuantity = #{record.insquantity,jdbcType=SMALLINT},
+      Status = #{record.status,jdbcType=SMALLINT},
+      ProposalDate = #{record.proposaldate,jdbcType=TIMESTAMP},
+      PolicyDate = #{record.policydate,jdbcType=TIMESTAMP},
+      CreteDate = #{record.cretedate,jdbcType=TIMESTAMP},
+      LastUpdateDate = #{record.lastupdatedate,jdbcType=TIMESTAMP},
+      Version = #{record.version,jdbcType=SMALLINT},
+      SkuName = #{record.skuname,jdbcType=VARCHAR},
+      PolicyLimitPrice = #{record.policylimitprice,jdbcType=DECIMAL},
+      PolicyType = #{record.policytype,jdbcType=SMALLINT},
+      PolicyNum = #{record.policynum,jdbcType=SMALLINT},
+      YN = #{record.yn,jdbcType=SMALLINT},
+      groupFlag = #{record.groupflag,jdbcType=SMALLINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atlandes.productCode.dao.Policyorder" >
+    update policyorder
+    <set >
+      <if test="orderid != null" >
+        OrderId = #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="policyno != null" >
+        PolicyNo = #{policyno,jdbcType=VARCHAR},
+      </if>
+      <if test="proposalno != null" >
+        ProposalNo = #{proposalno,jdbcType=VARCHAR},
+      </if>
+      <if test="uuid != null" >
+        UUID = #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="skuid != null" >
+        SkuId = #{skuid,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerenum != null" >
+        PartnerEnum = #{partnerenum,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerproductcode != null" >
+        partnerProductCode = #{partnerproductcode,jdbcType=VARCHAR},
+      </if>
+      <if test="customermapping != null" >
+        CustomerMapping = #{customermapping,jdbcType=VARCHAR},
+      </if>
+      <if test="policyprice != null" >
+        PolicyPrice = #{policyprice,jdbcType=DECIMAL},
+      </if>
+      <if test="downloadurl != null" >
+        downloadurl = #{downloadurl,jdbcType=VARCHAR},
+      </if>
+      <if test="insbegindate != null" >
+        InsBeginDate = #{insbegindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insenddate != null" >
+        InsEndDate = #{insenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insquantity != null" >
+        InsQuantity = #{insquantity,jdbcType=SMALLINT},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="proposaldate != null" >
+        ProposalDate = #{proposaldate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="policydate != null" >
+        PolicyDate = #{policydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cretedate != null" >
+        CreteDate = #{cretedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastupdatedate != null" >
+        LastUpdateDate = #{lastupdatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        Version = #{version,jdbcType=SMALLINT},
+      </if>
+      <if test="skuname != null" >
+        SkuName = #{skuname,jdbcType=VARCHAR},
+      </if>
+      <if test="policylimitprice != null" >
+        PolicyLimitPrice = #{policylimitprice,jdbcType=DECIMAL},
+      </if>
+      <if test="policytype != null" >
+        PolicyType = #{policytype,jdbcType=SMALLINT},
+      </if>
+      <if test="policynum != null" >
+        PolicyNum = #{policynum,jdbcType=SMALLINT},
+      </if>
+      <if test="yn != null" >
+        YN = #{yn,jdbcType=SMALLINT},
+      </if>
+      <if test="groupflag != null" >
+        groupFlag = #{groupflag,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atlandes.productCode.dao.Policyorder" >
+    update policyorder
+    set OrderId = #{orderid,jdbcType=VARCHAR},
+      PolicyNo = #{policyno,jdbcType=VARCHAR},
+      ProposalNo = #{proposalno,jdbcType=VARCHAR},
+      UUID = #{uuid,jdbcType=VARCHAR},
+      SkuId = #{skuid,jdbcType=VARCHAR},
+      PartnerEnum = #{partnerenum,jdbcType=VARCHAR},
+      partnerProductCode = #{partnerproductcode,jdbcType=VARCHAR},
+      CustomerMapping = #{customermapping,jdbcType=VARCHAR},
+      PolicyPrice = #{policyprice,jdbcType=DECIMAL},
+      downloadurl = #{downloadurl,jdbcType=VARCHAR},
+      InsBeginDate = #{insbegindate,jdbcType=TIMESTAMP},
+      InsEndDate = #{insenddate,jdbcType=TIMESTAMP},
+      InsQuantity = #{insquantity,jdbcType=SMALLINT},
+      Status = #{status,jdbcType=SMALLINT},
+      ProposalDate = #{proposaldate,jdbcType=TIMESTAMP},
+      PolicyDate = #{policydate,jdbcType=TIMESTAMP},
+      CreteDate = #{cretedate,jdbcType=TIMESTAMP},
+      LastUpdateDate = #{lastupdatedate,jdbcType=TIMESTAMP},
+      Version = #{version,jdbcType=SMALLINT},
+      SkuName = #{skuname,jdbcType=VARCHAR},
+      PolicyLimitPrice = #{policylimitprice,jdbcType=DECIMAL},
+      PolicyType = #{policytype,jdbcType=SMALLINT},
+      PolicyNum = #{policynum,jdbcType=SMALLINT},
+      YN = #{yn,jdbcType=SMALLINT},
+      groupFlag = #{groupflag,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

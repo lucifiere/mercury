@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atlandes.productCode.mapper.TradetaskMapper" >
+  <resultMap id="BaseResultMap" type="com.atlandes.productCode.dao.Tradetask" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="bizNo" property="bizno" jdbcType="VARCHAR" />
+    <result column="bizType" property="biztype" jdbcType="VARCHAR" />
+    <result column="orderId" property="orderid" jdbcType="VARCHAR" />
+    <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+    <result column="taskInfo" property="taskinfo" jdbcType="VARCHAR" />
+    <result column="taskStatus" property="taskstatus" jdbcType="SMALLINT" />
+    <result column="createDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="lastUpdateDate" property="lastupdatedate" jdbcType="TIMESTAMP" />
+    <result column="retryTime" property="retrytime" jdbcType="SMALLINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, bizNo, bizType, orderId, uuid, taskInfo, taskStatus, createDate, lastUpdateDate, 
+    retryTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.atlandes.productCode.dao.TradetaskExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tradetask
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tradetask
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tradetask
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.atlandes.productCode.dao.TradetaskExample" >
+    delete from tradetask
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.atlandes.productCode.dao.Tradetask" >
+    insert into tradetask (id, bizNo, bizType, 
+      orderId, uuid, taskInfo, 
+      taskStatus, createDate, lastUpdateDate, 
+      retryTime)
+    values (#{id,jdbcType=BIGINT}, #{bizno,jdbcType=VARCHAR}, #{biztype,jdbcType=VARCHAR}, 
+      #{orderid,jdbcType=VARCHAR}, #{uuid,jdbcType=VARCHAR}, #{taskinfo,jdbcType=VARCHAR}, 
+      #{taskstatus,jdbcType=SMALLINT}, #{createdate,jdbcType=TIMESTAMP}, #{lastupdatedate,jdbcType=TIMESTAMP}, 
+      #{retrytime,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.atlandes.productCode.dao.Tradetask" >
+    insert into tradetask
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="bizno != null" >
+        bizNo,
+      </if>
+      <if test="biztype != null" >
+        bizType,
+      </if>
+      <if test="orderid != null" >
+        orderId,
+      </if>
+      <if test="uuid != null" >
+        uuid,
+      </if>
+      <if test="taskinfo != null" >
+        taskInfo,
+      </if>
+      <if test="taskstatus != null" >
+        taskStatus,
+      </if>
+      <if test="createdate != null" >
+        createDate,
+      </if>
+      <if test="lastupdatedate != null" >
+        lastUpdateDate,
+      </if>
+      <if test="retrytime != null" >
+        retryTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="bizno != null" >
+        #{bizno,jdbcType=VARCHAR},
+      </if>
+      <if test="biztype != null" >
+        #{biztype,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="uuid != null" >
+        #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="taskinfo != null" >
+        #{taskinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="taskstatus != null" >
+        #{taskstatus,jdbcType=SMALLINT},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastupdatedate != null" >
+        #{lastupdatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="retrytime != null" >
+        #{retrytime,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.atlandes.productCode.dao.TradetaskExample" resultType="java.lang.Integer" >
+    select count(*) from tradetask
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tradetask
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.bizno != null" >
+        bizNo = #{record.bizno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.biztype != null" >
+        bizType = #{record.biztype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderid != null" >
+        orderId = #{record.orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uuid != null" >
+        uuid = #{record.uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskinfo != null" >
+        taskInfo = #{record.taskinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskstatus != null" >
+        taskStatus = #{record.taskstatus,jdbcType=SMALLINT},
+      </if>
+      <if test="record.createdate != null" >
+        createDate = #{record.createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastupdatedate != null" >
+        lastUpdateDate = #{record.lastupdatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.retrytime != null" >
+        retryTime = #{record.retrytime,jdbcType=SMALLINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tradetask
+    set id = #{record.id,jdbcType=BIGINT},
+      bizNo = #{record.bizno,jdbcType=VARCHAR},
+      bizType = #{record.biztype,jdbcType=VARCHAR},
+      orderId = #{record.orderid,jdbcType=VARCHAR},
+      uuid = #{record.uuid,jdbcType=VARCHAR},
+      taskInfo = #{record.taskinfo,jdbcType=VARCHAR},
+      taskStatus = #{record.taskstatus,jdbcType=SMALLINT},
+      createDate = #{record.createdate,jdbcType=TIMESTAMP},
+      lastUpdateDate = #{record.lastupdatedate,jdbcType=TIMESTAMP},
+      retryTime = #{record.retrytime,jdbcType=SMALLINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atlandes.productCode.dao.Tradetask" >
+    update tradetask
+    <set >
+      <if test="bizno != null" >
+        bizNo = #{bizno,jdbcType=VARCHAR},
+      </if>
+      <if test="biztype != null" >
+        bizType = #{biztype,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null" >
+        orderId = #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="uuid != null" >
+        uuid = #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="taskinfo != null" >
+        taskInfo = #{taskinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="taskstatus != null" >
+        taskStatus = #{taskstatus,jdbcType=SMALLINT},
+      </if>
+      <if test="createdate != null" >
+        createDate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastupdatedate != null" >
+        lastUpdateDate = #{lastupdatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="retrytime != null" >
+        retryTime = #{retrytime,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atlandes.productCode.dao.Tradetask" >
+    update tradetask
+    set bizNo = #{bizno,jdbcType=VARCHAR},
+      bizType = #{biztype,jdbcType=VARCHAR},
+      orderId = #{orderid,jdbcType=VARCHAR},
+      uuid = #{uuid,jdbcType=VARCHAR},
+      taskInfo = #{taskinfo,jdbcType=VARCHAR},
+      taskStatus = #{taskstatus,jdbcType=SMALLINT},
+      createDate = #{createdate,jdbcType=TIMESTAMP},
+      lastUpdateDate = #{lastupdatedate,jdbcType=TIMESTAMP},
+      retryTime = #{retrytime,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

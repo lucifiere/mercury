@@ -119,7 +119,8 @@
                                onclick="displayFeeType()">否
                     </lable>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="button" id="feeCheckBtn" name="feeCheck" class="am-btn am-btn-success am-radius" onclick="startFeeCheck()" hidden="true">
+                    <button type="button" id="feeCheckBtn" name="feeCheck" class="am-btn am-btn-success am-radius"
+                            onclick="startFeeCheck()" hidden="true">
                         费率检测开始
                     </button>&nbsp;
                 </div>
@@ -302,7 +303,7 @@
                             }
 
                             var res5 = result.amount;
-                            if (res5.length>0) {
+                            if (res5.length > 0) {
                                 var amountString = "";
                                 for (var i = 0; i < res5.length; i++) {
                                     amountString += "<option value=\"" + res5[i].code + "\" >" + res5[i].desc + "</option>";
@@ -325,15 +326,15 @@
 
                             var minAge = result.minAge;
                             var maxAge = result.maxAge;
-                            if (minAge != null && maxAge!=null) {
+                            if (minAge != null && maxAge != null) {
                                 var ageString = "";
                                 ageString += "<lable>年龄：</lable>" +
                                     "<input type='number' id='minAgeId' min='" + minAge +
-                                    "' max='" + maxAge + "'/>" +
+                                    "' max='" + maxAge + "' oninput='limitMin()'" + "/>" +
                                     "<label>(岁)</label>" +
                                     "<label>—</label>" +
                                     "<input type='number' id='maxAgeId' min='" + minAge +
-                                    "' max='" + maxAge + "'/>" +
+                                    "' max='" + maxAge + "' oninput='limitMax()'" + "/>" +
                                     "<label>(岁)</label>";
                                 $("#ageId").html(ageString);
                                 $("#ageId").show();
@@ -357,7 +358,23 @@
         }
     }
 
-    function startFeeCheck () {
+    function limitMin() {
+        var minValue = $("#minAgeId").val();
+        var maxValue = $("#maxAgeId").val();
+        if (minValue > maxValue) {
+            minValue = maxValue;
+        }
+    }
+
+    function limitMax() {
+        var minValue = $("#minAgeId").val();
+        var maxValue = $("#maxAgeId").val();
+        if ($(this).val() < minValue) {
+            minValue = maxValue;
+        }
+    }
+
+    function startFeeCheck() {
         var productFee = {};
         productFee.productCode = $("#productCode").val();
         productFee.periods = $("#insurancePeriodId option:selected").val();
@@ -365,9 +382,10 @@
         productFee.socialSecurity = $("#isSocialSecurityId option:selected").val();
         productFee.sex = $("#sexId option:selected").val();
         productFee.amount = $("#amountId option:selected").val();
+        productFee.holderInsuredRelations = $("#holderInsuredRelationsId option:selected").val();
         productFee.minAge = $("#minAgeId").val();
         productFee.maxAge = $("#maxAgeId").val();
-        if(productFee.minAge==="" || productFee.maxAge===""){
+        if (productFee.minAge === "" || productFee.maxAge === "") {
             alert("请选择投保年龄区间！");
             return false;
         }
@@ -380,7 +398,7 @@
             data: JSON.stringify(productFee),
             success: function (data) {
                 if (data.success === "true") {
-                    for (var i = 0;i<data.length;i++){
+                    for (var i = 0; i < data.length; i++) {
                         addFeeCheckResult(data[i]);
                     }
                     return true;

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -72,14 +74,14 @@ public class ProductCheckController {
 
     @RequestMapping("startFeeCheck")
     @ResponseBody
-    public FeeCheckResult startFeeCheck(@RequestBody ProductFeeRequest request) {
-        FeeCheckResult feeCheckResult = new FeeCheckResult();
+    public List<BaseCheckResult> startFeeCheck(@RequestBody ProductFeeRequest request) {
+        List<BaseCheckResult> feeCheckResult = new ArrayList<>();
         try {
 
             // todo
-            feeCheckResult.setSuccess(true);
+
         } catch (Exception e) {
-            feeCheckResult.setSuccess(false);
+          
         }
         return feeCheckResult;
     }

@@ -10,13 +10,13 @@
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <!-- 基本属性 -->
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/dev?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=GMT"/>
-        <property name="username" value="root"/>
-        <property name="password" value="123"/>
+        <property name="url" value="jdbc:mysql://172.25.28.10/nyse_trade?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=true&amp;serverTimezone=GMT"/>
+        <property name="username" value="policy"/>
+        <property name="password" value="1qaz@WSX"/>
         <!-- 配置初始化大小、最小、最大 -->
         <property name="initialSize" value="1"/>
         <property name="minIdle" value="1"/>
-        <property name="maxActive" value="20"/>
+        <property name="maxActive" value="100"/>
         <!-- 配置获取连接等待超时的时间 -->
         <property name="maxWait" value="60000"/>
         <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
@@ -43,10 +43,6 @@
 
     <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
         <constructor-arg index="0" ref="sqlSessionFactory"/>
-    </bean>
-
-    <bean id="baseFuncSupport" class="com.atlandes.common.service.BaseFuncSupport">
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
 
     <!-- spring与mybatis整合配置，扫描所有dao -->

@@ -12,7 +12,6 @@
     <context:property-placeholder location="classpath:config/*.properties"/>
 
     <context:component-scan base-package="com.atlandes"/>
-
     <mvc:annotation-driven>
         <mvc:message-converters>
             <ref bean="fastJsonHttpMessageConverter"/>
@@ -31,15 +30,9 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-        <property name="securityManager" ref="securityManager"/>
-    </bean>
-
     <aop:aspectj-autoproxy proxy-target-class="false"/>
 
     <import resource="springMybatis.xml"/>
-    <!--<import resource="springRedis.xml"/>-->
-    <import resource="springShiro.xml"/>
     <import resource="classpath:spring/*.xml"/>
 
 </beans>

@@ -330,11 +330,11 @@
                                 var ageString = "";
                                 ageString += "<lable>年龄：</lable>" +
                                     "<input type='number' id='minAgeId' min='" + minAge +
-                                    "' max='" + maxAge + "' oninput='limitMin()'" + "/>" +
+                                    "' max='" + maxAge + "' onchange='limitMin()'" + "/>" +
                                     "<label>(岁)</label>" +
                                     "<label>—</label>" +
                                     "<input type='number' id='maxAgeId' min='" + minAge +
-                                    "' max='" + maxAge + "' oninput='limitMax()'" + "/>" +
+                                    "' max='" + maxAge + "' onchange='limitMax()'" + "/>" +
                                     "<label>(岁)</label>";
                                 $("#ageId").html(ageString);
                                 $("#ageId").show();
@@ -361,17 +361,32 @@
     function limitMin() {
         var minValue = $("#minAgeId").val();
         var maxValue = $("#maxAgeId").val();
-        if (minValue > maxValue) {
-            minValue = maxValue;
+        if (Number(minValue) > Number(maxValue) && !isNull(maxValue)) {
+            $("#minAgeId").val(maxValue);
+            alert("最小投保年龄不可以超过最大投保年龄");
+        }
+        if (Number(minValue) < Number($("#minAgeId").attr("min"))) {
+            $("#minAgeId").val($("#minAgeId").attr("min"));
+            alert("该产品的最小投保年龄是" + $("#minAgeId").attr("min") + "岁");
         }
     }
 
     function limitMax() {
         var minValue = $("#minAgeId").val();
         var maxValue = $("#maxAgeId").val();
-        if ($(this).val() < minValue) {
-            minValue = maxValue;
+        if (Number(maxValue) < Number(minValue) && !isNull(minValue)) {
+            $("#maxAgeId").val(minValue);
+            alert("最大投保年龄不可以小于最小投保年龄");
         }
+        if (Number(maxValue) > Number($("#minAgeId").attr("max"))) {
+            $("#maxAgeId").val($("#minAgeId").attr("max"));
+            alert("该产品的最大投保年龄是" + $("#minAgeId").attr("max") + "岁");
+        }
+    }
+
+    function isNull(value) {
+        return (value === null || $.trim(value) === '' || $.trim(value) === 'null' || $.trim(value) === 'undefined'
+            || $.trim(value) === 'NULL' || typeof(value) === 'undefined');
     }
 
     function startFeeCheck() {

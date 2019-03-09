@@ -304,44 +304,44 @@ public class ProductBaseInfo extends BaseConfig {
         Long defaultPrice = bigDecimal.longValue();
 
         //保单信息
-        Insurance insureance= new Insurance();
-        if(StringUtils.isNotEmpty(insuredAmount)){
+        Insurance insureance = new Insurance();
+        if (StringUtils.isNotEmpty(insuredAmount)) {
             insureance.setAmount(insuredAmount);
-        }else{
+        } else {
             insureance.setAmount(productDetail.getResponse().getProductFee().getInsureAmount().get(0).getValue());
         }
 
-        Integer  validDay = null;
+        Integer validDay = null;
 
-        if( productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMinValidDays() == null){
+        if (productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMinValidDays() == null) {
             insureance.setBeginDate(getNextDay(1));
-        }else{
+        } else {
             validDay = productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMinValidDays();
             insureance.setBeginDate(getNextDay(validDay));
         }
 
-        if(StringUtils.isNotEmpty(period)){
+        if (StringUtils.isNotEmpty(period)) {
             insureance.setInsurancePeriod(period);
-        }else{
+        } else {
             insureance.setInsurancePeriod(productDetail.getResponse().getProductFee().getPeriods().get(0).getValue());
         }
         insureance.setInsurancePeriodType(productDetail.getResponse().getProductFee().getPeriods().get(0).getValueType());
         insureance.setItemId(productDetail.getResponse().getProductBase().getProductCode());
-        if(productDetail.getResponse().getProductRenewal()!=null){
+        if (productDetail.getResponse().getProductRenewal() != null) {
             insureance.setPaymentFrequency(productDetail.getResponse().getProductRenewal().getPayFrequency().get(0).getValue());
         }
 
-        if(StringUtils.isNotEmpty(payperiod)){
+        if (StringUtils.isNotEmpty(payperiod)) {
             insureance.setPaymentPeriod(payperiod);
             insureance.setPaymentPeriodType(productDetail.getResponse().getProductFee().getPayPeriod().get(0).getValueType());
-        }else{
-            if(productDetail.getResponse().getProductFee().getPayPeriod() != null){
+        } else {
+            if (productDetail.getResponse().getProductFee().getPayPeriod() != null) {
                 insureance.setPaymentPeriodType(productDetail.getResponse().getProductFee().getPayPeriod().get(0).getValueType());
                 insureance.setPaymentPeriod(productDetail.getResponse().getProductFee().getPayPeriod().get(0).getValue());
             }
         }
 
-        if(productDetail.getResponse().getProductSerialsList().get(0).getPlancode()!=null){
+        if (productDetail.getResponse().getProductSerialsList().get(0).getPlancode() != null) {
             insureance.setPlanCode(productDetail.getResponse().getProductSerialsList().get(0).getPlancode().get(0).getValue());
         }
 //		productDetail.getResponse().getProductSerialsList().get(0).getPlancode();
@@ -445,14 +445,12 @@ public class ProductBaseInfo extends BaseConfig {
     /**
      * 核保
      *
-     * @param sku
+     * @param underWriteReq 核保请求入参
      * @return
      */
-    public BaseResponse<UnderWriteResponse> underWrite(String sku) {
-        BaseResponse<ProductDetail> productDetail = getProductDetailBySkuId(sku);
-        UnderWriteRequest underWriteReq = new UnderWriteRequest();
-        underWriteReq = getGeneralUnderWriteOb(productDetail, null, null, null, null, null);
+    public BaseResponse<UnderWriteResponse> underWrite(UnderWriteRequest underWriteReq) {
         BaseResponse<UnderWriteResponse> underWriteRes = jsfUnderWriteResource.underwrite(underWriteReq);
+
         return underWriteRes;
     }
 
@@ -549,7 +547,7 @@ public class ProductBaseInfo extends BaseConfig {
                 pprt.setProductPeriod(productDetail.getResponse().getProductFee().getPeriods().get(0).getValue());//保障期间
             }
         }
-  //      pprt.setSocialSecurity("true");
+        //      pprt.setSocialSecurity("true");
         String json = JSON.toJSONString(pprt);
         return json;
     }

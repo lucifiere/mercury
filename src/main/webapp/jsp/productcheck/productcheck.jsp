@@ -1,11 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: XD.Wang
-  Date: 2017/6/9
-  Time: 18:23
-  To change this template use File | Settings | File Templates.
---%>
-<%--<%@ include file="/jsp/common/base.jsp"%>--%>
+<%@ include file="/jsp/common/base.jsp" %>
 
 <context:component-scan base-package="com.atlandes.productCode.controller"></context:component-scan>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -38,149 +31,129 @@
         </ul>
     </div>
 
-    <div class="fbneirong">
-        <form class="am-form" id="menuForm">
-            <div class="am-form-group am-cf">
-                <div class="zuo">sku：
-                    <input id="productCode" class="am-input-sm" placeholder="请输入sku"/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="button" class="am-btn am-btn-success am-radius" onclick="startCheck()">开始</button>&nbsp;
-                </div>
-            </div>
-            <div class="am-form-group am-cf">
-                <div class="zuo">
-                    <input type="checkbox" id="selectAll" onclick="selectAllBaseCheck()">
-                    <b>全选</b>
-                </div>
-            </div>
-            <div class="am-form-group am-cf">
-                <div class="zuo">
-                    <input type="checkbox" id="underWrite" name="baseCheckCB">
-                    核保检测
-                </div>
-            </div>
+    <div class="fbneirong" style="font-size: medium">
 
+        sku： <input id="productCode" class="am-input-sm" placeholder="请输入sku" style="font-size: medium"/>
+        <br><br><hr/><br>
+        <lable style="font-size:medium">请选择基本检测项</lable> &nbsp;&nbsp;&nbsp;&nbsp;<button type="button"
+                                                                                         class="am-btn am-btn-success am-radius"
+                                                                                         onclick="startCheck()">基本检测开始
+    </button>
+        <div class="am-form-group am-cf">
+            <input type="checkbox" id="selectAll" onclick="selectAllBaseCheck()">
+            <b>全选</b>
+        </div>
+        <div class="am-form-group am-cf">
+            <input type="checkbox" id="underWrite" name="baseCheckCB">
+            核保检测
+            &nbsp;&nbsp;&nbsp;
+            <input type="checkbox" id="issue" name="baseCheckCB">
+            出单检测
+            &nbsp;&nbsp;&nbsp;
+            <input type="checkbox" id="onLinePolicy" name="baseCheckCB">
+            电子保单检测
+            &nbsp;&nbsp;&nbsp;
+            <input type="checkbox" id="underWriteOnceMore" name="baseCheckCB">
+            核保份数校验
+            &nbsp;&nbsp;&nbsp;
+            <input type="checkbox" id="issueOnceMore" name="baseCheckCB">
+            出单份数校验
+            &nbsp;&nbsp;&nbsp;
+            <input type="checkbox" id="issueIdempotent" name="baseCheckCB">
+            出单幂等校验
+        </div>
+        <br>
+        <div name="baseResult">
             <div class="am-form-group am-cf">
-                <div class="zuo">
-                    <input type="checkbox" id="issue" name="baseCheckCB">
-                    出单检测
-                </div>
+                <b>基本项检测结果</b>
             </div>
-            <div class="am-form-group am-cf">
-                <div class="zuo">
-                    <input type="checkbox" id="onLinePolicy" name="baseCheckCB">
-                    电子保单检测
-                </div>
-            </div>
-            <div class="am-form-group am-cf">
-                <div class="zuo">
-                    <input type="checkbox" id="underWriteOnceMore" name="baseCheckCB">
-                    核保份数校验
-                </div>
-            </div>
-            <div class="am-form-group am-cf">
-                <div class="zuo">
-                    <input type="checkbox" id="issueOnceMore" name="baseCheckCB">
-                    出单份数校验
-                </div>
-            </div>
-            <div class="am-form-group am-cf">
-                <div class="zuo">
-                    <input type="checkbox" id="issueIdempotent" name="baseCheckCB">
-                    出单幂等校验
-                </div>
-            </div>
-            <div name="baseResult">
-                <div class="am-form-group am-cf">
-                    <b>检测结果</b>
-                </div>
-                <table border="1">
-                    <thead>
-                    <tr>
-                        <td>检测项</td>
-                        <td>检测结果</td>
-                        <td>结果描述</td>
-                        <td>备注</td>
-                    </tr>
-                    <thead>
-                    <tbody id="tb">
+            <table class="am-table am-table-bordered am-table-striped am-table-hover">
+                <thead>
+                <tr>
+                    <td>检测项</td>
+                    <td>检测结果</td>
+                    <td>结果描述</td>
+                    <td>备注</td>
+                </tr>
+                <thead>
+                <tbody id="tb">
 
-                    </tbody>
-                </table>
+                </tbody>
+            </table>
+        </div>
+        <br><br><hr/><br>
+        <div class="am-form-group am-cf" style="font-size: medium">
+            是否进行费率检测
+            <lable class="am-radio-inline">
+                <input type="radio" name="isFeeCheck" value="true" id="feeCheckTrue" style="font-size: medium"
+                       onclick="displayFeeType()">是
+            </lable>
+            <lable class="am-radio-inline">
+                <input type="radio" name="isFeeCheck" value="false" id="feeCheckFalse" style="font-size: medium"
+                       checked="checked"
+                       onclick="displayFeeType()">否
+            </lable>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" id="feeCheckBtn" name="feeCheck" class="am-btn am-btn-success am-radius"
+                    onclick="startFeeCheck()" hidden="true">
+                费率检测开始
+            </button>&nbsp;
+
+            <div name="feeCheck">
+
+                <div id="amountId" hidden="true">
+                    <lable>保额方案：</lable>
+                    <select name="amount"></select>
+                </div>
+                <div id="holderInsuredRelationsId" hidden="true">
+                    <lable>投被保人关系：</lable>
+                    <select name="holderInsuredRelations">
+                    </select>
+                </div>
+                <div id="sexId" hidden="true">
+                    <lable>性别：</lable>
+                    <select name="sex">
+                    </select>
+                </div>
+                <div id="paymentPeriodId" hidden="true">
+                    <lable>缴费期间：</lable>
+                    <select name="paymentPeriod">
+                    </select>
+                </div>
+                <div id="insurancePeriodId" hidden="true">
+                    <lable>保障期间：</lable>
+                    <select name="insurancePeriod">
+                    </select>
+                </div>
+                <div id="isSocialSecurityId" hidden="true">
+                    <lable>社保：</lable>
+                    <select name="isSocialSecurity">
+                    </select>
+                </div>
+                <br>
+                <div id="ageId">
+                </div>
+                <br>
             </div>
-            <br/><br/>
+        </div>
+
+        <div name="feeCheckResult">
             <div class="am-form-group am-cf">
-                <div class="zuo">是否进行费率检测
-                    <lable class="am-radio-inline">
-                        <input type="radio" name="isFeeCheck" value="true" id="feeCheckTrue" onclick="displayFeeType()">是
-                    </lable>
-                    <lable class="am-radio-inline">
-                        <input type="radio" name="isFeeCheck" value="false" id="feeCheckFalse" checked="checked"
-                               onclick="displayFeeType()">否
-                    </lable>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="button" id="feeCheckBtn" name="feeCheck" class="am-btn am-btn-success am-radius"
-                            onclick="startFeeCheck()" hidden="true">
-                        费率检测开始
-                    </button>&nbsp;
-                </div>
-                <div class="am-form-group am-cf" name="feeCheck">
-
-                    <div id="amountId" hidden="true">
-                        <lable>保额方案：</lable>
-                        <select name="amount">
-                        </select>
-                    </div>
-                    <div id="holderInsuredRelationsId" hidden="true">
-                        <lable>投被保人关系：</lable>
-                        <select name="holderInsuredRelations">
-                        </select>
-                    </div>
-                    <div id="sexId" hidden="true">
-                        <lable>性别：</lable>
-                        <select name="sex">
-                        </select>
-                    </div>
-                    <div id="paymentPeriodId" hidden="true">
-                        <lable>缴费期间：</lable>
-                        <select name="paymentPeriod">
-                        </select>
-                    </div>
-                    <div id="insurancePeriodId" hidden="true">
-                        <lable>保障期间：</lable>
-                        <select name="insurancePeriod">
-                        </select>
-                    </div>
-                    <div id="isSocialSecurityId" hidden="true">
-                        <lable>社保：</lable>
-                        <select name="isSocialSecurity">
-                        </select>
-                    </div>
-                    <br>
-                    <div id="ageId">
-                    </div>
-                    <br>
-                </div>
+                <b>费率检测结果</b>
             </div>
-
-            <div name="feeCheckResult">
-                <div class="am-form-group am-cf">
-                    <b>费率检测结果</b>
-                </div>
-                <table border="1">
-                    <thead>
-                    <tr>
-                        <td>年龄(岁)</td>
-                        <td>保费(元)</td>
-                        <td>结果</td>
-                        <td>备注</td>
-                    </tr>
-                    <thead>
-                    <tbody id="ftb">
-                    </tbody>
-                </table>
-            </div>
-        </form>
+            <table class="am-table am-table-bordered am-table-striped am-table-hover">
+                <thead>
+                <tr>
+                    <td>年龄(岁)</td>
+                    <td>保费(元)</td>
+                    <td>结果</td>
+                    <td>备注</td>
+                </tr>
+                <thead>
+                <tbody id="ftb">
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </div>

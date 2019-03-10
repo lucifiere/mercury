@@ -34,7 +34,9 @@
     <div class="fbneirong" style="font-size: medium">
 
         sku： <input id="productCode" class="am-input-sm" placeholder="请输入sku" style="font-size: medium"/>
-        <br><br><hr/><br>
+        <br><br>
+        <hr/>
+        <br>
         <lable style="font-size:medium">请选择基本检测项</lable> &nbsp;&nbsp;&nbsp;&nbsp;<button type="button"
                                                                                          class="am-btn am-btn-success am-radius"
                                                                                          onclick="startCheck()">基本检测开始
@@ -81,7 +83,9 @@
                 </tbody>
             </table>
         </div>
-        <br><br><hr/><br>
+        <br><br>
+        <hr/>
+        <br>
         <div class="am-form-group am-cf" style="font-size: medium">
             是否进行费率检测
             <lable class="am-radio-inline">
@@ -162,11 +166,17 @@
 <script>
     function startCheck() {
         var productCode = $("#productCode").val();
+        if (isNull(productCode)) {
+            alert("请输入sku");
+        }
         var baseCheckIdList = [];
         var baseChecked = $("input[name='baseCheckCB']:checked").each(function (i, checkCB) {
             baseCheckIdList.push($(checkCB).prop("id"));
         });
         var baseCheckIdStr = baseCheckIdList.join(",");
+        if (!isNull(productCode)) {
+            alert("部分接口为异步调用，请耐心等待。。。");
+        }
         $.ajax({
             url: "/productCheck/startCheck?sku=" + productCode + "&baseCheckIds=" + baseCheckIdStr,
             type: "GET",
@@ -365,6 +375,9 @@
     function startFeeCheck() {
         var productFee = {};
         productFee.productCode = $("#productCode").val();
+        if (isNull(productFee.productCode)) {
+            alert("请先输入sku");
+        }
         productFee.periods = $("#insurancePeriodId option:selected").val();
         productFee.payPeriod = $("#paymentPeriodId option:selected").val();
         productFee.socialSecurity = $("#isSocialSecurityId option:selected").val();
@@ -385,15 +398,10 @@
             async: false,
             data: JSON.stringify(productFee),
             success: function (data) {
-                if (data.success === "true") {
-                    for (var i = 0; i < data.length; i++) {
-                        addFeeCheckResult(data[i]);
-                    }
-                    return true;
-                } else {
-                    alert("执行失败");
-                    return false;
+                for (var i = 0; i < data.length; i++) {
+                    addFeeCheckResult(data[i]);
                 }
+                return true;
             },
             error: function (data) {
                 alert("error" + Json.stringify(data));

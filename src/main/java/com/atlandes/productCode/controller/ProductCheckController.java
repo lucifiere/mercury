@@ -6,6 +6,7 @@ import com.atlandes.productCode.service.ProductBaseInfo;
 import com.jd.baoxian.product.export.pojo.ProductFee;
 import com.jd.baoxian.product.export.vo.res.ProductDetail;
 import com.jd.baoxian.service.platform.domain.response.BaseResponse;
+import com.jd.baoxian.service.platform.domain.response.UnderWriteResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,11 +55,12 @@ public class ProductCheckController {
                 productCheckResult.setUnderWriteOnceMoreResult(underWriteOnceMoreRes);
             }
             if (Objects.equals(btnId, "issueOnceMore")) {
-                //todo 调用重复出单检测case
-
+                BaseCheckResult issueOnceMoreRes = productBaseInfo.getIssueOnceMoreRes(sku);
+                productCheckResult.setIssueOnceMoreResult(issueOnceMoreRes);
             }
             if (Objects.equals(btnId, "issueIdempotent")) {
-                //todo 调用出单幂等检测case
+                BaseCheckResult issueIdempotentRes = productBaseInfo.getIssueIdempotentRes(sku);
+                productCheckResult.setIssueIdempotentResult(issueIdempotentRes);
             }
         }
         return productCheckResult;
@@ -76,13 +78,16 @@ public class ProductCheckController {
     @ResponseBody
     public List<BaseCheckResult> startFeeCheck(@RequestBody ProductFeeRequest request) {
         List<BaseCheckResult> feeCheckResult = new ArrayList<>();
-        try {
 
-            // todo
+            BaseResponse<ProductDetail> productdetail = productBaseInfo.getProductDetailBySkuId(request.getProductCode());
+            for (int i = Integer.valueOf(request.getMinAge()); i <= Integer.valueOf(request.getMaxAge()); i++) {
+                BaseCheckResult feeUnderWriteResult = productBaseInfo.feeUnderWrite(productdetail, String.valueOf(i),
+                        request.getHolderInsuredRelations(), request.getPayPeriod(),
+                        request.getPeriods(), request.getAmount());
+                feeCheckResult.add(feeUnderWriteResult);
+            }
+            return feeCheckResult;
 
-        } catch (Exception e) {
-          
-        }
-        return feeCheckResult;
+
     }
 }

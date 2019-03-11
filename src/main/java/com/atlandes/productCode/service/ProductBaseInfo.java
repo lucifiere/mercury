@@ -591,8 +591,18 @@ public class ProductBaseInfo extends BaseConfig {
             BaseResponse<UnderWriteResponse> underwriteRes = jsfUnderWriteResource.underwrite(under);
             underCheckCheckResult.setCheckItem("核保检测");
             if (underwriteRes.isSuccess() && Objects.equals(underwriteRes.getCode(), "0000")) {
-                underCheckCheckResult.setCheckResult("检测通过");
                 String orderId = underwriteRes.getResponse().getUnderWriteOrder().getOrderId();
+                if(!("没有获取到投保单号".equals(getProposalNoByOrderId(orderId)) ||"没有获取到相应保单".equals(getProposalNoByOrderId(orderId)))){
+                    underCheckCheckResult.setCheckResult("检测通过");
+                    underCheckCheckResult.setCheckResultDesc("订单号：" + orderId + "<br>" + "投保单号：" + getProposalNoByOrderId(orderId));
+                    underCheckCheckResult.setCheckMark("");
+                }
+                else{
+                    underCheckCheckResult.setCheckResult("检测失败");
+                    underCheckCheckResult.setCheckResultDesc("订单号：" + orderId + "<br>" + "投保单号：" + getProposalNoByOrderId(orderId));
+                    underCheckCheckResult.setCheckMark("");
+                }
+                underCheckCheckResult.setCheckResult("检测通过");
                 underCheckCheckResult.setCheckResultDesc("订单号：" + orderId + "<br>" + "投保单号：" + getProposalNoByOrderId(orderId));
                 underCheckCheckResult.setCheckMark("");
             } else {
@@ -627,7 +637,7 @@ public class ProductBaseInfo extends BaseConfig {
                 return "没有获取到投保单号";
             }
         } else {
-            return "没有获取到投保单号";
+            return "没有获取到相应保单";
         }
     }
 
@@ -676,9 +686,16 @@ public class ProductBaseInfo extends BaseConfig {
                     }
                     String orderId = underwriteResp.getResponse().getUnderWriteOrder().getOrderId();
                     if (Objects.equals(issueRes.getCode(), "0000")) {
-                        issueCheckResult.setCheckResult("检测通过");
-                        issueCheckResult.setCheckResultDesc("订单号：" + orderId + "<br>" + "保单号：" + getPolicyNoByOrderId(orderId));
-                        issueCheckResult.setCheckMark(issueRes.getMessage());
+                        if(!("没有获取到保单号".equals(getPolicyNoByOrderId(orderId))||"没有获取到相应保单".equals(getPolicyNoByOrderId(orderId)))){
+                            issueCheckResult.setCheckResult("检测通过");
+                            issueCheckResult.setCheckResultDesc("订单号：" + orderId + "<br>" + "保单号：" + getPolicyNoByOrderId(orderId));
+                            issueCheckResult.setCheckMark(issueRes.getMessage());
+                        }
+                        else{
+                            issueCheckResult.setCheckResult("检测失败");
+                            issueCheckResult.setCheckResultDesc("订单号：" + orderId + "<br>" + "保单号：" + getPolicyNoByOrderId(orderId));
+                            issueCheckResult.setCheckMark(issueRes.getMessage());
+                        }
                     } else {
                         issueCheckResult.setCheckResult("检测失败");
                         issueCheckResult.setCheckResultDesc("订单号：" + orderId);
@@ -750,7 +767,7 @@ public class ProductBaseInfo extends BaseConfig {
                 if (Objects.equals(issueRes.getCode(), "0000")) {
                     String policyNo = getPolicyNoByOrderId(orderId);
                     String policyUrl = getOnLinePolicyByOrderId(orderId);
-                    if ("没有获取到电子保单".equals(policyUrl)) {
+                    if ("没有获取到电子保单".equals(policyUrl) ||"没有获取到相应保单".equals(policyUrl)) {
                         onLinePolicyCheckResult.setCheckResult("检测失败");
                         onLinePolicyCheckResult.setCheckResultDesc("订单号：" + orderId + "<br>" + "保单号：" + policyNo + "<br>" + "电子保单：" + policyUrl);
                         onLinePolicyCheckResult.setCheckMark("");
@@ -801,18 +818,26 @@ public class ProductBaseInfo extends BaseConfig {
                 }
                 if (issueRes.isSuccess() && Objects.equals(issueRes.getCode(), "0000")) {
                     String firstPolicyNo = getPolicyNoByOrderId(firstOrderId);
-                    BaseResponse<UnderWriteResponse> underwriteOnceMoreResp = jsfUnderWriteResource.underwrite(under);
-                    if (Objects.equals(underwriteOnceMoreResp.getCode(), "0000")) {
-                        String secondOrderId = underwriteOnceMoreResp.getResponse().getUnderWriteOrder().getOrderId();
-                        String secondProposalNo = getProposalNoByOrderId(secondOrderId);
+                    if("没有获取到保单号".equals(firstPolicyNo)||"没有获取到相应保单".equals(firstPolicyNo)){
                         underWriteOnceMoreCheckResult.setCheckResult("检测失败");
-                        underWriteOnceMoreCheckResult.setCheckResultDesc("第一次核保订单号：" + firstOrderId + "<br>" + "第一次承保保单号：" + firstPolicyNo + "<br>" + "第二次承保订单号：" + secondOrderId + "<br>" + "第二次投保单号：" + secondProposalNo);
-                        underWriteOnceMoreCheckResult.setCheckMark("第二次核保成功");
-                    } else {
-                        underWriteOnceMoreCheckResult.setCheckResult("检测成功");
                         underWriteOnceMoreCheckResult.setCheckResultDesc("第一次核保订单号：" + firstOrderId + "<br>" + "第一次承保保单号：" + firstPolicyNo);
-                        underWriteOnceMoreCheckResult.setCheckMark("第二次核保没有通过" + underwriteOnceMoreResp.getMessage());
+                        underWriteOnceMoreCheckResult.setCheckMark("第一次出单失败");
                     }
+                    else{
+                        BaseResponse<UnderWriteResponse> underwriteOnceMoreResp = jsfUnderWriteResource.underwrite(under);
+                        if (Objects.equals(underwriteOnceMoreResp.getCode(), "0000")) {
+                            String secondOrderId = underwriteOnceMoreResp.getResponse().getUnderWriteOrder().getOrderId();
+                            String secondProposalNo = getProposalNoByOrderId(secondOrderId);
+                            underWriteOnceMoreCheckResult.setCheckResult("检测失败");
+                            underWriteOnceMoreCheckResult.setCheckResultDesc("第一次核保订单号：" + firstOrderId + "<br>" + "第一次承保保单号：" + firstPolicyNo + "<br>" + "第二次核保订单号：" + secondOrderId + "<br>" + "第二次投保单号：" + secondProposalNo);
+                            underWriteOnceMoreCheckResult.setCheckMark("第二次核保成功");
+                        } else {
+                            underWriteOnceMoreCheckResult.setCheckResult("检测成功");
+                            underWriteOnceMoreCheckResult.setCheckResultDesc("第一次核保订单号：" + firstOrderId + "<br>" + "第一次承保保单号：" + firstPolicyNo);
+                            underWriteOnceMoreCheckResult.setCheckMark("第二次核保没有通过" + underwriteOnceMoreResp.getMessage());
+                        }
+                    }
+
                 } else {
                     underWriteOnceMoreCheckResult.setCheckResult("检测失败");
                     underWriteOnceMoreCheckResult.setCheckResultDesc("第一次核保订单号：" + firstOrderId);
@@ -865,14 +890,28 @@ public class ProductBaseInfo extends BaseConfig {
                 String firstPolicyNo = getPolicyNoByOrderId(firstOrderId);
                 String secongPolicyNo = getPolicyNoByOrderId(secondOrderId);
                 if (issueRes1.isSuccess() && Objects.equals(issueRes1.getCode(), "0000")) {
-                    if (issueRes2.isSuccess() && Objects.equals(issueRes2.getCode(), "0000")) {
+                    if(!("没有获取到保单号".equals(firstPolicyNo)||"没有获取到相应保单".equals(firstPolicyNo))){
+                        if (issueRes2.isSuccess() && Objects.equals(issueRes2.getCode(), "0000")) {
+                            if("没有获取到保单号".equals(secongPolicyNo)||"没有获取到相应保单".equals(secongPolicyNo)){
+                                issueOnceMoreCheckResult.setCheckResult("检测成功");
+                                issueOnceMoreCheckResult.setCheckResultDesc("第一次核保订单号：" + firstOrderId + "<br>" + "第一次承保保单号：" + firstPolicyNo + "<br>" + "第二次核保订单号：" + secondOrderId+ "<br>" + "第二次承保保单号：" + secongPolicyNo);
+                                issueOnceMoreCheckResult.setCheckMark("第二次出单失败。" + issueRes2.getMessage());
+                            }
+                            else{
+                                issueOnceMoreCheckResult.setCheckResult("检测失败");
+                                issueOnceMoreCheckResult.setCheckResultDesc("第一次核保订单号：" + firstOrderId + "<br>" + "第一次承保保单号：" + firstPolicyNo + "<br>" + "第二次核保订单号：" + secondOrderId + "<br>" + "第二次承保保单号：" + secongPolicyNo);
+                                issueOnceMoreCheckResult.setCheckMark("第二次出单成功");
+                            }
+                        } else {
+                            issueOnceMoreCheckResult.setCheckResult("检测成功");
+                            issueOnceMoreCheckResult.setCheckResultDesc("第一次核保订单号：" + firstOrderId + "<br>" + "第一次承保保单号：" + firstPolicyNo + "<br>" + "第二次核保订单号：" + secondOrderId);
+                            issueOnceMoreCheckResult.setCheckMark("第二次出单失败。" + issueRes2.getMessage());
+                        }
+                    }
+                   else{
                         issueOnceMoreCheckResult.setCheckResult("检测失败");
-                        issueOnceMoreCheckResult.setCheckResultDesc("第一次核保订单号：" + firstOrderId + "<br>" + "第一次承保保单号：" + firstPolicyNo + "<br>" + "第二次核保订单号：" + secondOrderId + "<br>" + "第二次承保保单号：" + secongPolicyNo);
-                        issueOnceMoreCheckResult.setCheckMark("第二次出单成功");
-                    } else {
-                        issueOnceMoreCheckResult.setCheckResult("检测成功");
-                        issueOnceMoreCheckResult.setCheckResultDesc("第一次核保订单号：" + firstOrderId + "<br>" + "第一次承保保单号：" + firstPolicyNo + "<br>" + "第二次核保订单号：" + secondOrderId);
-                        issueOnceMoreCheckResult.setCheckMark("第二次出单失败。" + issueRes2.getMessage());
+                        issueOnceMoreCheckResult.setCheckResultDesc("第一次核保订单号：" + firstOrderId+ "<br>" + "第一次承保保单号：" + firstPolicyNo);
+                        issueOnceMoreCheckResult.setCheckMark("第一次出单失败。" + issueRes1.getMessage());
                     }
                 } else {
                     issueOnceMoreCheckResult.setCheckResult("检测失败");
@@ -915,63 +954,68 @@ public class ProductBaseInfo extends BaseConfig {
                 }
                 if (issueRes1.isSuccess() && Objects.equals(issueRes1.getCode(), "0000")) {
                     String firstPolicyNo = getPolicyNoByOrderId(orderId);
-
-                    PolicyorderExample policyorderExample = new PolicyorderExample();
-                    PolicyorderExample.Criteria criteria = policyorderExample.createCriteria();
-                    criteria.andOrderidEqualTo(orderId);
-                    //更新订单表状态
-                    OrdersExample ordersExample = new OrdersExample();
-                    OrdersExample.Criteria ordersExampleCriteria = ordersExample.createCriteria();
-                    ordersExampleCriteria.andOrderidEqualTo(orderId);
-                    Orders orders = new Orders();
-                    orders.setStatus(Short.valueOf("4"));
-                    int updateOrderResult = ordersMapper.updateByExampleSelective(orders, ordersExample);
-                    //更新保单表状态
-                    Policyorder policyorder1 = new Policyorder();
-                    policyorder1.setStatus(Short.valueOf("1"));
-                    int updatePolicyResult = policyorderMapper.updateByExampleSelective(policyorder1, policyorderExample);
-                    //删除tradetask  中任务42
-                    TradetaskExample tradetaskExample = new TradetaskExample();
-                    TradetaskExample.Criteria tradeTaskCriteria = tradetaskExample.createCriteria();
-                    tradeTaskCriteria.andOrderidEqualTo(orderId);
-                    tradeTaskCriteria.andBiztypeEqualTo("42");
-                    int deleteResult = tradetaskMapper.deleteByExample(tradetaskExample);
-                    if (updateOrderResult == 1 && updatePolicyResult == 1 && deleteResult == 1) {//修改成功
-                        BaseResponse issueRes2 = issuePolicy(underwriteResp);
-                        try {
-                            Thread.sleep(2000L);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        if ("0000".equals(issueRes2.getCode())) {
-                            //订单状态查询
-                            List<Orders> ordersList = ordersMapper.selectByExample(ordersExample);
-                            Orders ordersRepeat = ordersList.get(0);
-                            Short orderStatusRepeat = ordersRepeat.getStatus();
-                            //保单号及状态查询
-                            List<Policyorder> policyorders2 = policyorderMapper.selectByExample(policyorderExample);
-                            String secondPolicyNo = getPolicyNoByOrderId(orderId);
-                            if (Objects.equals(secondPolicyNo, firstPolicyNo)) {
-                                issueIdempotentResult.setCheckResult("检测通过");
-                                issueIdempotentResult.setCheckResultDesc("第一次核保订单号：" + orderId + "<br>" + "第一次承保单号：" + firstPolicyNo + "<br>" + "第二次承保单号：" + secondPolicyNo);
-                                issueIdempotentResult.setCheckMark("");
+                    if(!("没有获取到保单号".equals(firstPolicyNo)||"没有获取到相应保单".equals(firstPolicyNo))){
+                        PolicyorderExample policyorderExample = new PolicyorderExample();
+                        PolicyorderExample.Criteria criteria = policyorderExample.createCriteria();
+                        criteria.andOrderidEqualTo(orderId);
+                        //更新订单表状态
+                        OrdersExample ordersExample = new OrdersExample();
+                        OrdersExample.Criteria ordersExampleCriteria = ordersExample.createCriteria();
+                        ordersExampleCriteria.andOrderidEqualTo(orderId);
+                        Orders orders = new Orders();
+                        orders.setStatus(Short.valueOf("4"));
+                        int updateOrderResult = ordersMapper.updateByExampleSelective(orders, ordersExample);
+                        //更新保单表状态
+                        Policyorder policyorder1 = new Policyorder();
+                        policyorder1.setStatus(Short.valueOf("1"));
+                        int updatePolicyResult = policyorderMapper.updateByExampleSelective(policyorder1, policyorderExample);
+                        //删除tradetask  中任务42
+                        TradetaskExample tradetaskExample = new TradetaskExample();
+                        TradetaskExample.Criteria tradeTaskCriteria = tradetaskExample.createCriteria();
+                        tradeTaskCriteria.andOrderidEqualTo(orderId);
+                        tradeTaskCriteria.andBiztypeEqualTo("42");
+                        int deleteResult = tradetaskMapper.deleteByExample(tradetaskExample);
+                        if (updateOrderResult == 1 && updatePolicyResult == 1 && deleteResult == 1) {//修改成功
+                            BaseResponse issueRes2 = issuePolicy(underwriteResp);
+                            try {
+                                Thread.sleep(2000L);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            if ("0000".equals(issueRes2.getCode())) {
+                                //订单状态查询
+                                List<Orders> ordersList = ordersMapper.selectByExample(ordersExample);
+                                Orders ordersRepeat = ordersList.get(0);
+                                Short orderStatusRepeat = ordersRepeat.getStatus();
+                                //保单号及状态查询
+                                List<Policyorder> policyorders2 = policyorderMapper.selectByExample(policyorderExample);
+                                String secondPolicyNo = getPolicyNoByOrderId(orderId);
+                                if (firstPolicyNo.equals(secondPolicyNo)) {
+                                    issueIdempotentResult.setCheckResult("检测通过");
+                                    issueIdempotentResult.setCheckResultDesc("第一次核保订单号：" + orderId + "<br>" + "第一次承保单号：" + firstPolicyNo + "<br>" + "第二次承保单号：" + secondPolicyNo);
+                                    issueIdempotentResult.setCheckMark("");
+                                } else {
+                                    issueIdempotentResult.setCheckResult("检测失败");
+                                    issueIdempotentResult.setCheckResultDesc("第一次核保订单号：" + orderId + "<br>" + "第一次承保单号：" + firstPolicyNo + "<br>" + "第二次承保单号：" + secondPolicyNo);
+                                    issueIdempotentResult.setCheckMark("");
+                                }
                             } else {
                                 issueIdempotentResult.setCheckResult("检测失败");
-                                issueIdempotentResult.setCheckResultDesc("第一次核保订单号：" + orderId + "<br>" + "第一次承保单号：" + firstPolicyNo + "<br>" + "第二次承保单号：" + secondPolicyNo);
-                                issueIdempotentResult.setCheckMark("");
+                                issueIdempotentResult.setCheckResultDesc("第一次核保订单号：" + orderId + "<br>" + "第一次承保单号：" + firstPolicyNo);
+                                issueIdempotentResult.setCheckMark("第二次出单失败" + issueRes2.getMessage());
                             }
+
                         } else {
                             issueIdempotentResult.setCheckResult("检测失败");
                             issueIdempotentResult.setCheckResultDesc("第一次核保订单号：" + orderId + "<br>" + "第一次承保单号：" + firstPolicyNo);
-                            issueIdempotentResult.setCheckMark("第二次出单失败" + issueRes2.getMessage());
+                            issueIdempotentResult.setCheckMark("数据库更新失败，出单幂等未执行");
                         }
-
-                    } else {
-                        issueIdempotentResult.setCheckResult("检测失败");
-                        issueIdempotentResult.setCheckResultDesc("第一次核保订单号：" + orderId + "<br>" + "第一次承保单号：" + firstPolicyNo);
-                        issueIdempotentResult.setCheckMark("数据库更新失败，出单幂等未执行");
                     }
-
+                    else{
+                        issueIdempotentResult.setCheckResult("检测失败");
+                        issueIdempotentResult.setCheckResultDesc("第一次核保订单号：" + orderId+ "<br>" + "第一次承保单号：" + firstPolicyNo);
+                        issueIdempotentResult.setCheckMark("第一次出单失败。" + issueRes1.getMessage());
+                    }
                 } else {
                     issueIdempotentResult.setCheckResult("检测失败");
                     issueIdempotentResult.setCheckResultDesc("第一次核保订单号：" + orderId);

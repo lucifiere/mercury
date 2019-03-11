@@ -18,18 +18,55 @@
     <script src="${pageContext.request.contextPath}/static/js/admin/menu.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/common.js"></script>
     <script src="${pageContext.request.contextPath}/static/lib/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/static/lib/jqmeter.js"></script>
     <script type="text/javascript"
             src="${pageContext.request.contextPath }/static/js/productCheck/productCheck.js"></script>
+    <style>
+        #tipDiv{
+            display:none;
+            position: absolute;
+            left: 39%;
+            top: 230px;
+            z-index: 9999;
+            background: #d9d9d9;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #tipInfo{
+            margin-top: 10px;
+        }
+    </style>
+
 
 </head>
 
 <body>
+
 <div class="admin-biaogelist">
     <div class="listbiaoti am-cf">
         <ul class="am-icon-flag on">
             产品自检盒子
         </ul>
     </div>
+    <div id="tipDiv">
+        <center><img style="width:25px;" src="http://img.lanrentuku.com/img/allimg/1212/5-121204193R5-50.gif"></center>
+        <div id="tipInfo"></div>
+    </div>
+
+    <script type="text/javascript">
+        //显示提示
+        function showTip(info){
+            $('#tipInfo').html(info);
+            $('#tipDiv').show();
+        }
+        //初始加载提示
+        //showTip('内容正在加载...');
+        //关闭提示
+        function closeTip(){
+            $('#tipDiv').hide();
+        }
+    </script>
+
 
     <div class="fbneirong" style="font-size: medium">
 
@@ -37,7 +74,7 @@
         <br><br>
         <hr/>
         <br>
-        <lable style="font-size:medium">请选择基本检测项</lable> &nbsp;&nbsp;&nbsp;&nbsp;<button type="button"
+        <lable style="font-size:medium">请选择基本检测项</lable> &nbsp;&nbsp;&nbsp;&nbsp;<button id ="baseBtn" type="button"
                                                                                          class="am-btn am-btn-success am-radius"
                                                                                          onclick="startCheck()">基本检测开始
     </button>
@@ -164,19 +201,24 @@
 
 
 <script>
+
     function startCheck() {
         var productCode = $("#productCode").val();
         if (isNull(productCode)) {
             alert("请输入sku");
+            return;
         }
+        showTip("检测中，请耐心等待......");
+        $("#baseBtn").attr("disabled",true);
+        $("#tb").html("");
+
         var baseCheckIdList = [];
         var baseChecked = $("input[name='baseCheckCB']:checked").each(function (i, checkCB) {
             baseCheckIdList.push($(checkCB).prop("id"));
         });
         var baseCheckIdStr = baseCheckIdList.join(",");
-        if (!isNull(productCode)) {
-            alert("部分接口为异步调用，请耐心等待。。。");
-        }
+
+
         $.ajax({
             url: "/productCheck/startCheck?sku=" + productCode + "&baseCheckIds=" + baseCheckIdStr,
             type: "GET",
@@ -188,6 +230,7 @@
                 if (res1 != null) {
                     addCheckResult(res1);
                 }
+
                 var res2 = result.issueResult;
                 if (res2 != null) {
                     addCheckResult(res2);
@@ -208,17 +251,22 @@
                 if (res6 != null) {
                     addCheckResult(res6);
                 }
+                closeTip();
+                $("#baseBtn").attr("disabled",false);
             },
             error: function () {
                 if (productCode.length > 0) {
-                    alert("您没有任何检测结果")
+                    alert("您没有任何检测结果");
+                    closeTip();
+                    $("#baseBtn").attr("disabled",false);
                 }
                 else {
-                    alert("请输入sku")
+                    alert("请输入sku");
+                    closeTip();
+                    $("#baseBtn").attr("disabled",false);
                 }
             }
         });
-
     }
 
     function selectAllBaseCheck() {
@@ -377,19 +425,23 @@
         productFee.productCode = $("#productCode").val();
         if (isNull(productFee.productCode)) {
             alert("请先输入sku");
+            return ;
         }
-        productFee.periods = $("#insurancePeriodId option:selected").val();
-        productFee.payPeriod = $("#paymentPeriodId option:selected").val();
-        productFee.socialSecurity = $("#isSocialSecurityId option:selected").val();
-        productFee.sex = $("#sexId option:selected").val();
-        productFee.amount = $("#amountId option:selected").val();
-        productFee.holderInsuredRelations = $("#holderInsuredRelationsId option:selected").val();
         productFee.minAge = $("#minAgeId").val();
         productFee.maxAge = $("#maxAgeId").val();
         if (productFee.minAge === "" || productFee.maxAge === "") {
             alert("请选择投保年龄区间！");
             return false;
         }
+
+        productFee.periods = $("#insurancePeriodId option:selected").val();
+        productFee.payPeriod = $("#paymentPeriodId option:selected").val();
+        productFee.socialSecurity = $("#isSocialSecurityId option:selected").val();
+        productFee.sex = $("#sexId option:selected").val();
+        productFee.amount = $("#amountId option:selected").val();
+        productFee.holderInsuredRelations = $("#holderInsuredRelationsId option:selected").val();
+
+        $("#ftb").html("");
         $.ajax({
             type: "post",
             url: "/productCheck/startFeeCheck",

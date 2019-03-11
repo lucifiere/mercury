@@ -266,7 +266,10 @@ public class ProductBaseInfo extends BaseConfig {
                     }
                 }
             } else {
-                defaultPriceYuan = productDetail.getResponse().getProductBase().getDefaultPrice();
+                defaultPriceYuan = getPriceBySkuId(HttpClientUtils.PREMIUM_TRIAL_URL, trialParam);
+                if (StringUtils.isEmpty(defaultPriceYuan)) {
+                    defaultPriceYuan =productDetail.getResponse().getProductBase().getDefaultPrice();
+                }
             }
 
         }

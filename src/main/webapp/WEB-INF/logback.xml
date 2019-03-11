@@ -24,7 +24,7 @@
             <fileNamePattern>.D:/logs/vod.log.%d{yyyy-MM-dd}</fileNamePattern>
         </rollingPolicy>
     </appender>
-    <logger name="com.atlandes" level="info"/>
+    <logger name="com.jd.baoxian.test.tools" level="info"/>
     <root level="warn">
         <appender-ref ref="Console"/>
     </root>

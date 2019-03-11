@@ -11,7 +11,7 @@
 
     <context:property-placeholder location="classpath:config/*.properties"/>
 
-    <context:component-scan base-package="com.atlandes"/>
+    <context:component-scan base-package="com.jd.baoxian.test.tools"/>
     <mvc:annotation-driven>
         <mvc:message-converters>
             <ref bean="fastJsonHttpMessageConverter"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.atlandes.productCode.mapper.PolicyorderMapper" >
-  <resultMap id="BaseResultMap" type="com.atlandes.productCode.dao.Policyorder" >
+<mapper namespace="com.jd.baoxian.test.tools.mapper.PolicyorderMapper" >
+  <resultMap id="BaseResultMap" type="com.jd.baoxian.test.tools.dao.Policyorder" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="OrderId" property="orderid" jdbcType="VARCHAR" />
     <result column="PolicyNo" property="policyno" jdbcType="VARCHAR" />
@@ -93,7 +93,7 @@
     Status, ProposalDate, PolicyDate, CreteDate, LastUpdateDate, Version, SkuName, PolicyLimitPrice, 
     PolicyType, PolicyNum, YN, groupFlag
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.atlandes.productCode.dao.PolicyorderExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jd.baoxian.test.tools.dao.PolicyorderExample" >
     select
     <if test="distinct" >
       distinct
@@ -117,13 +117,13 @@
     delete from policyorder
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.atlandes.productCode.dao.PolicyorderExample" >
+  <delete id="deleteByExample" parameterType="com.jd.baoxian.test.tools.dao.PolicyorderExample" >
     delete from policyorder
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.atlandes.productCode.dao.Policyorder" >
+  <insert id="insert" parameterType="com.jd.baoxian.test.tools.dao.Policyorder" >
     insert into policyorder (id, OrderId, PolicyNo, 
       ProposalNo, UUID, SkuId, 
       PartnerEnum, partnerProductCode, CustomerMapping, 
@@ -143,7 +143,7 @@
       #{policylimitprice,jdbcType=DECIMAL}, #{policytype,jdbcType=SMALLINT}, #{policynum,jdbcType=SMALLINT}, 
       #{yn,jdbcType=SMALLINT}, #{groupflag,jdbcType=SMALLINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.atlandes.productCode.dao.Policyorder" >
+  <insert id="insertSelective" parameterType="com.jd.baoxian.test.tools.dao.Policyorder" >
     insert into policyorder
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -306,7 +306,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.atlandes.productCode.dao.PolicyorderExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.jd.baoxian.test.tools.dao.PolicyorderExample" resultType="java.lang.Integer" >
     select count(*) from policyorder
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -430,7 +430,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.atlandes.productCode.dao.Policyorder" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.jd.baoxian.test.tools.dao.Policyorder" >
     update policyorder
     <set >
       <if test="orderid != null" >
@@ -511,7 +511,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.atlandes.productCode.dao.Policyorder" >
+  <update id="updateByPrimaryKey" parameterType="com.jd.baoxian.test.tools.dao.Policyorder" >
     update policyorder
     set OrderId = #{orderid,jdbcType=VARCHAR},
       PolicyNo = #{policyno,jdbcType=VARCHAR},

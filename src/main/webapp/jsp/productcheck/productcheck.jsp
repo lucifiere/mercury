@@ -19,7 +19,6 @@
     <script src="${pageContext.request.contextPath}/static/js/common.js"></script>
     <script src="${pageContext.request.contextPath}/static/lib/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/lib/jqmeter.js"></script>
-    <script src="${pageContext.request.contextPath}/static/css/tab.css"></script>
     <script type="text/javascript"
             src="${pageContext.request.contextPath }/static/js/productCheck/productCheck.js"></script>
     <style>
@@ -74,8 +73,8 @@
 
     <div data-am-widget="tabs" class="am-tabs am-tabs-d2">
         <ul class="am-tabs-nav am-cf">
-            <li class="am-active"><a href="[data-tab-panel-0]">Part1</a></li>
-            <li class=""><a href="[data-tab-panel-1]">Part2</a></li>
+            <li class="am-active"><a href="[data-tab-panel-0]">产品基本检测</a></li>
+            <li class=""><a href="[data-tab-panel-1]">产品费率检测</a></li>
         </ul>
 
         <div class="fbneirong am-tabs-bd" style="font-size: medium">
@@ -132,8 +131,10 @@
                     </table>
                 </div>
             </div>
-            <br><br><hr/><br>
+
             <div id="part2" data-tab-panel-1 class="am-tab-panel ">
+                sku： <input id="productCode2" class="am-input-sm" placeholder="请输入sku" style="font-size: medium"/>
+                <br><br><hr/><br>
                 <div class="am-form-group am-cf" style="font-size: medium">
                     是否进行费率检测
                     <lable class="am-radio-inline">
@@ -293,7 +294,7 @@
     }
 
     function displayFeeType() {
-        var productCode = $("#productCode").val();
+        var productCode = $("#productCode2").val();
         if (productCode.length > 0) {
             $("input[name='isFeeCheck']").change(function () {
                 var value = $(this).val();
@@ -435,7 +436,7 @@
 
     function startFeeCheck() {
         var productFee = {};
-        productFee.productCode = $("#productCode").val();
+        productFee.productCode = $("#productCode2").val();
         if (isNull(productFee.productCode)) {
             alert("请先输入sku");
             return;

@@ -88,17 +88,17 @@ public class GetAgeUtil {
 		String ageInsured = null;
 		if(holderRelation.equals("0")){ //得到本人的出生日期
 			calendar.add(Calendar.YEAR, -23);//当前时间减去23年
-			calendar.add(Calendar.MONTH, -2);//当前时间前去2个月
+			calendar.add(Calendar.DATE, -3);//当前时间前去4天
 		}else if(holderRelation.equals("1")){//得到父母的出生日期
-			calendar.add(Calendar.YEAR, -(minAge-1));
-			calendar.add(Calendar.MONTH, -2);
+			calendar.add(Calendar.YEAR, -(minAge));
+			calendar.add(Calendar.DATE, -4);
 
 		}else if(holderRelation.equals("2")){//得到子女的出生日期
 			calendar.add(Calendar.YEAR, -10);
-			calendar.add(Calendar.MONTH, -2);
+			calendar.add(Calendar.DATE, -4);
 		}else {//得到配偶的出生日期
 			calendar.add(Calendar.YEAR, -25);
-			calendar.add(Calendar.MONTH, -2);
+			calendar.add(Calendar.DATE, -4);
 		}
 		return calendar;
 	}
@@ -110,7 +110,7 @@ public class GetAgeUtil {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		calendar.add(Calendar.YEAR, -ageint);//当前时间减去23年
-		calendar.add(Calendar.MONTH, -1);//当前时间前去2个月
+		calendar.add(Calendar.DATE, -4);//
 		return  calendar;
 	}
 }

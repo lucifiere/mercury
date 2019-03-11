@@ -351,7 +351,7 @@ public class ProductBaseInfo extends BaseConfig {
         application.setProvinceId("110000");
         application.setAreaId("110106");
         application.setCityId("110100");
-        application.setAddress("经济开发区科创十一街京东大厦A座");
+        application.setAddress("经济开发区科创11街京东大厦A座");
         return application;
 
     }
@@ -419,26 +419,20 @@ public class ProductBaseInfo extends BaseConfig {
      * @return
      */
     public BaseCheckResult feeUnderWrite(BaseResponse<ProductDetail> productDetail,
-                                                       String age, String relation,
-                                                       String payperiod, String period,
-                                                       String insuredAmount) {
-        String amount =getTransParam(productDetail,insuredAmount);
-        UnderWriteRequest underWriteReq = getGeneralUnderWriteOb(productDetail,age,relation,payperiod,period,amount);
+                                         String age, String relation,
+                                         String payperiod, String period,
+                                         String insuredAmount) {
+        String amount = getTransParam(productDetail, insuredAmount);
+        UnderWriteRequest underWriteReq = getGeneralUnderWriteOb(productDetail, age, relation, payperiod, period, amount);
         BaseResponse<UnderWriteResponse> underWriteRes = jsfUnderWriteResource.underwrite(underWriteReq);
         BaseCheckResult feeUnderWriteResult = new BaseCheckResult();
         feeUnderWriteResult.setCheckAge(age);
-        String premium;
-        if(StringUtils.isNotEmpty(insuredAmount)){
-            premium =insuredAmount;
-        }
-        else{
-            premium = productDetail.getResponse().getProductSerialsList().get(0).getDefaultPrice();
-        }
-        feeUnderWriteResult.setCheckPremium(premium);
-        if(underWriteRes.isSuccess() && Objects.equals(underWriteRes.getCode(),"0000")){
-            feeUnderWriteResult.setCheckMark(underWriteRes.getResponse().getUnderWriteOrder().getOrderId());
+        if (underWriteRes.isSuccess() && Objects.equals(underWriteRes.getCode(), "0000")) {
+            feeUnderWriteResult.setCheckPremium(underWriteRes.getResponse().getUnderWriteOrder().getOrderPrice().toString());
+            feeUnderWriteResult.setCheckMark("订单号" + underWriteRes.getResponse().getUnderWriteOrder().getOrderId());
             feeUnderWriteResult.setCheckResult("核保成功");
-        }else{
+        } else {
+            feeUnderWriteResult.setCheckPremium(underWriteReq.getInsurance().getTotalPrice().toString());
             feeUnderWriteResult.setCheckMark(underWriteRes.getMessage());
             feeUnderWriteResult.setCheckResult("核保失败");
         }
@@ -494,13 +488,13 @@ public class ProductBaseInfo extends BaseConfig {
             pprt.setAge(Integer.parseInt(insuredAge));
         } else {
             if (holderRelation.equals("0")) {
-                pprt.setAge(24);
+                pprt.setAge(23);
             } else if (holderRelation.equals("1")) {
                 pprt.setAge(productDetail.getResponse().getProductSerialsList().get(0).getProductRule().getMinAge() + 1);
             } else if (holderRelation.equals("2")) {
-                pprt.setAge(11);
+                pprt.setAge(10);
             } else {
-                pprt.setAge(26);
+                pprt.setAge(25);
             }
         }
         if (mapParam.get("InsuredAmount") != null) {
@@ -558,7 +552,7 @@ public class ProductBaseInfo extends BaseConfig {
     }
 
     public String getTransParam(BaseResponse<ProductDetail> productDetail,
-                                           String insuredAmount) {
+                                String insuredAmount) {
         Map<String, Object> extend;
         extend = productDetail.getResponse().getProductSerialsList().get(0).getExtend();
         String key = getPlanCodeKey(extend, insuredAmount);
@@ -596,7 +590,7 @@ public class ProductBaseInfo extends BaseConfig {
             if (underwriteRes.isSuccess() && Objects.equals(underwriteRes.getCode(), "0000")) {
                 underCheckCheckResult.setCheckResult("检测通过");
                 String orderId = underwriteRes.getResponse().getUnderWriteOrder().getOrderId();
-                underCheckCheckResult.setCheckResultDesc("订单号：" + orderId + "  投保单号：" + getProposalNoByOrderId(orderId));
+                underCheckCheckResult.setCheckResultDesc("订单号：" + orderId + "<br>" + "投保单号：" + getProposalNoByOrderId(orderId));
                 underCheckCheckResult.setCheckMark("");
             } else {
                 underCheckCheckResult.setCheckResult("检测失败");
@@ -623,7 +617,12 @@ public class ProductBaseInfo extends BaseConfig {
         queryCond.andOrderidEqualTo(orderId);
         List<Policyorder> policyorderList = policyorderMapper.selectByExample(policyorderExample);
         if (CollectionUtils.isNotEmpty(policyorderList)) {
-            return policyorderList.get(0).getProposalno();
+            if(policyorderList.get(0).getProposalno()!=null){
+                return policyorderList.get(0).getProposalno();
+            }
+           else{
+                return "没有获取到投保单号";
+            }
         } else {
             return "没有获取到投保单号";
         }
@@ -641,9 +640,15 @@ public class ProductBaseInfo extends BaseConfig {
         queryCond.andOrderidEqualTo(orderId);
         List<Policyorder> policyorderList = policyorderMapper.selectByExample(policyorderExample);
         if (CollectionUtils.isNotEmpty(policyorderList)) {
-            return policyorderList.get(0).getPolicyno();
+            if(policyorderList.get(0).getPolicyno() !=null)
+            {
+                return policyorderList.get(0).getPolicyno();
+            }
+            else{
+                return "没有获取到保单号";
+            }
         } else {
-            return "没有获取到保单号";
+            return "没有获取到相应保单";
         }
     }
 
@@ -654,7 +659,7 @@ public class ProductBaseInfo extends BaseConfig {
         BaseCheckResult issueCheckResult = new BaseCheckResult();
         BaseResponse issueRes;
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
-        if (StringUtils.equals(productdetailRes.getCode(), "0000")) {
+        if (Objects.equals(productdetailRes.getCode(), "0000")) {
             UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes, null, null, null, null, null);
             BaseResponse<UnderWriteResponse> underwriteResp = jsfUnderWriteResource.underwrite(under);
             if (underwriteResp != null) {
@@ -669,7 +674,7 @@ public class ProductBaseInfo extends BaseConfig {
                     String orderId = underwriteResp.getResponse().getUnderWriteOrder().getOrderId();
                     if (Objects.equals(issueRes.getCode(), "0000")) {
                         issueCheckResult.setCheckResult("检测通过");
-                        issueCheckResult.setCheckResultDesc("订单号：" + orderId + "  保单号：" + getPolicyNoByOrderId(orderId));
+                        issueCheckResult.setCheckResultDesc("订单号：" + orderId + "<br>" + "保单号：" + getPolicyNoByOrderId(orderId));
                         issueCheckResult.setCheckMark(issueRes.getMessage());
                     } else {
                         issueCheckResult.setCheckResult("检测失败");
@@ -704,9 +709,14 @@ public class ProductBaseInfo extends BaseConfig {
         queryCond.andOrderidEqualTo(orderId);
         List<Policyorder> policyorderList = policyorderMapper.selectByExample(policyorderExample);
         if (CollectionUtils.isNotEmpty(policyorderList)) {
-            return policyorderList.get(0).getDownloadurl();
+            if(policyorderList.get(0).getDownloadurl()!=null){
+                return policyorderList.get(0).getDownloadurl();
+            }
+            else {
+                return "没有获取到电子保单";
+            }
         } else {
-            return "没有获取到电子保单";
+            return "没有获取到相应保单";
         }
     }
 
@@ -721,7 +731,7 @@ public class ProductBaseInfo extends BaseConfig {
         onLinePolicyCheckResult.setCheckItem("电子保单检测");
         BaseResponse issueRes;
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
-        if (StringUtils.equals(productdetailRes.getCode(), "0000")) {
+        if (Objects.equals(productdetailRes.getCode(), "0000")) {
             UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes, null, null, null, null, null);
             BaseResponse<UnderWriteResponse> underwriteResp = jsfUnderWriteResource.underwrite(under);
 
@@ -737,18 +747,18 @@ public class ProductBaseInfo extends BaseConfig {
                 if (Objects.equals(issueRes.getCode(), "0000")) {
                     String policyNo = getPolicyNoByOrderId(orderId);
                     String policyUrl = getOnLinePolicyByOrderId(orderId);
-                    if (StringUtils.equals(policyUrl, "没有获取到电子保单")) {
+                    if ("没有获取到电子保单".equals(policyUrl)) {
                         onLinePolicyCheckResult.setCheckResult("检测失败");
-                        onLinePolicyCheckResult.setCheckResultDesc("订单号：" + orderId + " 保单号：" + policyNo + " 电子保单：" + policyUrl);
+                        onLinePolicyCheckResult.setCheckResultDesc("订单号：" + orderId + "<br>" + "保单号：" + policyNo + "<br>" + "电子保单：" + policyUrl);
                         onLinePolicyCheckResult.setCheckMark("");
                     } else {
                         onLinePolicyCheckResult.setCheckResult("检测通过");
-                        onLinePolicyCheckResult.setCheckResultDesc("订单号：" + orderId + " 保单号：" + policyNo + " 电子保单" + policyUrl);
+                        onLinePolicyCheckResult.setCheckResultDesc("订单号：" + orderId + "<br>" + "保单号：" + policyNo + "<br>" + " 电子保单" + policyUrl);
                         onLinePolicyCheckResult.setCheckMark("");
                     }
                 } else {
                     onLinePolicyCheckResult.setCheckResult("检测失败");
-                    onLinePolicyCheckResult.setCheckResultDesc("订单号：" + orderId + " 投保单号：" + proposalNo);
+                    onLinePolicyCheckResult.setCheckResultDesc("订单号：" + orderId + "<br>" + " 投保单号：" + proposalNo);
                     onLinePolicyCheckResult.setCheckMark("出单失败。" + issueRes.getMessage());
                 }
             } else {
@@ -775,7 +785,7 @@ public class ProductBaseInfo extends BaseConfig {
         underWriteOnceMoreCheckResult.setCheckItem("重复核保检测");
         BaseResponse issueRes;
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
-        if (StringUtils.equals(productdetailRes.getCode(), "0000")) {
+        if (Objects.equals(productdetailRes.getCode(), "0000")) {
             UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes, null, null, null, null, null);
             BaseResponse<UnderWriteResponse> underwriteResp = jsfUnderWriteResource.underwrite(under);
             if (underwriteResp.isSuccess() && Objects.equals(underwriteResp.getCode(), "0000")) {
@@ -828,7 +838,7 @@ public class ProductBaseInfo extends BaseConfig {
         BaseCheckResult issueOnceMoreCheckResult = new BaseCheckResult();
         issueOnceMoreCheckResult.setCheckItem("重复出单检测");
         BaseResponse<ProductDetail> productdetailRes = getProductDetailBySkuId(sku);
-        if (StringUtils.equals(productdetailRes.getCode(), "0000")) {
+        if (Objects.equals(productdetailRes.getCode(), "0000")) {
             UnderWriteRequest under = getGeneralUnderWriteOb(productdetailRes, null, null, null, null, null);
             BaseResponse<UnderWriteResponse> underwriteResp1 = jsfUnderWriteResource.underwrite(under);
             if (underwriteResp1.isSuccess() && Objects.equals(underwriteResp1.getCode(), "0000")) {

@@ -23,8 +23,8 @@
     <script type="text/javascript"
             src="${pageContext.request.contextPath }/static/js/productCheck/productCheck.js"></script>
     <style>
-        #tipDiv{
-            display:none;
+        #tipDiv {
+            display: none;
             position: absolute;
             left: 39%;
             top: 230px;
@@ -33,7 +33,8 @@
             padding: 10px;
             border-radius: 5px;
         }
-        #tipInfo{
+
+        #tipInfo {
             margin-top: 10px;
         }
     </style>
@@ -42,21 +43,15 @@
 </head>
 
 <body>
-<ul id="tab">
-    <li class="tabin">test1</li>
-    <li>test2</li>
-    <li>test3</li>
-</ul>
-<div id="content">
-    <div id="realcontent"></div>
-</div>
 
-<div class="admin-biaogelist">
+<div class="admin-biaogelist" id="main" style="width: 80%;margin:0 auto;margin-top: 20px">
+
     <div class="listbiaoti am-cf">
         <ul class="am-icon-flag on">
             产品自检盒子
         </ul>
     </div>
+
     <div id="tipDiv">
         <center><img style="width:25px;" src="http://img.lanrentuku.com/img/allimg/1212/5-121204193R5-50.gif"></center>
         <div id="tipInfo"></div>
@@ -64,145 +59,154 @@
 
     <script type="text/javascript">
         //显示提示
-        function showTip(info){
+        function showTip(info) {
             $('#tipInfo').html(info);
             $('#tipDiv').show();
         }
+
         //初始加载提示
         //showTip('内容正在加载...');
         //关闭提示
-        function closeTip(){
+        function closeTip() {
             $('#tipDiv').hide();
         }
     </script>
 
+    <div data-am-widget="tabs" class="am-tabs am-tabs-d2">
+        <ul class="am-tabs-nav am-cf">
+            <li class="am-active"><a href="[data-tab-panel-0]">Part1</a></li>
+            <li class=""><a href="[data-tab-panel-1]">Part2</a></li>
+        </ul>
 
-    <div class="fbneirong" style="font-size: medium">
-
-        sku： <input id="productCode" class="am-input-sm" placeholder="请输入sku" style="font-size: medium"/>
-        <br><br>
-        <hr/>
-        <br>
-        <lable style="font-size:medium">请选择基本检测项</lable> &nbsp;&nbsp;&nbsp;&nbsp;<button id ="baseBtn" type="button"
-                                                                                         class="am-btn am-btn-success am-radius"
-                                                                                         onclick="startCheck()">基本检测开始
-    </button>
-        <div class="am-form-group am-cf">
-            <input type="checkbox" id="selectAll" onclick="selectAllBaseCheck()">
-            <b>全选</b>
-        </div>
-        <div class="am-form-group am-cf">
-            <input type="checkbox" id="underWrite" name="baseCheckCB">
-            核保检测
-            &nbsp;&nbsp;&nbsp;
-            <input type="checkbox" id="issue" name="baseCheckCB">
-            出单检测
-            &nbsp;&nbsp;&nbsp;
-            <input type="checkbox" id="onLinePolicy" name="baseCheckCB">
-            电子保单检测
-            &nbsp;&nbsp;&nbsp;
-            <input type="checkbox" id="underWriteOnceMore" name="baseCheckCB">
-            核保份数校验
-            &nbsp;&nbsp;&nbsp;
-            <input type="checkbox" id="issueOnceMore" name="baseCheckCB">
-            出单份数校验
-            &nbsp;&nbsp;&nbsp;
-            <input type="checkbox" id="issueIdempotent" name="baseCheckCB">
-            出单幂等校验
-        </div>
-        <br>
-        <div name="baseResult">
-            <div class="am-form-group am-cf">
-                <b>基本项检测结果</b>
-            </div>
-            <table class="am-table am-table-bordered am-table-striped am-table-hover">
-                <thead>
-                <tr>
-                    <td>检测项</td>
-                    <td>检测结果</td>
-                    <td>结果描述</td>
-                    <td>备注</td>
-                </tr>
-                <thead>
-                <tbody id="tb">
-
-                </tbody>
-            </table>
-        </div>
-        <br><br>
-        <hr/>
-        <br>
-        <div class="am-form-group am-cf" style="font-size: medium">
-            是否进行费率检测
-            <lable class="am-radio-inline">
-                <input type="radio" name="isFeeCheck" value="true" id="feeCheckTrue" style="font-size: medium"
-                       onclick="displayFeeType()">是
-            </lable>
-            <lable class="am-radio-inline">
-                <input type="radio" name="isFeeCheck" value="false" id="feeCheckFalse" style="font-size: medium"
-                       checked="checked"
-                       onclick="displayFeeType()">否
-            </lable>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="button" id="feeCheckBtn" name="feeCheck" class="am-btn am-btn-success am-radius"
-                    onclick="startFeeCheck()" hidden="true">
-                费率检测开始
-            </button>&nbsp;
-
-            <div name="feeCheck">
-
-                <div id="amountId" hidden="true">
-                    <lable>保额方案：</lable>
-                    <select name="amount"></select>
+        <div class="fbneirong am-tabs-bd" style="font-size: medium">
+            <div id="part1" data-tab-panel-0 class="am-tab-panel am-active">
+                sku： <input id="productCode" class="am-input-sm" placeholder="请输入sku" style="font-size: medium"/>
+                <br><br>
+                <hr/>
+                <br>
+                <lable style="font-size:medium">请选择基本检测项</lable> &nbsp;&nbsp;&nbsp;&nbsp;<button id="baseBtn" type="button"
+                                                                                                 class="am-btn am-btn-success am-radius"
+                                                                                                 onclick="startCheck()">
+                基本检测开始
+            </button>
+                <div class="am-form-group am-cf">
+                    <input type="checkbox" id="selectAll" onclick="selectAllBaseCheck()">
+                    <b>全选</b>
                 </div>
-                <div id="holderInsuredRelationsId" hidden="true">
-                    <lable>投被保人关系：</lable>
-                    <select name="holderInsuredRelations">
-                    </select>
-                </div>
-                <div id="sexId" hidden="true">
-                    <lable>性别：</lable>
-                    <select name="sex">
-                    </select>
-                </div>
-                <div id="paymentPeriodId" hidden="true">
-                    <lable>缴费期间：</lable>
-                    <select name="paymentPeriod">
-                    </select>
-                </div>
-                <div id="insurancePeriodId" hidden="true">
-                    <lable>保障期间：</lable>
-                    <select name="insurancePeriod">
-                    </select>
-                </div>
-                <div id="isSocialSecurityId" hidden="true">
-                    <lable>社保：</lable>
-                    <select name="isSocialSecurity">
-                    </select>
+                <div class="am-form-group am-cf">
+                    <input type="checkbox" id="underWrite" name="baseCheckCB">
+                    核保检测
+                    &nbsp;&nbsp;&nbsp;
+                    <input type="checkbox" id="issue" name="baseCheckCB">
+                    出单检测
+                    &nbsp;&nbsp;&nbsp;
+                    <input type="checkbox" id="onLinePolicy" name="baseCheckCB">
+                    电子保单检测
+                    &nbsp;&nbsp;&nbsp;
+                    <input type="checkbox" id="underWriteOnceMore" name="baseCheckCB">
+                    核保份数校验
+                    &nbsp;&nbsp;&nbsp;
+                    <input type="checkbox" id="issueOnceMore" name="baseCheckCB">
+                    出单份数校验
+                    &nbsp;&nbsp;&nbsp;
+                    <input type="checkbox" id="issueIdempotent" name="baseCheckCB">
+                    出单幂等校验
                 </div>
                 <br>
-                <div id="ageId">
-                </div>
-                <br>
-            </div>
-        </div>
+                <div name="baseResult">
+                    <div class="am-form-group am-cf">
+                        <b>基本项检测结果</b>
+                    </div>
+                    <table class="am-table am-table-bordered am-table-striped am-table-hover">
+                        <thead>
+                        <tr>
+                            <td>检测项</td>
+                            <td>检测结果</td>
+                            <td>结果描述</td>
+                            <td>备注</td>
+                        </tr>
+                        <thead>
+                        <tbody id="tb">
 
-        <div name="feeCheckResult">
-            <div class="am-form-group am-cf">
-                <b>费率检测结果</b>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <table class="am-table am-table-bordered am-table-striped am-table-hover">
-                <thead>
-                <tr>
-                    <td>年龄(岁)</td>
-                    <td>保费(分)</td>
-                    <td>结果</td>
-                    <td>备注</td>
-                </tr>
-                <thead>
-                <tbody id="ftb">
-                </tbody>
-            </table>
+            <br><br><hr/><br>
+            <div id="part2" data-tab-panel-1 class="am-tab-panel ">
+                <div class="am-form-group am-cf" style="font-size: medium">
+                    是否进行费率检测
+                    <lable class="am-radio-inline">
+                        <input type="radio" name="isFeeCheck" value="true" id="feeCheckTrue" style="font-size: medium"
+                               onclick="displayFeeType()">是
+                    </lable>
+                    <lable class="am-radio-inline">
+                        <input type="radio" name="isFeeCheck" value="false" id="feeCheckFalse" style="font-size: medium"
+                               checked="checked"
+                               onclick="displayFeeType()">否
+                    </lable>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" id="feeCheckBtn" name="feeCheck" class="am-btn am-btn-success am-radius"
+                            onclick="startFeeCheck()" hidden="true">
+                        费率检测开始
+                    </button>&nbsp;
+
+                    <div name="feeCheck">
+
+                        <div id="amountId" hidden="true">
+                            <lable>保额方案：</lable>
+                            <select name="amount"></select>
+                        </div>
+                        <div id="holderInsuredRelationsId" hidden="true">
+                            <lable>投被保人关系：</lable>
+                            <select name="holderInsuredRelations">
+                            </select>
+                        </div>
+                        <div id="sexId" hidden="true">
+                            <lable>性别：</lable>
+                            <select name="sex">
+                            </select>
+                        </div>
+                        <div id="paymentPeriodId" hidden="true">
+                            <lable>缴费期间：</lable>
+                            <select name="paymentPeriod">
+                            </select>
+                        </div>
+                        <div id="insurancePeriodId" hidden="true">
+                            <lable>保障期间：</lable>
+                            <select name="insurancePeriod">
+                            </select>
+                        </div>
+                        <div id="isSocialSecurityId" hidden="true">
+                            <lable>社保：</lable>
+                            <select name="isSocialSecurity">
+                            </select>
+                        </div>
+                        <br>
+                        <div id="ageId">
+                        </div>
+                        <br>
+                    </div>
+                </div>
+
+                <div name="feeCheckResult">
+                    <div class="am-form-group am-cf">
+                        <b>费率检测结果</b>
+                    </div>
+                    <table class="am-table am-table-bordered am-table-striped am-table-hover">
+                        <thead>
+                        <tr>
+                            <td>年龄(岁)</td>
+                            <td>保费(分)</td>
+                            <td>结果</td>
+                            <td>备注</td>
+                        </tr>
+                        <thead>
+                        <tbody id="ftb">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -218,7 +222,7 @@
             return;
         }
         showTip("检测中，请耐心等待......");
-        $("#baseBtn").attr("disabled",true);
+        $("#baseBtn").attr("disabled", true);
         $("#tb").html("");
 
         var baseCheckIdList = [];
@@ -261,18 +265,18 @@
                     addCheckResult(res6);
                 }
                 closeTip();
-                $("#baseBtn").attr("disabled",false);
+                $("#baseBtn").attr("disabled", false);
             },
             error: function () {
                 if (productCode.length > 0) {
                     alert("您没有任何检测结果");
                     closeTip();
-                    $("#baseBtn").attr("disabled",false);
+                    $("#baseBtn").attr("disabled", false);
                 }
                 else {
                     alert("请输入sku");
                     closeTip();
-                    $("#baseBtn").attr("disabled",false);
+                    $("#baseBtn").attr("disabled", false);
                 }
             }
         });
@@ -434,7 +438,7 @@
         productFee.productCode = $("#productCode").val();
         if (isNull(productFee.productCode)) {
             alert("请先输入sku");
-            return ;
+            return;
         }
         productFee.minAge = $("#minAgeId").val();
         productFee.maxAge = $("#maxAgeId").val();

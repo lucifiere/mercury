@@ -16,5 +16,6 @@
       href="${pageContext.request.contextPath}/static/lib/amaze_ui/i/app-icon72x72@2x.png">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/lib/amaze_ui/css/amazeui.min.css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/lib/amaze_ui/css/admin.css">
+<script src="${pageContext.request.contextPath}/static/lib/amaze_ui/js/amazeui.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/lib/amaze_ui/js/app.js"></script>
 
